@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:inventory_management/config/asset_config.dart';
 import 'package:inventory_management/theme/app_colors.dart';
-import 'package:flutter_svg/flutter_svg.dart';
 import 'package:inventory_management/theme/app_text_style.dart';
 import 'package:inventory_management/widget/custom_button.dart';
 import 'package:inventory_management/widget/custom_password_input.dart';
@@ -17,6 +17,32 @@ class LoginScreen extends StatefulWidget {
 class _LoginScreenState extends State<LoginScreen> {
   TextEditingController usernameController = new TextEditingController();
   TextEditingController passwordController = new TextEditingController();
+  void submitUsernameAndPassword() {
+    if (usernameController.text.isEmpty) {
+      Fluttertoast.showToast(
+          msg: "Invalid username",
+          toastLength: Toast.LENGTH_SHORT,
+          gravity: ToastGravity.CENTER,
+          timeInSecForIosWeb: 1,
+          backgroundColor: AppColor.toast_msg_warning,
+          textColor: Colors.white,
+          fontSize: 13.0);
+      return;
+    } else if (passwordController.text.isEmpty) {
+      Fluttertoast.showToast(
+          msg: "Invalid password",
+          toastLength: Toast.LENGTH_SHORT,
+          gravity: ToastGravity.CENTER,
+          timeInSecForIosWeb: 1,
+          backgroundColor: AppColor.toast_msg_warning,
+          textColor: Colors.white,
+          fontSize: 13.0);
+      return;
+    } else {
+      return;
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     var width = MediaQuery.of(context).size.width;
@@ -102,7 +128,7 @@ class _LoginScreenState extends State<LoginScreen> {
                     ),
                     Container(
                       child: CustomButton(
-                        onPressed: () {},
+                        onPressed: submitUsernameAndPassword,
                         text: "Log in",
                       ),
                     ),
