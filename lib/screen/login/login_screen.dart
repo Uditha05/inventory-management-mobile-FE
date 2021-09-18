@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:inventory_management/config/asset_config.dart';
-import 'package:inventory_management/screen/menu/Office_Clerk_Dashboard.dart';
+import 'package:inventory_management/controller/auth_controller.dart';
+
+import 'package:inventory_management/screen/office_clerk/office_clerk_dashboard.dart';
 import 'package:inventory_management/theme/app_colors.dart';
 import 'package:inventory_management/theme/app_text_style.dart';
 import 'package:inventory_management/widget/custom_button.dart';
@@ -18,8 +20,8 @@ class LoginScreen extends StatefulWidget {
 class _LoginScreenState extends State<LoginScreen> {
   TextEditingController usernameController = new TextEditingController();
   TextEditingController passwordController = new TextEditingController();
-  void submitUsernameAndPassword() {
-    if (usernameController.text.isEmpty) {
+  void submitUsernameAndPassword() async {
+    if (usernameController.text.trim().isEmpty) {
       Fluttertoast.showToast(
           msg: "Invalid username",
           toastLength: Toast.LENGTH_SHORT,
@@ -29,7 +31,7 @@ class _LoginScreenState extends State<LoginScreen> {
           textColor: Colors.white,
           fontSize: 13.0);
       return;
-    } else if (passwordController.text.isEmpty) {
+    } else if (passwordController.text.trim().isEmpty) {
       Fluttertoast.showToast(
           msg: "Invalid password",
           toastLength: Toast.LENGTH_SHORT,
@@ -40,7 +42,21 @@ class _LoginScreenState extends State<LoginScreen> {
           fontSize: 13.0);
       return;
     } else {
-      Navigator.of(context).push(new MaterialPageRoute(
+      var out = await AuthController().checkLogin(
+          usernameController.text.trim(), passwordController.text.trim());
+
+      if (out == null) {
+        Fluttertoast.showToast(
+            msg: "Invalid Email or Password",
+            toastLength: Toast.LENGTH_SHORT,
+            gravity: ToastGravity.CENTER,
+            timeInSecForIosWeb: 1,
+            backgroundColor: AppColor.toast_msg_warning,
+            textColor: Colors.white,
+            fontSize: 13.0);
+        return;
+      }
+      Navigator.of(context).pushReplacement(new MaterialPageRoute(
           builder: (BuildContext context) => OfficeClerkDashboard()));
       return;
     }
@@ -115,7 +131,7 @@ class _LoginScreenState extends State<LoginScreen> {
                         hintText: "Username",
                         icon: Icon(Icons.person),
                         isEnable: true,
-                        maxLetters: 15,
+                        maxLetters: 40,
                         textEditingController: usernameController,
                       ),
                     ),

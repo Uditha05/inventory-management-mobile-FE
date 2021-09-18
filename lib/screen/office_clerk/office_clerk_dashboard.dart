@@ -1,4 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:inventory_management/screen/login/login_screen.dart';
+import 'package:inventory_management/screen/office_clerk/handle_damage/handle_damage.dart';
+import 'package:inventory_management/screen/settings_screen.dart';
+import 'package:inventory_management/theme/app_colors.dart';
 import 'package:inventory_management/widget/card_button.dart';
 
 class OfficeClerkDashboard extends StatefulWidget {
@@ -19,15 +23,26 @@ class _OfficeClerkDashboardState extends State<OfficeClerkDashboard> {
         ),
         leading: Container(),
         centerTitle: true,
+        actions: [
+          IconButton(
+              icon: Icon(Icons.settings),
+              onPressed: () {
+                Navigator.of(context).push(new MaterialPageRoute(
+                    builder: (BuildContext context) => SettingsScreen()));
+              })
+        ],
       ),
-      backgroundColor: Colors.green,
       body: Container(
         child: Column(
           children: [
             GestureDetector(
+              onTap: () {
+                Navigator.of(context).push(new MaterialPageRoute(
+                    builder: (BuildContext context) => HandleDamage()));
+              },
               child: CardButton(
                 title: "Handle Damage",
-                subtitle: "All ",
+                subtitle: "Handle damage item and repair",
                 icon: Icon(
                   Icons.handyman,
                   size: 50,
@@ -38,7 +53,7 @@ class _OfficeClerkDashboardState extends State<OfficeClerkDashboard> {
             GestureDetector(
               child: CardButton(
                 title: "Check Availability",
-                subtitle: "Test Subtitle",
+                subtitle: "check availability of the items",
                 icon: Icon(
                   Icons.check_box_rounded,
                   size: 50,
@@ -47,6 +62,10 @@ class _OfficeClerkDashboardState extends State<OfficeClerkDashboard> {
               ),
             ),
             GestureDetector(
+              onTap: () {
+                Navigator.of(context).pushReplacement(new MaterialPageRoute(
+                    builder: (BuildContext context) => LoginScreen()));
+              },
               child: CardButton(
                 title: "Logout",
                 subtitle: "Log out from Office Clerk",

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:inventory_management/theme/app_colors.dart';
 
 class CardButton extends StatelessWidget {
   final String title;
@@ -14,7 +15,7 @@ class CardButton extends StatelessWidget {
       padding: EdgeInsets.all(20),
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(13),
-        color: Colors.white,
+        color: Colors.grey,
       ),
       child: Row(
         crossAxisAlignment: CrossAxisAlignment.center,
@@ -25,23 +26,23 @@ class CardButton extends StatelessWidget {
             height: 103,
             decoration: BoxDecoration(
               borderRadius: BorderRadius.circular(14),
-              color: Color(0xFF8A8A8A),
+              color: AppColor.main_green_background,
             ),
             child: icon,
           ),
           Container(
             margin: EdgeInsets.all(10),
             child: Column(
-              crossAxisAlignment: CrossAxisAlignment.center,
-              mainAxisAlignment: MainAxisAlignment.center,
+              crossAxisAlignment: CrossAxisAlignment.start,
+              mainAxisAlignment: MainAxisAlignment.start,
               children: [
                 Text(
                   title,
-                  style: TextStyle(fontSize: 24),
+                  style: TextStyle(fontSize: 24, color: Colors.white),
                 ),
                 Text(
                   subtitle,
-                  // style: TextStyle(fontSize: 26),
+                  style: TextStyle(fontSize: 13, color: Colors.white),
                 ),
               ],
             ),

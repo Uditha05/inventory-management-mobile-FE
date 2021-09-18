@@ -23,7 +23,7 @@ class CustomStringInput extends StatelessWidget {
       padding: EdgeInsets.only(top: 5, right: 5, left: 5),
       child: TextField(
         controller: textEditingController,
-        keyboardType: TextInputType.name,
+        keyboardType: TextInputType.text,
         maxLength: maxLetters,
         enabled: isEnable,
         maxLengthEnforced: true,
