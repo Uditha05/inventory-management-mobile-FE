@@ -24,6 +24,9 @@ dependencies:
   flutter:
     sdk: flutter
   fluttertoast: ^8.0.8
+  font_awesome_flutter: ^9.1.0
+  flutter_datetime_picker: ^1.5.1
+  intl: ^0.17.0
 
 
   # The following adds the Cupertino Icons font to your application.
