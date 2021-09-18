@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:inventory_management/config/asset_config.dart';
+import 'package:inventory_management/screen/menu/Office_Clerk_Dashboard.dart';
 import 'package:inventory_management/theme/app_colors.dart';
 import 'package:inventory_management/theme/app_text_style.dart';
 import 'package:inventory_management/widget/custom_button.dart';
@@ -39,6 +40,8 @@ class _LoginScreenState extends State<LoginScreen> {
           fontSize: 13.0);
       return;
     } else {
+      Navigator.of(context).push(new MaterialPageRoute(
+          builder: (BuildContext context) => OfficeClerkDashboard()));
       return;
     }
   }
