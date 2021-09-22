@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:inventory_management/screen/login/login_screen.dart';
+import 'package:inventory_management/screen/office_clerk/checkAv/check_availability.dart';
 import 'package:inventory_management/screen/office_clerk/handle_damage/handle_damage.dart';
 import 'package:inventory_management/screen/settings_screen.dart';
 import 'package:inventory_management/theme/app_colors.dart';
@@ -51,6 +52,10 @@ class _OfficeClerkDashboardState extends State<OfficeClerkDashboard> {
               ),
             ),
             GestureDetector(
+              onTap: () {
+                Navigator.of(context).push(new MaterialPageRoute(
+                    builder: (BuildContext context) => CheckAvailability()));
+              },
               child: CardButton(
                 title: "Check Availability",
                 subtitle: "check availability of the items",

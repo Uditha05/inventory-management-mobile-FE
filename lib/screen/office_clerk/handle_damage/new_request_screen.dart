@@ -119,7 +119,7 @@ class _NewRequestScreenState extends State<NewRequestScreen> {
                 style: TextStyle(fontSize: 20, color: Colors.white),
               )),
           Container(
-            height: MediaQuery.of(context).size.height - 186,
+            height: MediaQuery.of(context).size.height - 189,
             child: ListView.builder(
                 itemCount: upcoming.length,
                 itemBuilder: (context, index) {
