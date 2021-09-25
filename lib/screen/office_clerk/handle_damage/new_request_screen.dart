@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:inventory_management/controller/office_clerk_controller.dart';
 import 'package:inventory_management/model/dummy/broken_item.dart';
 import 'package:inventory_management/screen/office_clerk/handle_damage/handle_damage.dart';
 import 'package:inventory_management/screen/office_clerk/qr_scan.dart';
@@ -21,8 +22,9 @@ class _NewRequestScreenState extends State<NewRequestScreen> {
     getUpcomingRequest();
   }
 
-  void getUpcomingRequest() {
-    List<BrokenItem> out = dummyBroken;
+  void getUpcomingRequest() async {
+    List<BrokenItem> out = []; //dummyBroken;
+    out = await OfficeClerkController().getNewDamages();
     for (var one in out) {
       if (one.status == "Broken") {
         upcoming.add(one);
