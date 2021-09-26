@@ -1,7 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
+import 'package:flutter_barcode_scanner/flutter_barcode_scanner.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:inventory_management/controller/office_clerk_controller.dart';
 import 'package:inventory_management/model/dummy/broken_item.dart';
 import 'package:inventory_management/screen/office_clerk/handle_damage/handle_damage.dart';
+import 'package:inventory_management/screen/office_clerk/office_clerk_dashboard.dart';
 import 'package:inventory_management/screen/office_clerk/qr_scan.dart';
 import 'package:inventory_management/theme/app_colors.dart';
 import 'package:inventory_management/widget/broken_item_view_card.dart';
@@ -15,14 +19,17 @@ class NewRequestScreen extends StatefulWidget {
 }
 
 class _NewRequestScreenState extends State<NewRequestScreen> {
+  String barcodeString;
   List upcoming = [];
+  bool isloading = false;
   @override
   void initState() {
     super.initState();
     getUpcomingRequest();
   }
 
-  void getUpcomingRequest() async {
+  Future getUpcomingRequest() async {
+    upcoming.clear();
     List<BrokenItem> out = []; //dummyBroken;
     out = await OfficeClerkController().getNewDamages();
     for (var one in out) {
@@ -35,7 +42,55 @@ class _NewRequestScreenState extends State<NewRequestScreen> {
     });
   }
 
-  void _showDialog(BuildContext context) {
+  Future<void> scanBarcodeNormal() async {
+    String barcodeScanRes;
+    // Platform messages may fail, so we use a try/catch PlatformException.
+    try {
+      barcodeScanRes = await FlutterBarcodeScanner.scanBarcode(
+          '#ff6666', 'Cancel', true, ScanMode.BARCODE);
+      if (barcodeString != null) {
+        chckFromBendingRequest();
+        return;
+      }
+      print(barcodeScanRes);
+    } on PlatformException {
+      barcodeScanRes = 'Failed to get platform version.';
+    }
+    if (!mounted) return;
+
+    setState(() {
+      barcodeString = barcodeScanRes;
+    });
+  }
+
+  chckFromBendingRequest() {}
+
+  void markAsRepair(String id) async {
+    var out = await OfficeClerkController().markSendToRepair(id);
+    if (out == "pass") {
+      await getUpcomingRequest();
+      setState(() {
+        isloading = false;
+      });
+      Navigator.pop(context);
+      // Navigator.of(context).push(new MaterialPageRoute(
+      //     builder: (BuildContext context) => OfficeClerkDashboard()));
+    } else {
+      setState(() {
+        isloading = false;
+      });
+      Fluttertoast.showToast(
+          msg: "Something went wrong!",
+          toastLength: Toast.LENGTH_SHORT,
+          gravity: ToastGravity.CENTER,
+          timeInSecForIosWeb: 1,
+          backgroundColor: AppColor.toast_msg_warning,
+          textColor: Colors.white,
+          fontSize: 13.0);
+    }
+  }
+
+  void _showDialog(BuildContext context, String id) {
     showDialog(
       context: context,
       builder: (BuildContext context) {
@@ -67,7 +122,10 @@ class _NewRequestScreenState extends State<NewRequestScreen> {
                 style: TextStyle(color: Colors.black),
               ),
               onPressed: () {
-                Navigator.of(context).pop();
+                setState(() {
+                  isloading = true;
+                });
+                markAsRepair(id);
               },
             ),
           ],
@@ -78,24 +136,27 @@ class _NewRequestScreenState extends State<NewRequestScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return Stack(
-      children: [
-        Body_Widget(),
-        Positioned(
-          bottom: 20,
-          right: 20,
-          child: Fab(
-            onTap: () {
-              Navigator.push(
-                context,
-                MaterialPageRoute(builder: (context) => QRScannPage()),
-              );
-            },
-            child: Icon(Icons.qr_code),
-          ),
-        ),
-      ],
-    );
+    return isloading
+        ? Center(
+            child: Container(
+              child: CircularProgressIndicator(),
+            ),
+          )
+        : Stack(
+            children: [
+              Body_Widget(),
+              Positioned(
+                bottom: 20,
+                right: 20,
+                child: Fab(
+                  onTap: () {
+                    scanBarcodeNormal();
+                  },
+                  child: Icon(Icons.qr_code),
+                ),
+              ),
+            ],
+          );
   }
 
   Widget Body_Widget() {
@@ -128,9 +189,12 @@ class _NewRequestScreenState extends State<NewRequestScreen> {
                   BrokenItem brokenItem = upcoming[index];
                   return GestureDetector(
                       onTap: () {
-                        _showDialog(context);
+                        _showDialog(context, brokenItem.itemId);
                       },
-                      child: BrokenItemViewCard(brokenItem: brokenItem));
+                      child: BrokenItemViewCard(
+                        brokenItem: brokenItem,
+                        isOld: false,
+                      ));
                 }),
           )
         ]),

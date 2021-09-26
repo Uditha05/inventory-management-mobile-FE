@@ -1,10 +1,7 @@
-import 'dart:convert';
-
 import 'package:http/http.dart' as http;
-import 'package:inventory_management/config/api/auth_api.dart';
+
 import 'package:inventory_management/config/api/office_clerk_api.dart';
 import 'package:inventory_management/model/response/broken_item_model.dart';
-import 'package:inventory_management/model/response/response_model.dart';
 
 class OfficeClerkService {
   Future getNewDamageItems() async {
@@ -19,6 +16,96 @@ class OfficeClerkService {
 
         print(responseModel.length);
         return responseModel;
+        // return res.body;
+      } else {
+        print("status code : ${res.statusCode}");
+        return null;
+      }
+    } on Exception catch (e) {
+      print(e);
+      return null;
+    }
+  }
+
+  Future getPendingRepairItems() async {
+    print("Try access");
+    try {
+      var url = Uri.parse(getPendingRepair);
+      var res = await http.get(url);
+
+      if (res.statusCode == 200) {
+        print(res.body);
+        List<BrokenItems> responseModel = brokenItemsFromJson(res.body);
+
+        print(responseModel.length);
+        return responseModel;
+        // return res.body;
+      } else {
+        print("status code : ${res.statusCode}");
+        return null;
+      }
+    } on Exception catch (e) {
+      print(e);
+      return null;
+    }
+  }
+
+  Future getOldDamageItem() async {
+    print("Try access");
+    try {
+      var url = Uri.parse(getOldDamgeItems);
+      var res = await http.get(url);
+
+      if (res.statusCode == 200) {
+        print(res.body);
+        List<BrokenItems> responseModel = brokenItemsFromJson(res.body);
+
+        print(responseModel.length);
+        return responseModel;
+        // return res.body;
+      } else {
+        print("status code : ${res.statusCode}");
+        return null;
+      }
+    } on Exception catch (e) {
+      print(e);
+      return null;
+    }
+  }
+
+  Future markSendToRepair(String id) async {
+    print("Try access");
+    try {
+      var url = Uri.parse(sendToRepair + id);
+      print(sendToRepair + id);
+      var res = await http.put(url);
+
+      if (res.statusCode == 200) {
+        print(res.body);
+
+        return "pass";
+        // return res.body;
+      } else {
+        print("status code : ${res.statusCode}");
+        return null;
+      }
+    } on Exception catch (e) {
+      print(e);
+      return null;
+    }
+  }
+
+  Future markFinishedRepair(String id) async {
+    print("Try access");
+    try {
+      var url = Uri.parse(markRepairFinish + id);
+      print(sendToRepair + id);
+      var res = await http.put(url);
+
+      if (res.statusCode == 200) {
+        print(res.body);
+
+        return "pass";
         // return res.body;
       } else {
         print("status code : ${res.statusCode}");

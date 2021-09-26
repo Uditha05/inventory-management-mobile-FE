@@ -59,6 +59,7 @@ class Equipment {
     this.labName,
     this.availability,
     this.status,
+    this.storeCode,
   });
 
   int id;
@@ -68,6 +69,7 @@ class Equipment {
   String labName;
   bool availability;
   String status;
+  String storeCode;
 
   factory Equipment.fromJson(Map<String, dynamic> json) => Equipment(
         id: json["id"],
@@ -77,6 +79,7 @@ class Equipment {
         labName: json["labName"],
         availability: json["availability"],
         status: json["status"],
+        storeCode: json["storeCode"],
       );
 
   Map<String, dynamic> toJson() => {
@@ -87,5 +90,6 @@ class Equipment {
         "labName": labName,
         "availability": availability,
         "status": status,
+        "storeCode": storeCode
       };
 }

@@ -4,10 +4,18 @@ import 'package:intl/intl.dart';
 
 class BrokenItemViewCard extends StatelessWidget {
   final BrokenItem brokenItem;
+  final bool isOld;
   const BrokenItemViewCard({
     Key key,
     this.brokenItem,
+    @required this.isOld,
   }) : super(key: key);
+
+  String closeDate(String dateString) {
+    var date = DateTime.parse(dateString);
+
+    return DateFormat.yMMMd().format(date);
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -16,7 +24,7 @@ class BrokenItemViewCard extends StatelessWidget {
         borderRadius: BorderRadius.circular(13),
         color: Colors.grey,
       ),
-      height: 130,
+      height: isOld ? 160 : 135,
       margin: EdgeInsets.all(10),
       child: Row(
         children: [
@@ -40,6 +48,10 @@ class BrokenItemViewCard extends StatelessWidget {
               mainAxisAlignment: MainAxisAlignment.center,
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
+                isOld
+                    ? Label_Value(
+                        "Close Date: ", closeDate(brokenItem.closeDate))
+                    : Container(),
                 Label_Value("Category: ", brokenItem.category),
                 Label_Value("Model: ", brokenItem.model),
                 Label_Value("Store Code: ", brokenItem.storeCode),

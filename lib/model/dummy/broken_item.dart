@@ -28,7 +28,7 @@ class BrokenItem {
   String category;
   String issue;
   DateTime openDate;
-  DateTime closeDate;
+  var closeDate;
   String image;
   String status;
 
