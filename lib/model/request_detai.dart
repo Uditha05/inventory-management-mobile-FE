@@ -1,10 +1,15 @@
-import 'item.dart';
 class RequestDetail{
-  final int requestId;
+  final int id;
+  final String storeCode;
+  final String requestDate;
   final String studentId;
-  final Item item;
-  final String fromDate;
-  final String dueDate;
 
-  RequestDetail(this.requestId,this.studentId,this.item,this.fromDate,this.dueDate);
+  RequestDetail({this.id,this.storeCode,this.requestDate,this.studentId});
+
+  factory RequestDetail.formJson(Map<String,dynamic>parsedJson) => RequestDetail(
+    id: parsedJson['id'],
+    storeCode: parsedJson['storeCode'],
+    requestDate: parsedJson['requestDate'],
+    studentId: parsedJson['studentId'],
+  );
 }

@@ -4,10 +4,12 @@ import 'package:inventory_management/model/avaiability_detail.dart';
 
 class AvailabilityList extends StatelessWidget {
   final List<AvailabilityDetail> details;
+  //final AvailabilityDetailList details;
   final String type;
   AvailabilityList(this.details,this.type);
 
   Widget build(BuildContext context) {
+    //print(details[0].availability);
     return ListView.builder(
       itemBuilder: (context, index){
         return AvailabilityTile(

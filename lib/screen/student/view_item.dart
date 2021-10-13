@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:intl/intl.dart';
 import 'package:inventory_management/model/item.dart';
 
 
@@ -9,6 +10,7 @@ class ItemView extends StatelessWidget {
   ItemView({this.itemDetail,this.availableDate});
   @override
   Widget build(BuildContext context) {
+    final dt = DateFormat('dd/MM/yyyy').format(DateTime.parse(availableDate));
     return Container(
       color: Color(0xff003e29),
       child: Container(
@@ -84,7 +86,7 @@ class ItemView extends StatelessWidget {
                     size: 30,
                   ),
                   SizedBox(width: 30,),
-                  Text('Available on $availableDate',style: TextStyle(fontSize: 16,fontWeight: FontWeight.w500),)
+                  Text('Available on $dt',style: TextStyle(fontSize: 16,fontWeight: FontWeight.w500),)
                 ],
               ),
             ),

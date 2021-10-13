@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:inventory_management/model/request_detai.dart';
 import 'package:inventory_management/screen/lecturer/pending_request_detail.dart';
+import 'package:intl/intl.dart';
 
 class Request extends StatelessWidget {
 
@@ -23,9 +24,8 @@ class Request extends StatelessWidget {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Text('StudentId:',style: textStyle,),
-              Text('Category:',style: textStyle,),
-              Text('From Date:',style: textStyle,),
-              Text('Due date:',style: textStyle,),
+              Text('Store Code:',style: textStyle,),
+              Text('Request Date:',style: textStyle,),
             ],
           ),
           SizedBox(width: 15,),
@@ -34,9 +34,8 @@ class Request extends StatelessWidget {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Text(request.studentId,style: textStyle,),
-                Text(request.item.category,style: textStyle,),
-                Text(request.fromDate,style: textStyle,),
-                Text(request.dueDate,style: textStyle,),
+                Text(request.storeCode,style: textStyle,),
+                Text(DateFormat('dd/MM/yyyy').format(DateTime.parse(request.requestDate)),style: textStyle,),
               ],
             ),
           ),
@@ -46,11 +45,10 @@ class Request extends StatelessWidget {
             onPressed: (){
               showModalBottomSheet(
                 context: context,
-                builder: (context)=> PendingRequestDetail(request.studentId,request.item,request.fromDate,request.dueDate),
-              );
+                builder: (context)=> PendingRequestDetail(id: request.id.toString(),),
+              ).whenComplete(() => print('hi therer'));
             },
           ),
-          
         ],
       ),
     );

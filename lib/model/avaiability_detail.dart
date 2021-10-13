@@ -5,4 +5,16 @@ class AvailabilityDetail{
   final String availableDate;
 
   AvailabilityDetail({this.availability,this.data,this.availableDate});
+
+  factory AvailabilityDetail.fromJson(Map<String, dynamic> parsedJson) => AvailabilityDetail(
+    availability: parsedJson["availability"],
+    data: Item.fromJson(parsedJson["Item"]),
+    availableDate: parsedJson["availableDate"],
+  );
+
+  Map<String, dynamic> toJson() => {
+    "availability": availability,
+    "Item": data.toJson(),
+    "availableDate": availableDate,
+  };
 }

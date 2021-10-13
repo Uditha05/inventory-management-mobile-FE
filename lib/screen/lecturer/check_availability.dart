@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:inventory_management/model/avaiability_detail.dart';
+import 'package:inventory_management/model/availability_detail_list.dart';
 import 'package:inventory_management/widget/widget/availability_list.dart';
 import 'package:inventory_management/theme/app_colors.dart';
-import 'package:inventory_management/model/item.dart';
+import 'package:flutter_spinkit/flutter_spinkit.dart';
+import '../../services/lecturer_api.dart';
 
 
 class CheckAvailability extends StatefulWidget {
@@ -13,16 +15,31 @@ class CheckAvailability extends StatefulWidget {
 
 class _CheckAvailabilityState extends State<CheckAvailability> {
 
-  List<AvailabilityDetail> details = [
-    AvailabilityDetail(availability: false,data: Item(category: 'Projector',model: 'CA124-B',storeCode: 'NA255',labName: 'CSE Level 1 lab'),availableDate: '2/10/2021'),
-    AvailabilityDetail(availability: false,data: Item(category: 'Hi-fi system',model: 'CA124-B',storeCode: 'NA255',labName: 'CSE Level 1 lab'),availableDate: '1/10/2021'),
-    AvailabilityDetail(availability: false,data: Item(category: 'Router',model: 'CA124-B',storeCode: 'NA255',labName: 'CSE Level 1 lab'),availableDate: '20/10/2021'),
-    AvailabilityDetail(availability: true,data: Item(category: 'Touch',model: 'CA124-B',storeCode: 'NA255',labName: 'CSE Level 1 lab'),availableDate: null),
-  ];
+  LecturerApi lecApi = LecturerApi();
+  AvailabilityDetailList detalist;
+  List<AvailabilityDetail> lst;
 
+  @override
+  void initState(){
+    super.initState();
+    updateUi(lecApi.getItems());
+  }
+
+  void updateUi (dynamic data) async{
+    if(data==null){
+      print('null val');
+      lst = [];
+    }else{
+      detalist = await data;
+      setState(() {
+        lst = detalist.details;
+      });
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
+
     return Scaffold(
       backgroundColor: AppColor.main_green_background,
       appBar: AppBar(
@@ -37,10 +54,10 @@ class _CheckAvailabilityState extends State<CheckAvailability> {
         title: Text('Check Availability'),
         backgroundColor: AppColor.main_green_background,
       ),
-      body: Column(
+      body: (detalist==null) ?Center(child: SpinKitDoubleBounce(color: Colors.white,size: 100,),):Column(
         children: [
           Expanded(
-            child: AvailabilityList(details,'lecturer'),
+            child: AvailabilityList(lst,'lecturer'),
           ),
         ],
       )

@@ -1,13 +1,33 @@
 import 'package:flutter/material.dart';
-import 'package:inventory_management/model/item.dart';
+import 'package:inventory_management/services/lecturer_api.dart';
+import '../../model/pending_detail.dart';
+import 'package:intl/intl.dart';
 
-class PendingRequestDetail extends StatelessWidget {
-  final String studentId;
-  final Item item;
-  final String fromDate;
-  final String toDate;
+class PendingRequestDetail extends StatefulWidget {
+  final String id;
+  PendingRequestDetail({this.id});
 
-  PendingRequestDetail(this.studentId,this.item,this.fromDate,this.toDate);
+  @override
+  _PendingRequestDetailState createState() => _PendingRequestDetailState();
+}
+
+class _PendingRequestDetailState extends State<PendingRequestDetail> {
+  LecturerApi lecApi = LecturerApi();
+  PendingDetail detail;
+
+  @override
+  void initState(){
+    super.initState();
+    updateUi(lecApi.getPendingItemDetail(widget.id));
+  }
+
+  void updateUi(dynamic data)async{
+    var dtail = await data;
+    setState(() {
+      detail=dtail;
+      print(detail);
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -22,7 +42,7 @@ class PendingRequestDetail extends StatelessWidget {
             topRight: Radius.circular(20),
           ),
         ),
-        child: Column(
+        child: (detail==null)?Text('Loading...'):Column(
           children: [
             Container(
               decoration: BoxDecoration(
@@ -62,20 +82,19 @@ class PendingRequestDetail extends StatelessWidget {
                           Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
-                              Text(studentId,style: TextStyle(fontSize: 16,fontWeight: FontWeight.normal),),
-                              Text(item.category,style: TextStyle(fontSize: 16,fontWeight: FontWeight.normal),),
-                              Text(item.model,style: TextStyle(fontSize: 16,fontWeight: FontWeight.normal),),
-                              Text(item.storeCode,style: TextStyle(fontSize: 16,fontWeight: FontWeight.normal),),
-                              Text(item.labName,style: TextStyle(fontSize: 16,fontWeight: FontWeight.normal),),
-                              Text(fromDate,style: TextStyle(fontSize: 16,fontWeight: FontWeight.normal),),
-                              Text(toDate,style: TextStyle(fontSize: 16,fontWeight: FontWeight.normal),),
+                              Text(detail.studentId,style: TextStyle(fontSize: 16,fontWeight: FontWeight.normal),),
+                              Text(detail.item.category,style: TextStyle(fontSize: 16,fontWeight: FontWeight.normal),),
+                              Text(detail.item.model,style: TextStyle(fontSize: 16,fontWeight: FontWeight.normal),),
+                              Text(detail.item.storeCode,style: TextStyle(fontSize: 16,fontWeight: FontWeight.normal),),
+                              Text(detail.item.labName,style: TextStyle(fontSize: 16,fontWeight: FontWeight.normal),),
+                              Text(DateFormat('dd/MM/yyyy').format(DateTime.parse(detail.fromDate)),style: TextStyle(fontSize: 16,fontWeight: FontWeight.normal),),
+                              Text(DateFormat('dd/MM/yyyy').format(DateTime.parse(detail.dueDate)),style: TextStyle(fontSize: 16,fontWeight: FontWeight.normal),),
                             ],
                           )
                         ],
                       ),
                     ),
                   ],
-
                 ),
               ),
             ),
@@ -90,7 +109,9 @@ class PendingRequestDetail extends StatelessWidget {
                   ),
                   onPressed: (){
                     print('reject');
+                    var data = lecApi.rejectRequest(widget.id, {});
                     Navigator.pop(context);
+                    (data==null)?Text('Loading....'): Navigator.popUntil(context, (route) => route.isFirst);
                     },
                 ),
                 TextButton(
@@ -100,7 +121,9 @@ class PendingRequestDetail extends StatelessWidget {
                   ),
                   onPressed: (){
                     print('approve');
-                    Navigator.pop(context);
+                    var data=lecApi.approveRequest(widget.id,{});
+                    (data==null)?Text('Loading....'): Navigator.popUntil(context, (route) => route.isFirst);
+                    //(data==null)?Text('Loading....'): Navigator.pushReplacement(context, MaterialPageRoute(builder: (context)=>PendingRequest()));
                     },
                 ),
               ],

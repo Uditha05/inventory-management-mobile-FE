@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:inventory_management/model/request_list.dart';
 import 'package:inventory_management/theme/app_colors.dart';
 import 'package:inventory_management/widget/widget/request_list.dart';
 import 'package:inventory_management/model/request_detai.dart';
-import 'package:inventory_management/model/item.dart';
+import '../../services/lecturer_api.dart';
+import 'package:flutter_spinkit/flutter_spinkit.dart';
 
 class PendingRequest extends StatefulWidget {
   @override
@@ -10,11 +12,32 @@ class PendingRequest extends StatefulWidget {
 }
 
 class _PendingRequestState extends State<PendingRequest> {
-  List<RequestDetail> requests = [
-    RequestDetail(1, '180200X', Item(category: 'Projector',model: 'CA124-B',storeCode: 'NA255',labName: 'CSE Level 1 Lab'), '12/10/2021', '13/10/2021'),
-    RequestDetail(2, '180200X', Item(category: 'Projector',model: 'CA124-B',storeCode: 'NA255',labName: 'CSE Level 1 Lab'), '12/10/2021', '13/10/2021'),
-    RequestDetail(3, '180244B', Item(category: 'Projector',model: 'CA124-B',storeCode: 'NA255',labName: 'CSE Level 1 Lab'), '12/10/2021', '13/10/2021'),
-  ];
+  LecturerApi lecApi = new LecturerApi();
+  RequestsList reqlist;
+  List<RequestDetail> requests;
+
+  @override
+  void initState(){
+    super.initState();
+    updateUi(lecApi.getPendingRequest());
+  }
+
+  void updateUi(dynamic data)async{
+    if(data==null){
+      setState(() {
+        requests=[];
+        print('I am running again empty');
+      });
+    }else{
+      reqlist = await data;
+      setState(() {
+        requests = reqlist.details;
+        //print(requests);
+        print('I am running again');
+      });
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -23,7 +46,7 @@ class _PendingRequestState extends State<PendingRequest> {
         title: Text('Pending Requests'),
         backgroundColor: AppColor.main_green_background,
       ),
-      body: Column(
+      body: (reqlist==null)?Center(child: SpinKitDoubleBounce(color: Colors.white,size: 100,),) : Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Container(
