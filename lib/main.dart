@@ -20,8 +20,8 @@ class MyApp extends StatelessWidget {
         primarySwatch: Colors.green,
       ),
       //home: LoginScreen(),
-      home: StudentDashboard(),
-      //home: LecturerDashboard(),
+      //home: StudentDashboard(),
+      home: LecturerDashboard(),
       debugShowCheckedModeBanner: false,
     );
   }

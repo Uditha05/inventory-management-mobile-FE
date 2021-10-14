@@ -33,6 +33,7 @@ class _CheckAvailabilityState extends State<CheckAvailability> {
       detalist = await data;
       setState(() {
         lst = detalist.details;
+        //print(lst);
       });
     }
   }

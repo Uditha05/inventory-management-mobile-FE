@@ -17,7 +17,7 @@ class AvailabilityTile extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    //print(availableDate);
+    //print(availability);
     return Container(
       margin: EdgeInsets.all(10),
       padding: EdgeInsets.all(5),

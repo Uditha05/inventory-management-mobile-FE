@@ -6,12 +6,14 @@ import '../model/pending_detail.dart';
 
 class LecturerApi{
   Future<dynamic> getItems() async{
-    NetworkHelper networkHelper = NetworkHelper('http://10.0.2.2:5000/checkAvaiability');
+    //NetworkHelper networkHelper = NetworkHelper('http://10.0.2.2:5000/checkAvaiability');
+    NetworkHelper networkHelper = NetworkHelper('https://sep-backend-inventory.herokuapp.com/checkAvaiability');
     var data = await networkHelper.getData();
     var lst =[];
+    //print(data);
     for(var m in data){
       var newObj;
-      if(m['availability'] == '1'){
+      if(m['availability'] == 1){
         newObj = {
           'availability': true,
           'Item': {
@@ -40,7 +42,7 @@ class LecturerApi{
   }
 
   Future<dynamic> getPendingRequest() async{
-    NetworkHelper networkHelper = NetworkHelper('http://10.0.2.2:5000/pending');
+    NetworkHelper networkHelper = NetworkHelper('https://sep-backend-inventory.herokuapp.com/pending');
     var data = await networkHelper.getData();
     var lst=[];
     for(var m in data){
@@ -56,7 +58,7 @@ class LecturerApi{
     return RequestsList.fromJson(lst);
   }
   Future<dynamic> getPendingItemDetail(String id) async{
-    NetworkHelper networkHelper = NetworkHelper('http://10.0.2.2:5000/requestDetail/${id}');
+    NetworkHelper networkHelper = NetworkHelper('https://sep-backend-inventory.herokuapp.com/requestDetail/${id}');
     var data = await networkHelper.getData();
     var newObj = {
       'studentId': data[0]['Requests.RequestBorrowing.studentId'],
@@ -73,21 +75,21 @@ class LecturerApi{
   }
 
   Future approveRequest(String id,Object obj)async{
-    NetworkHelper networkHelper = NetworkHelper('http://10.0.2.2:5000/approve/${id}');
+    NetworkHelper networkHelper = NetworkHelper('https://sep-backend-inventory.herokuapp.com/approve/${id}');
     var data = await networkHelper.sendDate(obj);
     print('send approve request');
     return data;
   }
 
   Future rejectRequest(String id,Object obj)async{
-    NetworkHelper networkHelper = NetworkHelper('http://10.0.2.2:5000/reject/${id}');
+    NetworkHelper networkHelper = NetworkHelper('https://sep-backend-inventory.herokuapp.com/reject/${id}');
     var data = await networkHelper.sendDate(obj);
     print('send reject request');
     return data;
   }
 
   Future getCategory()async{
-    NetworkHelper networkHelper = NetworkHelper('http://10.0.2.2:5000/category');
+    NetworkHelper networkHelper = NetworkHelper('https://sep-backend-inventory.herokuapp.com/category');
     var data = await networkHelper.getData();
     var lst=[];
     for(var m in data){
@@ -97,7 +99,7 @@ class LecturerApi{
   }
 
   Future getModel(String category)async{
-    NetworkHelper networkHelper = NetworkHelper('http://10.0.2.2:5000/model/${category}');
+    NetworkHelper networkHelper = NetworkHelper('https://sep-backend-inventory.herokuapp.com/model/${category}');
     var data = await networkHelper.getData();
     var lst=[];
     for(var m in data){
@@ -108,7 +110,7 @@ class LecturerApi{
   }
   
   Future getLab(String model,String category)async{
-    NetworkHelper networkHelper = NetworkHelper('http://10.0.2.2:5000/lab/${category}/${model}');
+    NetworkHelper networkHelper = NetworkHelper('https://sep-backend-inventory.herokuapp.com/lab/${category}/${model}');
     var data = await networkHelper.getData();
     //print(data);
     var lst=[];
@@ -119,7 +121,7 @@ class LecturerApi{
   }
 
   Future getStoreCode(String category,String model, String lab)async{
-    NetworkHelper networkHelper = NetworkHelper('http://10.0.2.2:5000/storeCode/${category}/${model}/${lab}');
+    NetworkHelper networkHelper = NetworkHelper('https://sep-backend-inventory.herokuapp.com/storeCode/${category}/${model}/${lab}');
     var data = await networkHelper.getData();
     //print(data);
     var lst=[];
@@ -130,7 +132,7 @@ class LecturerApi{
   }
 
   Future getLecturers(String lab)async{
-    NetworkHelper networkHelper = NetworkHelper('http://10.0.2.2:5000/lecturer/${lab}');
+    NetworkHelper networkHelper = NetworkHelper('https://sep-backend-inventory.herokuapp.com/lecturer/${lab}');
     var data = await networkHelper.getData();
     //print(data);
     var lst=[];

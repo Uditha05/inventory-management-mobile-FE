@@ -9,7 +9,7 @@ class AvailabilityList extends StatelessWidget {
   AvailabilityList(this.details,this.type);
 
   Widget build(BuildContext context) {
-    //print(details[0].availability);
+    //print(details[4].availability);
     return ListView.builder(
       itemBuilder: (context, index){
         return AvailabilityTile(
