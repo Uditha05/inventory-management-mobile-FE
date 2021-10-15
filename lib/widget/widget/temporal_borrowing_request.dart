@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:inventory_management/services/lecturer_api.dart';
 import 'package:inventory_management/widget/widget/drop_down_list.dart';
-import 'package:inventory_management/widget/widget/date_picker.dart';
 import 'package:intl/intl.dart';
+
 class TemporalBorrowingRequest extends StatefulWidget {
 
 
@@ -17,21 +18,91 @@ class _TemporalBorrowingRequestState extends State<TemporalBorrowingRequest> {
   String studentId;
   String fromDate;
   String toDate;
+  bool isError=false;
 
-  final categoryList = ['category0', 'category1', 'category2'];
-  final modelList = ['model0', 'model1', 'model2'];
-  final storeCodeList = ['storeCode0', 'storeCode1', 'storeCode2'];
+  List<String> cList=[];
+  List<String> mList=[];
+  List<String> lList=[];
+  List<String> sList=[];
+
+  LecturerApi lecApi = LecturerApi();
+
+  @override
+  void initState(){
+    super.initState();
+    updateCategory(lecApi.getCategory());
+  }
+
+  void updateCategory(dynamic data)async{
+    List<dynamic>lst = await data;
+    List<String> ls=[];
+    for(var m in lst){
+      ls.add(m.toString());
+    }
+    setState(() {
+      cList=ls;
+    });
+  }
+
+  void updateModel(dynamic data)async{
+    List<dynamic>lst = await data;
+    List<String> ls=[];
+    for(var m in lst){
+      ls.add(m.toString());
+    }
+    setState(() {
+      mList=ls;
+    });
+  }
+
+  void updateLab(dynamic data)async{
+    List<dynamic>lst = await data;
+    List<String> ls=[];
+    for(var m in lst){
+      ls.add(m.toString());
+    }
+    setState(() {
+      lList=ls;
+    });
+  }
+
+  void updateStoreCode(dynamic data)async{
+    List<dynamic>lst = await data;
+    List<String> ls=[];
+    for(var m in lst){
+      ls.add(m.toString());
+    }
+    setState(() {
+      sList=ls;
+    });
+  }
+
 
 
   void toogleCategory(String category) {
     setState(() {
+      updateModel(lecApi.getModel(category));
       selectedCategory = category;
+      selectedModel = null;
+      labName=null;
+      selectedStoreCode= null;
     });
   }
 
   void toogleModel(String model) {
+    updateLab(lecApi.getLab(model, selectedCategory));
     setState(() {
       selectedModel = model;
+      labName=null;
+      selectedStoreCode=null;
+    });
+  }
+
+  void toogleLabName(String lbName) {
+    updateStoreCode(lecApi.getStoreCode(selectedCategory, selectedModel, lbName));
+    setState(() {
+      labName = lbName;
+      selectedStoreCode=null;
     });
   }
 
@@ -41,18 +112,27 @@ class _TemporalBorrowingRequestState extends State<TemporalBorrowingRequest> {
     });
   }
 
-  void toogleFromDate(DateTime date){
-    setState(() {
-      fromDate= DateFormat('dd/MM/yyyy').format(date);
-    });
-  }
 
-  void toogleToDate(DateTime date){
-    setState(() {
-      toDate= DateFormat('dd/MM/yyyy').format(date);
-    });
+  void formSubmitHandler(){
+    if(selectedCategory==null || selectedModel==null || labName==null || selectedStoreCode==null || studentId==null){
+      setState(() {
+        isError = true;
+      });
+      print('Error');
+    }else{
+      print(selectedCategory);
+      print(selectedModel);
+      print(labName);
+      print(selectedStoreCode);
+      print(studentId);
+      setState(() {
+        selectedCategory=null;
+        selectedModel=null;
+        labName=null;
+        selectedStoreCode=null;
+      });
+    }
   }
-
 
   @override
   Widget build(BuildContext context) {
@@ -62,33 +142,10 @@ class _TemporalBorrowingRequestState extends State<TemporalBorrowingRequest> {
           SizedBox(
             height: 20,
           ),
-          FormInput(title: 'Category',lst: categoryList,callback: toogleCategory,value: selectedCategory,),
-          FormInput(title: 'Model',lst: modelList,callback: toogleModel,value: selectedModel,),
-          FormInput(title:'StoreCode',lst: storeCodeList,callback: toogleStoreCode,value: selectedStoreCode,),
-          Padding(
-            padding: EdgeInsets.only(left: 15,right: 15,top: 10),
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                Text(
-                  'Lab Name',
-                  style: TextStyle(color: Colors.white, fontSize: 20),
-                ),
-                Container(
-                  padding: EdgeInsets.all(5),
-                  color: Colors.white,
-                  width: 200,
-                  child: Text(
-                    'Lab0',
-                    style: TextStyle(
-                      fontSize: 18,
-                      fontWeight: FontWeight.bold,
-                    ),
-                  ),
-                ),
-              ],
-            ),
-          ),
+          FormInput(title: 'Category',lst: cList,callback: toogleCategory,value: selectedCategory,),
+          FormInput(title: 'Model',lst: mList,callback: toogleModel,value: selectedModel,),
+          FormInput(title: 'Lab Name',lst: lList,callback: toogleLabName,value: labName,),
+          FormInput(title:'StoreCode',lst: sList,callback: toogleStoreCode,value: selectedStoreCode,),
           Padding(
             padding: EdgeInsets.only(left: 15,right: 15,top: 10),
             child: Row(
@@ -125,10 +182,7 @@ class _TemporalBorrowingRequestState extends State<TemporalBorrowingRequest> {
             ),
             color: Color(0xff69C0A1),
             onPressed: (){
-              print(selectedCategory);
-              print(selectedModel);
-              print(selectedStoreCode);
-              print(studentId);
+              formSubmitHandler();
             },
           )
         ],

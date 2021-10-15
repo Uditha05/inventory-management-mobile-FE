@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:inventory_management/services/lecturer_api.dart';
 import '../../model/pending_detail.dart';
 import 'package:intl/intl.dart';
+import 'package:flutter_spinkit/flutter_spinkit.dart';
 
 class PendingRequestDetail extends StatefulWidget {
   final String id;
@@ -42,7 +43,7 @@ class _PendingRequestDetailState extends State<PendingRequestDetail> {
             topRight: Radius.circular(20),
           ),
         ),
-        child: (detail==null)?Text('Loading...'):Column(
+        child: (detail==null)?Center(child: SpinKitFadingFour(color: Colors.white,size: 100,),):Column(
           children: [
             Container(
               decoration: BoxDecoration(

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:inventory_management/services/student_api.dart';
 import 'package:inventory_management/theme/app_colors.dart';
 import 'package:intl/intl.dart';
 import 'package:inventory_management/widget/widget/date_picker.dart';
@@ -17,21 +18,93 @@ class _AddRequestState extends State<AddRequest> {
   String lecturerId;
   String fromDate;
   String toDate;
+  bool isError = false;
 
-  final categoryList = ['category0', 'category1', 'category2'];
-  final modelList = ['model0', 'model1', 'model2'];
-  final storeCodeList = ['storeCode0', 'storeCode1', 'storeCode2'];
+  List<String> cList=[];
+  List<String> mList=[];
+  List<String> lList=[];
+  List<String> sList=[];
+
+  StudentApi studentApi = StudentApi();
+  var lectureIdController = TextEditingController();
+
+  @override
+  void initState(){
+    super.initState();
+    updateCategory(studentApi.getCategory());
+  }
+
+  void updateCategory(dynamic data)async{
+    List<dynamic>lst = await data;
+    List<String> ls=[];
+    for(var m in lst){
+      ls.add(m.toString());
+    }
+    setState(() {
+      cList=ls;
+    });
+  }
+
+  void updateModel(dynamic data)async{
+    List<dynamic>lst = await data;
+    List<String> ls=[];
+    for(var m in lst){
+      ls.add(m.toString());
+    }
+    setState(() {
+      mList=ls;
+    });
+  }
+
+  void updateLab(dynamic data)async{
+    List<dynamic>lst = await data;
+    List<String> ls=[];
+    for(var m in lst){
+      ls.add(m.toString());
+    }
+    setState(() {
+      lList=ls;
+    });
+  }
+
+  void updateStoreCode(dynamic data)async{
+    List<dynamic>lst = await data;
+    List<String> ls=[];
+    for(var m in lst){
+      ls.add(m.toString());
+    }
+    setState(() {
+      sList=ls;
+    });
+  }
+
+
 
 
   void toogleCategory(String category) {
     setState(() {
+      updateModel(studentApi.getModel(category));
       selectedCategory = category;
+      selectedModel = null;
+      labName=null;
+      selectedStoreCode= null;
     });
   }
 
   void toogleModel(String model) {
+    updateLab(studentApi.getLab(model, selectedCategory));
     setState(() {
       selectedModel = model;
+      labName=null;
+      selectedStoreCode=null;
+    });
+  }
+
+  void toogleLabName(String lbName) {
+    updateStoreCode(studentApi.getStoreCode(selectedCategory, selectedModel, lbName));
+    setState(() {
+      labName = lbName;
+      selectedStoreCode=null;
     });
   }
 
@@ -53,6 +126,31 @@ class _AddRequestState extends State<AddRequest> {
     });
   }
 
+  void formSubmitHandler(){
+    if(selectedCategory==null || selectedModel==null || labName==null || selectedStoreCode==null || lecturerId==null || fromDate==null || toDate==null){
+      setState(() {
+        isError = true;
+      });
+      print('Error');
+    }else{
+      print(selectedCategory);
+      print(selectedModel);
+      print(selectedStoreCode);
+      print(lecturerId);
+      print(fromDate);
+      print(toDate);
+      setState(() {
+        selectedCategory=null;
+        selectedModel=null;
+        labName=null;
+        selectedStoreCode= null;
+        lectureIdController.clear();
+        fromDate=null;
+        toDate=null;
+      });
+    }
+  }
+
 
   @override
   Widget build(BuildContext context) {
@@ -70,45 +168,27 @@ class _AddRequestState extends State<AddRequest> {
             ),
             FormInput(
               title: 'Category',
-              lst: categoryList,
+              lst: cList,
               callback: toogleCategory,
               value: selectedCategory,
             ),
             FormInput(
               title: 'Model',
-              lst: modelList,
+              lst: mList,
               callback: toogleModel,
               value: selectedModel,
             ),
             FormInput(
+              title: 'Lab Name',
+              lst: lList,
+              callback: toogleLabName,
+              value: labName,
+            ),
+            FormInput(
               title: 'StoreCode',
-              lst: storeCodeList,
+              lst: sList,
               callback: toogleStoreCode,
               value: selectedStoreCode,
-            ),
-            Padding(
-              padding: EdgeInsets.only(left: 15, right: 15, top: 10),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  Text(
-                    'Lab Name',
-                    style: TextStyle(color: Colors.white, fontSize: 20),
-                  ),
-                  Container(
-                    padding: EdgeInsets.all(5),
-                    color: Colors.white,
-                    width: 200,
-                    child: Text(
-                      'Lab0',
-                      style: TextStyle(
-                        fontSize: 18,
-                        fontWeight: FontWeight.bold,
-                      ),
-                    ),
-                  ),
-                ],
-              ),
             ),
             Padding(
               padding: EdgeInsets.only(left: 15, right: 15, top: 10),
@@ -120,6 +200,7 @@ class _AddRequestState extends State<AddRequest> {
                   Container(
                     width: 200,
                     child: TextField(
+                      controller: lectureIdController,
                       decoration: InputDecoration(
                         fillColor: Colors.white,
                         filled: true,
@@ -181,12 +262,7 @@ class _AddRequestState extends State<AddRequest> {
               ),
               color: Color(0xff69C0A1),
               onPressed: () {
-                print(selectedCategory);
-                print(selectedModel);
-                print(selectedStoreCode);
-                print(lecturerId);
-                print(fromDate);
-                print(toDate);
+                formSubmitHandler();
               },
             )
           ],

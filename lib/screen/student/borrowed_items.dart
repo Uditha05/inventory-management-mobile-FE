@@ -1,8 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:inventory_management/model/borrow_detail_list.dart';
+import 'package:inventory_management/services/student_api.dart';
 import 'package:inventory_management/theme/app_colors.dart';
 import 'package:inventory_management/widget/widget/item_list.dart';
 import 'package:inventory_management/model/borrow_detail.dart';
 import 'package:inventory_management/model/item.dart';
+import 'package:flutter_spinkit/flutter_spinkit.dart';
 
 class BorrowItems extends StatefulWidget {
 
@@ -21,6 +24,30 @@ class _BorrowItemsState extends State<BorrowItems> {
     BorrowDetail(month: 'JAN',date: '16',data: Item(category: 'Sound system',model: 'CA124-B',storeCode: 'NA255',labName: 'CSE Level 1 lab')),
   ];
 
+  StudentApi studentApi = StudentApi();
+  BorrowDetailList datalist;
+  List<BorrowDetail> lst;
+
+  @override
+  void initState() {
+    super.initState();
+    updateUi(studentApi.getBorrowingHistory());
+
+  }
+
+  void updateUi (dynamic data) async{
+    if(data==null){
+      print('null val');
+      lst = [];
+    }else{
+      datalist = await data;
+      setState(() {
+        lst = datalist.details;
+        //print(lst);
+      });
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -29,13 +56,13 @@ class _BorrowItemsState extends State<BorrowItems> {
         title: Text('Borrowed Items'),
         backgroundColor: AppColor.main_green_background,
       ),
-      body: Column(
+      body: (datalist==null)?Center(child: SpinKitDoubleBounce(color: Colors.white,size: 100,),):Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Container(
             margin: EdgeInsets.all(10),
             child: Text(
-              'Items: ${details.length}',
+              'Items: ${lst.length}',
               style: TextStyle(
                 color: Colors.white,
                 fontSize: 19,
@@ -43,7 +70,7 @@ class _BorrowItemsState extends State<BorrowItems> {
             ),
           ),
           Expanded(
-            child: ItemList(details),
+            child: ItemList(lst),
           )
         ],
       ),
