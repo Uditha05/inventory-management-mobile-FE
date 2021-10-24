@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:inventory_management/screen/office_clerk/handle_damage/mark_request_screen.dart';
 import 'package:inventory_management/screen/office_clerk/handle_damage/new_request_screen.dart';
 import 'package:inventory_management/screen/office_clerk/handle_damage/old_request_screen.dart';
-import 'package:inventory_management/theme/app_colors.dart';
+import 'package:get/get.dart';
 
 class HandleDamage extends StatefulWidget {
   HandleDamage({Key key}) : super(key: key);
@@ -20,16 +20,16 @@ class _HandleDamageState extends State<HandleDamage> {
         appBar: AppBar(
           bottom: TabBar(
             tabs: [
-              Tab(text: 'NEW REQUEST'),
+              Tab(text: 'NEW REQUESTS'.tr),
               Tab(
-                text: 'MARK REPAIR',
+                text: 'MARK REPAIR'.tr,
               ),
               Tab(
-                text: 'OLD REQUEST',
+                text: 'OLD REQUEST'.tr,
               ),
             ],
           ),
-          title: Text('Handle Request'),
+          title: Text('Handle Request'.tr),
         ),
         body: Container(
           child: TabBarView(

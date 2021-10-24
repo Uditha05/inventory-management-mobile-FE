@@ -1,5 +1,8 @@
 import 'dart:convert';
 
+import 'package:get/get.dart';
+import 'package:get_storage/get_storage.dart';
+import 'package:inventory_management/config/constant_data.dart';
 import 'package:inventory_management/service/auth_service.dart';
 
 class AuthController {
@@ -16,11 +19,15 @@ class AuthController {
     if (out == null) {
       return null;
     }
+
     var payload = decodeJWT(out);
     if (payload == null) {
       return null;
     }
     print(payload["type"]);
+    final localStorage = GetStorage();
+    localStorage.write("email", email);
+    localStorage.write("password", password);
 
     return payload["type"];
   }

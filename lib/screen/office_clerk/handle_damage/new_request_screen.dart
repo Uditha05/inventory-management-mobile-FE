@@ -20,7 +20,7 @@ class NewRequestScreen extends StatefulWidget {
 
 class _NewRequestScreenState extends State<NewRequestScreen> {
   String barcodeString;
-  List upcoming = [];
+  List<BrokenItem> upcoming = [];
   bool isloading = false;
   @override
   void initState() {
@@ -37,9 +37,11 @@ class _NewRequestScreenState extends State<NewRequestScreen> {
         upcoming.add(one);
       }
     }
-    setState(() {
-      print("refresh");
-    });
+    if (mounted) {
+      setState(() {
+        print("refresh");
+      });
+    }
   }
 
   Future<void> scanBarcodeNormal() async {
@@ -48,22 +50,39 @@ class _NewRequestScreenState extends State<NewRequestScreen> {
     try {
       barcodeScanRes = await FlutterBarcodeScanner.scanBarcode(
           '#ff6666', 'Cancel', true, ScanMode.BARCODE);
-      if (barcodeString != null) {
-        chckFromBendingRequest();
-        return;
-      }
+
       print(barcodeScanRes);
     } on PlatformException {
       barcodeScanRes = 'Failed to get platform version.';
     }
     if (!mounted) return;
-
-    setState(() {
-      barcodeString = barcodeScanRes;
-    });
+    if (barcodeScanRes != " ") {
+      setState(() {
+        barcodeString = barcodeScanRes;
+      });
+      checkUpcomingList(barcodeScanRes);
+      return;
+    } else {
+      Fluttertoast.showToast(
+          msg: "Barcode can not ditect!",
+          toastLength: Toast.LENGTH_SHORT,
+          gravity: ToastGravity.CENTER,
+          timeInSecForIosWeb: 1,
+          backgroundColor: AppColor.toast_msg_warning,
+          textColor: Colors.white,
+          fontSize: 13.0);
+      return;
+    }
   }
 
-  chckFromBendingRequest() {}
+  void checkUpcomingList(String sCode) {
+    for (var oneB in upcoming) {
+      if (oneB.storeCode == sCode) {
+        return _showDialog(context, oneB.itemId);
+      }
+    }
+    return errorDialog(context);
+  }
 
   void markAsRepair(String id) async {
     var out = await OfficeClerkController().markSendToRepair(id);
@@ -88,6 +107,37 @@ class _NewRequestScreenState extends State<NewRequestScreen> {
           textColor: Colors.white,
           fontSize: 13.0);
     }
+  }
+
+  void errorDialog(BuildContext context) {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          backgroundColor: AppColor.main_green_background,
+          title: new Text(
+            "Invalid Store code",
+            style: TextStyle(color: Colors.white),
+          ),
+          content: new Text(
+            "Damage request cannot find for this store code",
+            style: TextStyle(color: Colors.white),
+          ),
+          actions: <Widget>[
+            new FlatButton(
+              color: Colors.green[200],
+              child: new Text(
+                "OK",
+                style: TextStyle(color: Colors.black),
+              ),
+              onPressed: () {
+                Navigator.of(context).pop();
+              },
+            ),
+          ],
+        );
+      },
+    );
   }
 
   void _showDialog(BuildContext context, String id) {

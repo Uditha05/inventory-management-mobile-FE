@@ -2,7 +2,7 @@ import 'dart:convert';
 
 import 'package:http/http.dart' as http;
 import 'package:inventory_management/config/api/auth_api.dart';
-import 'package:inventory_management/model/response/response_model.dart';
+import 'package:inventory_management/config/constant_data.dart';
 
 class AuthService {
   Future attemptLogIn(String username, String password) async {
@@ -14,6 +14,9 @@ class AuthService {
 
       if (res.statusCode == 200) {
         print(res.body);
+        final parsed = json.decode(res.body);
+        ConstantData.TOKEN = parsed['token'].toString();
+        // print("res.body ${parsed['token']}");
         return res.body;
       } else {
         print("status code : ${res.statusCode}");

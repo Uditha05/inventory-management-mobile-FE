@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
+import 'package:flutter_barcode_scanner/flutter_barcode_scanner.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:inventory_management/controller/office_clerk_controller.dart';
 import 'package:inventory_management/model/dummy/broken_item.dart';
@@ -89,6 +91,7 @@ class _MarkRequestScreenState extends State<MarkRequestScreen> {
       await getPendingRequest();
       setState(() {
         isloading = false;
+        storeCodeEditor.text = "";
       });
       Navigator.pop(context);
     } else {
@@ -118,7 +121,7 @@ class _MarkRequestScreenState extends State<MarkRequestScreen> {
             style: TextStyle(color: Colors.white),
           ),
           content: new Text(
-            "has this item repaird?",
+            "has this item repaired?",
             style: TextStyle(color: Colors.white),
           ),
           actions: <Widget>[
@@ -149,6 +152,43 @@ class _MarkRequestScreenState extends State<MarkRequestScreen> {
         );
       },
     );
+  }
+
+  Future<void> scanBarcodeNormal() async {
+    String barcodeScanRes;
+    // Platform messages may fail, so we use a try/catch PlatformException.
+    try {
+      barcodeScanRes = await FlutterBarcodeScanner.scanBarcode(
+          '#ff6666', 'Cancel', true, ScanMode.BARCODE);
+
+      print(barcodeScanRes.toString());
+      if (barcodeScanRes == "" || barcodeScanRes == "-1") {
+        setState(() {
+          barcodeString = barcodeScanRes;
+        });
+        if (barcodeString != "-1") {
+          setState(() {
+            storeCodeEditor.text = barcodeString;
+          });
+        }
+
+        return;
+      } else {
+        Fluttertoast.showToast(
+            msg: "Barcode can not ditect!",
+            toastLength: Toast.LENGTH_SHORT,
+            gravity: ToastGravity.CENTER,
+            timeInSecForIosWeb: 1,
+            backgroundColor: AppColor.toast_msg_warning,
+            textColor: Colors.white,
+            fontSize: 13.0);
+
+        return;
+      }
+    } on PlatformException {
+      barcodeScanRes = 'Failed to get platform version.';
+    }
+    if (!mounted) return;
   }
 
   @override
@@ -214,11 +254,12 @@ class _MarkRequestScreenState extends State<MarkRequestScreen> {
                             child: IconButton(
                               icon: Icon(Icons.qr_code_rounded),
                               onPressed: () {
-                                Navigator.push(
-                                  context,
-                                  MaterialPageRoute(
-                                      builder: (context) => QRScannPage()),
-                                );
+                                scanBarcodeNormal();
+                                // Navigator.push(
+                                //   context,
+                                //   MaterialPageRoute(
+                                //       builder: (context) => QRScannPage()),
+                                // );
                               },
                               color: Colors.white,
                             ),
@@ -239,24 +280,31 @@ class _MarkRequestScreenState extends State<MarkRequestScreen> {
                 SizedBox(
                   height: 5,
                 ),
-                Expanded(
-                  child: Container(
-                    child: ListView.builder(
-                        itemCount: pendingList.length,
-                        itemBuilder: (contex, index) {
-                          BrokenItem brokenItem = pendingList[index];
-                          return GestureDetector(
-                            onTap: () {
-                              _showDialog(context, brokenItem.itemId);
-                            },
-                            child: BrokenItemViewCard(
-                              brokenItem: brokenItem,
-                              isOld: false,
-                            ),
-                          );
-                        }),
-                  ),
-                )
+                pendingList.length == 0
+                    ? Center(
+                        child: Container(
+                          margin: EdgeInsets.only(top: 30),
+                          child: Text("No items under repair"),
+                        ),
+                      )
+                    : Expanded(
+                        child: Container(
+                          child: ListView.builder(
+                              itemCount: pendingList.length,
+                              itemBuilder: (contex, index) {
+                                BrokenItem brokenItem = pendingList[index];
+                                return GestureDetector(
+                                  onTap: () {
+                                    _showDialog(context, brokenItem.itemId);
+                                  },
+                                  child: BrokenItemViewCard(
+                                    brokenItem: brokenItem,
+                                    isOld: false,
+                                  ),
+                                );
+                              }),
+                        ),
+                      )
               ],
             ),
           );

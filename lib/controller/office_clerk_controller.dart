@@ -1,5 +1,5 @@
 import 'package:inventory_management/model/dummy/broken_item.dart';
-import 'package:inventory_management/model/response/broken_item_model.dart';
+import 'package:inventory_management/model/office_clerk_related/broken_item_model.dart';
 import 'package:inventory_management/service/office_clerk_service.dart';
 
 class OfficeClerkController {

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 
 class SettingsScreen extends StatefulWidget {
   SettingsScreen({Key key}) : super(key: key);
@@ -9,6 +10,27 @@ class SettingsScreen extends StatefulWidget {
 
 class _SettingsScreenState extends State<SettingsScreen> {
   String lang = "English";
+
+  @override
+  void initState() {
+    super.initState();
+    getAppLanguage();
+  }
+
+  void updateLanguage() {
+    if (lang == "සිංහල") {
+      var locale = Locale('si', 'LK');
+      Get.updateLocale(locale);
+      print("language change");
+    } else {
+      var locale = Locale('en', 'US');
+      Get.updateLocale(locale);
+      print("language change");
+    }
+  }
+
+  void getAppLanguage() async {}
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -31,7 +53,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
                 Container(
                   child: DropdownButton<String>(
                     items: <String>[
-                      'Sinhala',
+                      'සිංහල',
                       'English',
                       'Tamil',
                     ].map((String value) {
@@ -44,6 +66,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
                       setState(() {
                         lang = value;
                         print(lang);
+                        updateLanguage();
                       });
                     },
                     value: lang,
