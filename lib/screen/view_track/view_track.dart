@@ -1,3 +1,5 @@
+import 'package:flutter_spinkit/flutter_spinkit.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:inventory_management/services/category.dart';
 import 'package:flutter/material.dart';
 import 'package:inventory_management/widget/equipment.dart';
@@ -15,12 +17,17 @@ class ItemTrackScreen extends StatefulWidget {
 class _ItemTrackScreenState extends State<ItemTrackScreen> {
   List<Iteam> equipments = [];
   Category categories;
+  bool loading = false;
   @override
   Future setEquipments(quary) async {
+    setState(() {
+      this.loading = true;
+    });
     List<Iteam> result = await Iteam.findIteamsByCatogary(quary);
 
     setState(() {
       this.equipments = result;
+      this.loading = false;
     });
   }
 
@@ -45,16 +52,21 @@ class _ItemTrackScreenState extends State<ItemTrackScreen> {
         children: [
           Padding(
             padding: const EdgeInsets.fromLTRB(5, 75, 5, 0),
-            child: ListView.builder(
-                itemCount: equipments.length,
-                itemBuilder: (contex, index) {
-                  return Padding(
-                      padding: const EdgeInsets.fromLTRB(5, 10, 5, 10),
-                      child: Equipment(
-                        iteam: equipments[index],
-                        isviewed: false,
-                      ));
-                }),
+            child: loading
+                ? SpinKitFadingCircle(
+                    color: Colors.black,
+                    size: 50.0,
+                  ) //Icon(FontAwesomeIcons.spinner)
+                : ListView.builder(
+                    itemCount: equipments.length,
+                    itemBuilder: (contex, index) {
+                      return Padding(
+                          padding: const EdgeInsets.fromLTRB(5, 10, 5, 10),
+                          child: Equipment(
+                            iteam: equipments[index],
+                            isviewed: false,
+                          ));
+                    }),
           ),
           SearchBar(
               setEquipments: setEquipments,

@@ -7,9 +7,9 @@ import 'package:inventory_management/services/lab.dart';
 import 'package:inventory_management/services/modal.dart';
 import 'package:inventory_management/widget/chart.dart';
 
+var apiurl = "https://insep.herokuapp.com";
 getCategories(Category c) async {
-  var url = Uri.http(
-      '10.0.2.2:5000', '/technicalofficer/categories', {'q': '{http}'});
+  var url = Uri.parse(apiurl + '/technicalofficer/categories');
 
   var response = await http.get(url);
   if (response.statusCode == 200) {
@@ -21,8 +21,7 @@ getCategories(Category c) async {
 }
 
 getLabs(Lab c) async {
-  var url =
-      Uri.http('10.0.2.2:5000', '/technicalofficer/labs', {'q': '{http}'});
+  var url = Uri.parse(apiurl + '/technicalofficer/labs');
 
   var response = await http.get(url);
   if (response.statusCode == 200) {
@@ -34,8 +33,19 @@ getLabs(Lab c) async {
 }
 
 getModels(Model c) async {
-  var url = Uri.http(
-      '10.0.2.2:5000', '/technicalofficer/models/${c.id}', {'q': '{http}'});
+  var url = Uri.parse(apiurl + '/technicalofficer/models/${c.id}');
+
+  var response = await http.get(url);
+  if (response.statusCode == 200) {
+    return convert.jsonDecode(response.body);
+    print(response.body);
+  } else {
+    print('Request failed with status: ${response.statusCode}.');
+  }
+}
+
+getRequestData(String id) async {
+  var url = Uri.parse(apiurl + '/technicalofficer/requestdata/$id');
 
   var response = await http.get(url);
   if (response.statusCode == 200) {
@@ -47,8 +57,7 @@ getModels(Model c) async {
 }
 
 findIteamsByCatogary(id) async {
-  var url = Uri.http(
-      '10.0.2.2:5000', '/technicalofficer/categories/$id', {'q': '{http}'});
+  var url = Uri.parse(apiurl + '/technicalofficer/categories/$id');
 
   var response = await http.get(url);
   if (response.statusCode == 200) {
@@ -58,8 +67,8 @@ findIteamsByCatogary(id) async {
       Iteam iteam = new Iteam(
           catogary: result[i]['Category']['categoryName'],
           store_code: result[i]['id'],
-          model: result[i]['model']['modelName'],
-          lab: result[i]['Laboratory']['labName'],
+          model: result[i]['Model']['modelName'],
+          lab: result[i]['Lab']['labName'],
           isAvailable: result[i]['availability'] == 1,
           status: result[i]['status']);
       iteam.imgURL = result[i]['imageURL'];
@@ -72,8 +81,7 @@ findIteamsByCatogary(id) async {
 }
 
 getBorrowData(id, fromDate, toDate) async {
-  var url = Uri.http(
-      '10.0.2.2:5000', '/technicalofficer/borrowdata/', {'q': '{http}'});
+  var url = Uri.parse(apiurl + '/technicalofficer/borrowdata/');
   var response = await http.post(url, body: {
     'store_code': id,
     'fromDate': '${fromDate.year}/${fromDate.month}/${fromDate.day}',
@@ -81,13 +89,27 @@ getBorrowData(id, fromDate, toDate) async {
   });
   if (response.statusCode == 200) {
     List result = convert.jsonDecode(response.body);
-    print(response.body);
+    // result.map((e) => print(e));
+    for (var item in result) {
+      print(item);
+      if (item['type'] == 'temporary') {
+        print(item['TemoryBorrowings']);
+      } else if (item['type'] == 'normal') {
+        print(item['RequestBorrowings']);
+      } else {
+        print(item['LecturerBorrowings']);
+      }
+    }
     List<BorrowData> list = result
         .map((e) => new BorrowData(
             type: e['type'],
-            name: e['type'] == 'lecture'
+            name: e['type'] == 'lecturer'
                 ? e['LecturerBorrowings'][0]['lecturer']['firstName']
-                : '',
+                : e['type'] == 'normal'
+                    ? e['RequestBorrowings'][0]['student']['firstName']
+                    : e['type'] == 'temporary'
+                        ? e['TemoryBorrowings'][0]['student']['firstName']
+                        : '',
             status: e['status'],
             fromDate: DateTime.parse(e['fromDate']),
             toDate: DateTime.parse(e['dueDate']),
@@ -102,9 +124,48 @@ getBorrowData(id, fromDate, toDate) async {
   }
 }
 
+getLastBorrowData(id) async {
+  print("hhhhhhh");
+  var url = Uri.parse(apiurl + '/technicalofficer//borrowdata/$id');
+  var response = await http.get(url);
+  if (response.statusCode == 200) {
+    List result = convert.jsonDecode(response.body);
+
+    var e = result[0];
+    print(e);
+    BorrowData data = new BorrowData(
+        type: e['type'],
+        name: e['type'] == 'lecturer'
+            ? e['LecturerBorrowings'][0]['lecturer']['firstName']
+            : e['type'] == 'normal'
+                ? e['RequestBorrowings'][0]['student']['firstName']
+                : e['type'] == 'temporary'
+                    ? e['TemoryBorrowings'][0]['student']['firstName']
+                    : '',
+        status: e['status'],
+        fromDate: DateTime.parse(e['fromDate']),
+        toDate: DateTime.parse(e['dueDate']),
+        id: e['id'].toString(),
+        returnDate:
+            e['returnDate'] == null ? null : DateTime.parse(e['returnDate']));
+    print(data);
+
+    if (e['type'] == 'temporary') {
+      data.userid = e['TemoryBorrowings'][0]['student']['id'];
+    } else if (e['type'] == 'normal') {
+      data.userid = e['RequestBorrowings'][0]['student']['id'];
+    } else {
+      data.userid = e['LecturerBorrowings'][0]['lecturer']['id'];
+    }
+    print("result");
+    return data;
+  } else {
+    print('Request failed with status: ${response.statusCode}.');
+  }
+}
+
 getEquipmentByStoreCode(storeid) async {
-  var url = Uri.http(
-      '10.0.2.2:5000', '/technicalofficer/equipment/$storeid', {'q': '{http}'});
+  var url = Uri.parse(apiurl + '/technicalofficer/equipment/$storeid');
 
   var response = await http.get(url);
   if (response.statusCode == 200) {
@@ -114,8 +175,8 @@ getEquipmentByStoreCode(storeid) async {
       Iteam iteam = new Iteam(
           catogary: result['Category']['categoryName'],
           store_code: result['id'],
-          model: result['model']['modelName'],
-          lab: result['Laboratory']['labName'],
+          model: result['Model']['modelName'],
+          lab: result['Lab']['labName'],
           isAvailable: result['availability'] == 1,
           status: result['status']);
       iteam.imgURL = result['imageURL'];
@@ -128,8 +189,7 @@ getEquipmentByStoreCode(storeid) async {
 }
 
 temporyIssueEquipment(userid, storeid, fromdate, todate, reason) async {
-  var url = Uri.http(
-      '10.0.2.2:5000', '/technicalofficer/temporyborrowing', {'q': '{http}'});
+  var url = Uri.parse(apiurl + '/technicalofficer/temporyborrowing');
 
   var response = await http.post(url, body: {
     'userid': userid,
@@ -147,11 +207,16 @@ temporyIssueEquipment(userid, storeid, fromdate, todate, reason) async {
   }
 }
 
-updateEquipment(store_code, status) async {
-  var url = Uri.http(
-      '10.0.2.2:5000', '/technicalofficer/updateequipment/', {'q': '{http}'});
-  var response =
-      await http.post(url, body: {'store_code': store_code, 'status': status});
+updateEquipment(store_code, status, imgUrl, issetimage) async {
+  var url = Uri.parse(apiurl + '/technicalofficer/updateequipment/');
+  var bd = {
+    'store_code': store_code,
+    'status': status,
+    'imgPreview': imgUrl,
+    'issetimage': issetimage.toString()
+  };
+  print(bd);
+  var response = await http.post(url, body: bd);
   if (response.statusCode < 300) {
     return [true, 'none'];
   } else {
@@ -159,11 +224,14 @@ updateEquipment(store_code, status) async {
   }
 }
 
-AddEquipment(category, model, lab) async {
-  var url = Uri.http(
-      '10.0.2.2:5000', '/technicalofficer/addequipment/', {'q': '{http}'});
-  var response = await http
-      .post(url, body: {'category': category, 'model': model, 'lab': lab});
+AddEquipment(category, model, lab, imgUrl) async {
+  var url = Uri.parse(apiurl + '/technicalofficer/addequipment/');
+  var response = await http.post(url, body: {
+    'category': category,
+    'model': model,
+    'lab': lab,
+    'imgPreview': imgUrl
+  });
   if (response.statusCode < 300) {
     var item = convert.jsonDecode(response.body);
     return [true, 'none', convert.jsonDecode(response.body)['id']];
@@ -172,10 +240,19 @@ AddEquipment(category, model, lab) async {
   }
 }
 
+acceptEquipment(id, status) async {
+  var url = Uri.parse(apiurl + '/technicalofficer/acceptEquipment/');
+  var response = await http.post(url, body: {'id': id, 'status': status});
+  if (response.statusCode < 400) {
+    return false;
+  } else {
+    return true;
+  }
+}
+
 getReport(fromdate, toDate, categories, reportType) async {
   print(reportType);
-  var url =
-      Uri.http('10.0.2.2:5000', '/technicalofficer/report/', {'q': '{http}'});
+  var url = Uri.parse(apiurl + '/technicalofficer/report/');
   var response = await http.post(
     url,
     headers: <String, String>{

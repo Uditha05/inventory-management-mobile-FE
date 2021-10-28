@@ -11,6 +11,7 @@ import 'package:share/share.dart';
 import 'package:syncfusion_flutter_charts/charts.dart';
 import 'package:syncfusion_flutter_charts/sparkcharts.dart';
 import 'package:multiselect/multiselect.dart';
+import 'package:flutter_spinkit/flutter_spinkit.dart';
 
 class UsageReport extends StatefulWidget {
   const UsageReport({Key key}) : super(key: key);
@@ -36,7 +37,7 @@ class _UsageReportState extends State<UsageReport> {
   String reporttype = 'usage';
   DateTime fromDate = DateTime.now();
   DateTime toDate = DateTime.now();
-
+  bool loading = false;
   TextEditingController fromdateController = TextEditingController();
   TextEditingController todateController = TextEditingController();
   GlobalKey<ScaffoldState> scafoldkey = GlobalKey<ScaffoldState>();
@@ -53,6 +54,9 @@ class _UsageReportState extends State<UsageReport> {
   }
 
   Future submit() async {
+    setState(() {
+      this.loading = true;
+    });
     fromdateController.text = fromDate.toString();
     todateController.text = toDate.toString();
     scafoldkey.currentState.openEndDrawer();
@@ -75,6 +79,7 @@ class _UsageReportState extends State<UsageReport> {
     List<ChartData> chartDatatmp = await report.getReport();
     setState(() {
       chartData = chartDatatmp;
+      this.loading = false;
     });
   }
 
@@ -137,12 +142,17 @@ class _UsageReportState extends State<UsageReport> {
           ),
         ]),
       ),
-      body: Chrartless(
-        type: charttype,
-        fromdate: fromDate,
-        todate: toDate,
-        chartData: chartData,
-      ),
+      body: loading
+          ? SpinKitFadingCircle(
+              color: Colors.black,
+              size: 50.0,
+            ) //Icon(FontAwesomeIcons.spinner)
+          : Chrartless(
+              type: charttype,
+              fromdate: fromDate,
+              todate: toDate,
+              chartData: chartData,
+            ),
       floatingActionButton: report != null
           ? FloatingActionButton(
               backgroundColor: AppColor.main_green_background,

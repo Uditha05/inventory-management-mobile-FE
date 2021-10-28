@@ -2,11 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:inventory_management/services/iteam.dart';
 
-
 import 'package:inventory_management/theme/app_colors.dart';
 import 'package:inventory_management/widget/custom_button.dart';
 import 'package:inventory_management/widget/custom_string_input.dart';
-
+import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'add_update_equipment_form.dart';
 
 class AddUpdateEquipment extends StatefulWidget {
@@ -20,10 +19,17 @@ class _AddUpdateEquipmentState extends State<AddUpdateEquipment> {
   TextEditingController storeIdController = new TextEditingController();
   String addUpdateType = 'Add Equipment';
   List addUpdateTypes = ["Add Equipment", "Update Equipment Details"];
+  bool loading = false;
   Iteam iteam;
   Future next(BuildContext context) async {
     if (addUpdateType == "Update Equipment Details") {
+      setState(() {
+        this.loading = true;
+      });
       iteam = await Iteam.findByStoreId(storeIdController.text);
+      setState(() {
+        this.loading = false;
+      });
     }
     if (iteam == null && addUpdateType == "Update Equipment Details") {
       Fluttertoast.showToast(
@@ -48,10 +54,21 @@ class _AddUpdateEquipmentState extends State<AddUpdateEquipment> {
 
   Future findDataByQr() async {
     iteam = await Iteam.findDataByQr();
+
     if (iteam != null) {
       setState(() {
         storeIdController.text = iteam.store_code;
       });
+      next(context);
+    } else {
+      Fluttertoast.showToast(
+          msg: "Invalid Store ID",
+          toastLength: Toast.LENGTH_SHORT,
+          gravity: ToastGravity.TOP,
+          timeInSecForIosWeb: 1,
+          backgroundColor: AppColor.toast_msg_warning,
+          textColor: Colors.white,
+          fontSize: 13.0);
     }
   }
 
@@ -69,7 +86,7 @@ class _AddUpdateEquipmentState extends State<AddUpdateEquipment> {
         child: Padding(
           padding: const EdgeInsets.all(20),
           child: Container(
-            width: 370,
+            width: 500,
             height: 1000,
             decoration: BoxDecoration(
               borderRadius: BorderRadius.all(Radius.circular(20)),
@@ -100,27 +117,32 @@ class _AddUpdateEquipmentState extends State<AddUpdateEquipment> {
                       ),
                     ),
                     addUpdateType == "Update Equipment Details"
-                        ? Column(
-                            children: [
-                              Container(
-                                padding: EdgeInsets.all(2),
-                                child: CustomStringInput(
-                                  hintText: "Store ID",
-                                  icon: Icon(Icons.person),
-                                  isEnable: addUpdateType ==
-                                      "Update Equipment Details",
-                                  maxLetters: 15,
-                                  textEditingController: storeIdController,
-                                ),
-                              ),
-                              Container(
-                                child: CustomButton(
-                                  onPressed: () => findDataByQr(),
-                                  text: "bar code",
-                                ),
-                              ),
-                            ],
-                          )
+                        ? loading
+                            ? SpinKitFadingCircle(
+                                color: Colors.black,
+                                size: 50.0,
+                              ) //Icon(FontAwesomeIcons.spinner)
+                            : Column(
+                                children: [
+                                  Container(
+                                    padding: EdgeInsets.all(2),
+                                    child: CustomStringInput(
+                                      hintText: "Store ID",
+                                      icon: Icon(Icons.person),
+                                      isEnable: addUpdateType ==
+                                          "Update Equipment Details",
+                                      maxLetters: 15,
+                                      textEditingController: storeIdController,
+                                    ),
+                                  ),
+                                  Container(
+                                    child: CustomButton(
+                                      onPressed: () => findDataByQr(),
+                                      text: "bar code",
+                                    ),
+                                  ),
+                                ],
+                              )
                         : Container(),
                     SizedBox(
                       height: 70,

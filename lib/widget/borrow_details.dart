@@ -84,7 +84,7 @@ class BorrowDetails extends StatelessWidget {
                   ),
                   Text(
                     data.returnDate != null
-                        ? "returnDate: " + getDateNTime(data.returnDate)
+                        ? "returnDate:\n" + getDateNTime(data.returnDate)
                         : '-',
                     style: TextStyle(
                       color: Colors.white,
@@ -131,6 +131,16 @@ class UserTypeIcon extends StatelessWidget {
         );
         break;
       case ("temporary"):
+        return Container(
+          width: 40,
+          height: 40,
+          decoration: BoxDecoration(
+            borderRadius: BorderRadius.all(Radius.circular(5)),
+            color: Colors.grey[200],
+          ),
+          child: Icon(FontAwesomeIcons.userGraduate),
+        );
+      case ("normal"):
         return Container(
           width: 40,
           height: 40,

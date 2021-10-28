@@ -10,15 +10,15 @@ class Request {
   BorrowData borrowData;
   final Iteam iteam;
   final String id;
-  final IRequestUser lecture;
+  IRequestUser lecture;
 
-  Request(
-      {this.iRequestUser,
-      this.reqdate,
-      this.status,
-      this.iteam,
-      this.id,
-      this.lecture});
+  Request({
+    this.iRequestUser,
+    this.reqdate,
+    this.status,
+    this.iteam,
+    this.id,
+  });
 
   Future setBorrowData() {}
 }

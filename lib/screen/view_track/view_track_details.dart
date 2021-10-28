@@ -5,6 +5,7 @@ import 'package:inventory_management/widget/borrow_details.dart';
 import 'package:inventory_management/widget/equipment.dart';
 import 'package:inventory_management/services/iteam.dart';
 import 'package:inventory_management/theme/app_colors.dart';
+import 'package:flutter_spinkit/flutter_spinkit.dart';
 
 class ViewTrackDetails extends StatefulWidget {
   final Iteam iteam;
@@ -24,7 +25,7 @@ class _ViewTrackDetailsState extends State<ViewTrackDetails> {
   TextEditingController fromdateController = TextEditingController();
   TextEditingController todateController = TextEditingController();
   _ViewTrackDetailsState({this.iteam});
-
+  bool loading = false;
   @override
   void initState() {
     setHistory();
@@ -33,6 +34,9 @@ class _ViewTrackDetailsState extends State<ViewTrackDetails> {
   }
 
   void setHistory() async {
+    setState(() {
+      this.loading = true;
+    });
     List<BorrowDetails> borrowHistorytmp =
         await iteam.getBorrowData(fromDate, toDate).then((value) => value
             .map((e) => BorrowDetails(
@@ -47,6 +51,7 @@ class _ViewTrackDetailsState extends State<ViewTrackDetails> {
     setState(() {
       borrowHistory = borrowHistorytmp;
       lastdata = tempborrwData;
+      this.loading = false;
     });
   }
 
@@ -97,25 +102,30 @@ class _ViewTrackDetailsState extends State<ViewTrackDetails> {
           elevation: 0,
         ),
         backgroundColor: AppColor.main_green_background,
-        body: Column(
-          children: [
-            SizedBox(
-              height: 10,
-            ),
-            SizedBox(
-              height: 10,
-            ),
-            Expanded(
-              child: ListView.builder(
-                  itemCount: borrowHistory.length,
-                  itemBuilder: (context, index) {
-                    return Padding(
-                        padding: EdgeInsets.fromLTRB(5, 10, 5, 10),
-                        child: borrowHistory[index]);
-                  }),
-            ),
-          ],
-        ),
+        body: loading
+            ? SpinKitFadingCircle(
+                color: Colors.black,
+                size: 50.0,
+              ) //Icon(FontAwesomeIcons.spinner)
+            : Column(
+                children: [
+                  SizedBox(
+                    height: 10,
+                  ),
+                  SizedBox(
+                    height: 10,
+                  ),
+                  Expanded(
+                    child: ListView.builder(
+                        itemCount: borrowHistory.length,
+                        itemBuilder: (context, index) {
+                          return Padding(
+                              padding: EdgeInsets.fromLTRB(5, 10, 5, 10),
+                              child: borrowHistory[index]);
+                        }),
+                  ),
+                ],
+              ),
         drawer: SafeArea(
           child: Drawer(
             child: Column(

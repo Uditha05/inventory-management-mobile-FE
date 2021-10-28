@@ -1,7 +1,10 @@
+import 'dart:convert';
+import 'dart:io';
 import 'dart:math';
 
 import 'package:date_time_picker/date_time_picker.dart';
 import 'package:dropdown_search/dropdown_search.dart';
+import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:fluttertoast/fluttertoast.dart';
@@ -13,10 +16,12 @@ import 'package:inventory_management/services/modal.dart';
 import 'package:inventory_management/services/printing.dart';
 import 'package:inventory_management/theme/app_colors.dart';
 import 'package:inventory_management/widget/custem_input.dart';
+import 'package:path/path.dart' as p;
 
 import 'package:inventory_management/widget/custom_button.dart';
 import 'package:inventory_management/widget/custom_string_input.dart';
 import 'package:inventory_management/widget/search_bar.dart';
+import 'package:flutter_spinkit/flutter_spinkit.dart';
 
 class AddUpdateEquipmetForm extends StatefulWidget {
   final String type;
@@ -36,9 +41,11 @@ class _AddUpdateEquipmetFormState extends State<AddUpdateEquipmetForm> {
   TextEditingController modelController = new TextEditingController();
   TextEditingController storeCodeController = new TextEditingController();
   TextEditingController labController = new TextEditingController();
-  List addUpdateTypes = ["notdamaged", "damaged"];
-  String addUpdateType = "notdamaged";
-
+  final List addUpdateTypes = ["notdamage", "damage"];
+  String addUpdateType = "notdamage";
+  bool loading = false;
+  bool loading2 = false;
+  bool loadingsubmit = false;
   String model = '';
   bool isIDVailed;
   bool isUpdate;
@@ -55,11 +62,17 @@ class _AddUpdateEquipmetFormState extends State<AddUpdateEquipmetForm> {
   Model models;
   List modellist = [];
   bool submi = false;
+  String imgUrl = '';
+  bool issetimage = false;
   @override
   void initState() {
     submi = false;
     isIDVailed = false;
+    print(type);
     if (type == "Add Equipment") {
+      setState(() {
+        this.loading = true;
+      });
       isUpdate = false;
       categories = new Category(setCategories);
       labs = new Lab(setlabs);
@@ -70,6 +83,7 @@ class _AddUpdateEquipmetFormState extends State<AddUpdateEquipmetForm> {
       storeCodeController.text = iteam.store_code;
       labController.text = iteam.lab;
       addUpdateType = iteam.status;
+      imgUrl = iteam.imgURL;
     }
 
     super.initState();
@@ -85,6 +99,7 @@ class _AddUpdateEquipmetFormState extends State<AddUpdateEquipmetForm> {
   setCategories() {
     setState(() {
       catlist = categories.categories;
+      this.loading = false;
     });
   }
 
@@ -112,8 +127,14 @@ class _AddUpdateEquipmetFormState extends State<AddUpdateEquipmetForm> {
       } else if (addUpdateType.isEmpty) {
         error = "Status is Empty";
       } else {
-        List check =
-            await iteam.SetLabandStatus(labController.text, addUpdateType);
+        setState(() {
+          this.loadingsubmit = true;
+        });
+        List check = await iteam.SetLabandStatus(
+            labController.text, addUpdateType, imgUrl, issetimage);
+        setState(() {
+          this.loadingsubmit = false;
+        });
         if (check[0]) {
           Navigator.popUntil(context, ModalRoute.withName('/'));
         } else {
@@ -127,9 +148,16 @@ class _AddUpdateEquipmetFormState extends State<AddUpdateEquipmetForm> {
         error = "Model is Empty";
       } else if (lab == '') {
         error = "Lab is Empty";
+      } else if (imgUrl == '') {
+        error = "Upload Image";
       } else {
-        List check = await Iteam.createNewIteam(category, model, lab);
-
+        setState(() {
+          this.loadingsubmit = true;
+        });
+        List check = await Iteam.createNewIteam(category, model, lab, imgUrl);
+        setState(() {
+          this.loadingsubmit = false;
+        });
         if (check[0]) {
           genarateQr(check[2]);
         } else {
@@ -153,12 +181,14 @@ class _AddUpdateEquipmetFormState extends State<AddUpdateEquipmetForm> {
   setmodels() {
     setState(() {
       modellist = models.models;
+      this.loading2 = false;
     });
   }
 
   setCategory(val) {
     setState(() {
       category = categories.getid(val).toString();
+      this.loading2 = true;
       models = new Model(category, setmodels);
     });
   }
@@ -173,6 +203,40 @@ class _AddUpdateEquipmetFormState extends State<AddUpdateEquipmetForm> {
     setState(() {
       lab = labs.getid(name).toString();
     });
+  }
+
+  setdamage(name) {
+    print(name);
+    setState(() {
+      if (name) {
+        addUpdateType = addUpdateTypes[1];
+      } else {
+        addUpdateType = addUpdateTypes[0];
+      }
+    });
+    print(addUpdateType);
+  }
+
+  Future uploadFile() async {
+    FilePickerResult result =
+        await FilePicker.platform.pickFiles(type: FileType.image);
+
+    if (result != null) {
+      File file = File(result.files.single.path);
+      var bytes = file.readAsBytesSync();
+
+      String img64 = 'data:image/' +
+          p.extension(file.path).substring(1) +
+          ';base64,' +
+          base64Encode(bytes);
+      setState(() {
+        issetimage = true;
+        imgUrl = img64;
+        print(imgUrl);
+      });
+    } else {
+      // User canceled the picker
+    }
   }
 
   @override
@@ -194,58 +258,75 @@ class _AddUpdateEquipmetFormState extends State<AddUpdateEquipmetForm> {
                         height: 15,
                       ),
                       !isUpdate
-                          ? Column(
-                              children: [
-                                DropdownSearch(
-                                    mode: Mode.MENU,
-                                    enabled: !isUpdate,
-                                    items: catlist
-                                        .map(
-                                            (e) => e['categoryName'].toString())
-                                        .toList(),
-                                    label: "Catetory",
-                                    hint: "select categories",
-                                    popupItemDisabled: (String s) =>
-                                        s.startsWith('I'),
-                                    onChanged: setCategory,
-                                    selectedItem: "Category"),
-                                SizedBox(
-                                  height: 15,
-                                ),
-                                DropdownSearch(
-                                    mode: Mode.MENU,
-                                    enabled: !isUpdate,
-                                    items: models != null
-                                        ? modellist
+                          ? loading
+                              ? SpinKitFadingCircle(
+                                  color: Colors.black,
+                                  size: 50.0,
+                                ) //Icon(FontAwesomeIcons.spinner)
+                              : Column(
+                                  children: [
+                                    DropdownSearch(
+                                        mode: Mode.MENU,
+                                        enabled: !isUpdate,
+                                        items: catlist
                                             .map((e) =>
-                                                e['modelName'].toString())
-                                            .toList()
-                                        : [''],
-                                    label: "Model",
-                                    hint: "select model",
-                                    popupItemDisabled: (String s) =>
-                                        s.startsWith('I'),
-                                    onChanged: setmodel,
-                                    selectedItem: "Model"),
-                                SizedBox(
-                                  height: 15,
-                                ),
-                                DropdownSearch(
-                                    mode: Mode.MENU,
-                                    enabled: !isUpdate,
-                                    items: labs != null
-                                        ? lablist
-                                            .map((e) => e['labName'].toString())
-                                            .toList()
-                                        : [''],
-                                    label: "Lab",
-                                    hint: "select lab",
-                                    popupItemDisabled: (String s) =>
-                                        s.startsWith('I'),
-                                    onChanged: setlab,
-                                    selectedItem: "Lab"),
-                              ],
-                            )
+                                                e['categoryName'].toString())
+                                            .toList(),
+                                        label: "Catetory",
+                                        hint: "select categories",
+                                        popupItemDisabled: (String s) =>
+                                            s.startsWith('I'),
+                                        onChanged: setCategory,
+                                        selectedItem: "Category"),
+                                    SizedBox(
+                                      height: 15,
+                                    ),
+                                    loading2
+                                        ? SpinKitFadingCircle(
+                                            color: Colors.black,
+                                            size: 50.0,
+                                          ) //Icon(FontAwesomeIcons.spinner)
+                                        : DropdownSearch(
+                                            mode: Mode.MENU,
+                                            enabled: !isUpdate,
+                                            items: models != null
+                                                ? modellist
+                                                    .map((e) => e['modelName']
+                                                        .toString())
+                                                    .toList()
+                                                : [''],
+                                            label: "Model",
+                                            hint: "select model",
+                                            popupItemDisabled: (String s) =>
+                                                s.startsWith('I'),
+                                            onChanged: setmodel,
+                                            selectedItem: "Model"),
+                                    SizedBox(
+                                      height: 15,
+                                    ),
+                                    DropdownSearch(
+                                        mode: Mode.MENU,
+                                        enabled: !isUpdate,
+                                        items: labs != null
+                                            ? lablist
+                                                .map((e) =>
+                                                    e['labName'].toString())
+                                                .toList()
+                                            : [''],
+                                        label: "Lab",
+                                        hint: "select lab",
+                                        popupItemDisabled: (String s) =>
+                                            s.startsWith('I'),
+                                        onChanged: setlab,
+                                        selectedItem: "Lab"),
+                                    Container(
+                                      child: CustomButton(
+                                        onPressed: () => uploadFile(),
+                                        text: "Image",
+                                      ),
+                                    ),
+                                  ],
+                                )
                           : Column(
                               children: [
                                 InputFeildType(
@@ -263,28 +344,27 @@ class _AddUpdateEquipmetFormState extends State<AddUpdateEquipmetForm> {
                                   isEnable: true,
                                   name: 'Lab',
                                 ),
+                                Container(
+                                  child: CustomButton(
+                                    onPressed: () => uploadFile(),
+                                    text: "Image",
+                                  ),
+                                ),
                               ],
                             ),
                       isUpdate
                           ? Container(
                               padding: EdgeInsets.all(8),
-                              child: DropdownButton(
-                                hint: Text("Select one ..."),
-                                value: addUpdateType,
-                                onChanged: (newvalue) {
-                                  setState(() {
-                                    addUpdateType = newvalue;
-                                  });
-                                },
-                                items: [
-                                  DropdownMenuItem(
-                                    child: Text('damaged'),
-                                    value: 'damaged',
+                              child: Row(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                children: [
+                                  Text("Damage"),
+                                  Checkbox(
+                                    value: addUpdateType == addUpdateTypes[1],
+                                    onChanged: (newvalue) {
+                                      setdamage(newvalue);
+                                    },
                                   ),
-                                  DropdownMenuItem(
-                                    child: Text('notdamaged'),
-                                    value: 'notdamaged',
-                                  )
                                 ],
                               ),
                             )
@@ -295,12 +375,20 @@ class _AddUpdateEquipmetFormState extends State<AddUpdateEquipmetForm> {
                       Row(
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
-                          Container(
-                            child: CustomButton(
-                              onPressed: () => !submi ? submit() : null,
-                              text: "Submit",
-                            ),
-                          ),
+                          loading
+                              ? Container() //Icon(FontAwesomeIcons.spinner)
+                              : loadingsubmit
+                                  ? SpinKitFadingCircle(
+                                      color: Colors.black,
+                                      size: 50.0,
+                                    ) //Icon(FontAwesomeIcons.spinner)
+                                  : Container(
+                                      child: CustomButton(
+                                        onPressed: () =>
+                                            !submi ? submit() : null,
+                                        text: "Submit",
+                                      ),
+                                    ),
                           SizedBox(
                             width: 50,
                           ),

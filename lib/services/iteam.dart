@@ -20,7 +20,7 @@ class Iteam {
   final String lab;
   final bool isAvailable;
   final DateTime available_time = DateTime.now();
-  String status = "damaged";
+  String status = "damage";
   String imgURL;
 
   Iteam(
@@ -67,15 +67,7 @@ class Iteam {
   }
 
   Future<BorrowData> getLastBorrowData() async {
-    BorrowData list = new BorrowData(
-        type: "Lecture",
-        toDate: DateTime.now(),
-        fromDate: DateTime.now(),
-        name: "pubba pubba pubba pubba",
-        status: "180240J",
-        id: '23456');
-
-    return list;
+    return await api.getLastBorrowData(this.store_code);
   }
 
   static Future<Iteam> findDataByQr() async {
@@ -204,8 +196,9 @@ class Iteam {
     }
   }
 
-  Future<List> SetLabandStatus(String lab, String Status) async {
-    return await api.updateEquipment(store_code, Status);
+  Future<List> SetLabandStatus(
+      String lab, String Status, imgUrl, issetimage) async {
+    return await api.updateEquipment(store_code, Status, imgUrl, issetimage);
     // if (Random().nextInt(10) < 125) {
     //   return [true, "none"];
     // } else {
@@ -214,8 +207,8 @@ class Iteam {
   }
 
   static Future<List> createNewIteam(
-      String catogary, String Model, String lab) async {
-    return await api.AddEquipment(catogary, Model, lab);
+      String catogary, String Model, String lab, String imgUrl) async {
+    return await api.AddEquipment(catogary, Model, lab, imgUrl);
     // Iteam iteam = Iteam(
     //     catogary: catogary,
     //     model: Model,
