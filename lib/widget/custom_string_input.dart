@@ -7,14 +7,15 @@ class CustomStringInput extends StatelessWidget {
   final String hintText;
   final Icon icon;
   final bool isEnable;
-
+  final Function onchange;
   CustomStringInput(
       {Key key,
       this.textEditingController,
       this.hintText,
       this.icon,
       this.isEnable,
-      this.maxLetters})
+      this.maxLetters,
+      this.onchange})
       : super(key: key);
 
   @override
@@ -24,6 +25,11 @@ class CustomStringInput extends StatelessWidget {
       child: TextField(
         controller: textEditingController,
         keyboardType: TextInputType.name,
+        onChanged: onchange != null
+            ? (text) {
+                onchange(text);
+              }
+            : null,
         maxLength: maxLetters,
         enabled: isEnable,
         maxLengthEnforced: true,
