@@ -9,16 +9,27 @@ class CustomButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      child: RaisedButton(
-        color: AppColor.main_green_background,
-        onPressed: onPressed,
-        padding: EdgeInsets.all(5),
-        child: Text(
-          text,
-          style: AppTextStyle.loginButtonText,
-        ),
-      ),
+    return GestureDetector(
+      onTap: onPressed,
+      child: Container(
+          decoration: BoxDecoration(
+            borderRadius: BorderRadius.circular(13),
+            color: AppColor.main_green_background,
+          ),
+          padding: EdgeInsets.all(13),
+          child: Text(
+            text,
+            style: AppTextStyle.loginButtonText,
+          )
+
+          // RaisedButton(
+
+          //   onPressed: onPressed,
+          //   color: AppColor.main_green_background,
+          //   padding: EdgeInsets.all(5),
+          //   child: ,
+          // ),
+          ),
     );
   }
 }
