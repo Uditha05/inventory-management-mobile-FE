@@ -3,7 +3,7 @@ import 'package:fluttertoast/fluttertoast.dart';
 import 'package:inventory_management/config/asset_config.dart';
 import 'package:inventory_management/controller/auth_controller.dart';
 import 'package:inventory_management/screen/lectureDashboard.dart';
-import 'package:inventory_management/screen/loading_screen.dart';
+
 import 'package:inventory_management/screen/office_clerk/office_clerk_dashboard.dart';
 import 'package:inventory_management/screen/sudentDashboard.dart';
 import 'package:inventory_management/screen/technicalOfficerDashboard.dart';
@@ -13,6 +13,7 @@ import 'package:inventory_management/theme/app_text_style.dart';
 import 'package:inventory_management/widget/custom_button.dart';
 import 'package:inventory_management/widget/custom_password_input.dart';
 import 'package:inventory_management/widget/custom_string_input.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class LoginScreen extends StatefulWidget {
   LoginScreen({Key key}) : super(key: key);
@@ -24,6 +25,11 @@ class LoginScreen extends StatefulWidget {
 class _LoginScreenState extends State<LoginScreen> {
   TextEditingController usernameController = new TextEditingController();
   TextEditingController passwordController = new TextEditingController();
+
+  @override
+  void initState() {
+    super.initState();
+  }
 
   void submitUsernameAndPassword() async {
     if (usernameController.text.trim().isEmpty) {
@@ -71,7 +77,10 @@ class _LoginScreenState extends State<LoginScreen> {
     }
   }
 
-  void redirectToDashboard(String type) {
+  void redirectToDashboard(String type) async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    prefs.setString("email", usernameController.text);
+    prefs.setString("password", passwordController.text);
     if (type == "Student") {
       Navigator.of(context).pushReplacement(new MaterialPageRoute(
           builder: (BuildContext context) => StudentDashboard()));

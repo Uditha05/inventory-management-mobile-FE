@@ -3,8 +3,8 @@ import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
 import 'package:inventory_management/config/language_config.dart';
-import 'package:inventory_management/screen/login/login_screen.dart';
-import 'package:inventory_management/screen/office_clerk/qr_scan.dart';
+
+import 'package:inventory_management/screen/login/loadingScreen.dart';
 
 final storage = FlutterSecureStorage();
 void main() async {
@@ -24,7 +24,7 @@ class MyApp extends StatelessWidget {
         backgroundColor: Color(0xFF00875A),
         primaryColor: Color(0xFF00875A),
       ),
-      home: LoginScreen(), //QRScannPage(),
+      home: LoadingScreen(), //QRScannPage(),
       debugShowCheckedModeBanner: false,
     );
   }

@@ -4,9 +4,7 @@ import 'package:flutter_barcode_scanner/flutter_barcode_scanner.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:inventory_management/controller/office_clerk_controller.dart';
 import 'package:inventory_management/model/dummy/broken_item.dart';
-import 'package:inventory_management/screen/office_clerk/handle_damage/handle_damage.dart';
-import 'package:inventory_management/screen/office_clerk/office_clerk_dashboard.dart';
-import 'package:inventory_management/screen/office_clerk/qr_scan.dart';
+
 import 'package:inventory_management/theme/app_colors.dart';
 import 'package:inventory_management/widget/broken_item_view_card.dart';
 import 'package:inventory_management/widget/qr_float_button.dart';
@@ -33,9 +31,11 @@ class _NewRequestScreenState extends State<NewRequestScreen> {
     List<BrokenItem> out = []; //dummyBroken;
     out = await OfficeClerkController().getNewDamages();
     for (var one in out) {
-      if (one.status == "Broken") {
-        upcoming.add(one);
-      }
+      print(one.status);
+      upcoming.add(one);
+      // if (one.status == "pending") {
+
+      // }
     }
     if (mounted) {
       setState(() {
@@ -78,7 +78,7 @@ class _NewRequestScreenState extends State<NewRequestScreen> {
   void checkUpcomingList(String sCode) {
     for (var oneB in upcoming) {
       if (oneB.storeCode == sCode) {
-        return _showDialog(context, oneB.itemId);
+        return _showDialog(context, oneB.damageId);
       }
     }
     return errorDialog(context);
@@ -237,9 +237,10 @@ class _NewRequestScreenState extends State<NewRequestScreen> {
                 itemCount: upcoming.length,
                 itemBuilder: (context, index) {
                   BrokenItem brokenItem = upcoming[index];
+                  print(brokenItem.itemId);
                   return GestureDetector(
                       onTap: () {
-                        _showDialog(context, brokenItem.itemId);
+                        _showDialog(context, brokenItem.damageId);
                       },
                       child: BrokenItemViewCard(
                         brokenItem: brokenItem,

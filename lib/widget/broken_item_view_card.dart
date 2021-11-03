@@ -11,10 +11,14 @@ class BrokenItemViewCard extends StatelessWidget {
     @required this.isOld,
   }) : super(key: key);
 
-  String closeDate(String dateString) {
-    var date = DateTime.parse(dateString);
-
-    return DateFormat.yMMMd().format(date);
+  String closeDate(dateString) {
+    print(dateString);
+    if (!isOld) {
+      return "Not closed";
+    } else {
+      var date = DateTime.parse(dateString.toString());
+      return DateFormat.yMMMd().format(date);
+    }
   }
 
   @override
