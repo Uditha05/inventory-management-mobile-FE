@@ -2,17 +2,21 @@ import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:inventory_management/config/asset_config.dart';
 import 'package:inventory_management/controller/auth_controller.dart';
-import 'package:inventory_management/screen/lectureDashboard.dart';
+//import 'package:inventory_management/screen/lectureDashboard.dart';
 import 'package:inventory_management/screen/loading_screen.dart';
 import 'package:inventory_management/screen/office_clerk/office_clerk_dashboard.dart';
-import 'package:inventory_management/screen/sudentDashboard.dart';
-import 'package:inventory_management/screen/technicalOfficerDashboard.dart';
+//import 'package:inventory_management/screen/student/sudent_dashboard.dart';
+import 'package:inventory_management/screen/student/student_dashboard.dart';
+import 'package:inventory_management/screen/lecturer/lecturer_dashboard.dart';
+
+import 'package:inventory_management/screen/technicla_officer_dashboard/technical_officer_dashboard.dart';
 
 import 'package:inventory_management/theme/app_colors.dart';
 import 'package:inventory_management/theme/app_text_style.dart';
 import 'package:inventory_management/widget/custom_button.dart';
 import 'package:inventory_management/widget/custom_password_input.dart';
 import 'package:inventory_management/widget/custom_string_input.dart';
+
 
 class LoginScreen extends StatefulWidget {
   LoginScreen({Key key}) : super(key: key);
@@ -26,49 +30,50 @@ class _LoginScreenState extends State<LoginScreen> {
   TextEditingController passwordController = new TextEditingController();
 
   void submitUsernameAndPassword() async {
-    if (usernameController.text.trim().isEmpty) {
-      Fluttertoast.showToast(
-          msg: "Invalid username",
-          toastLength: Toast.LENGTH_SHORT,
-          gravity: ToastGravity.CENTER,
-          timeInSecForIosWeb: 1,
-          backgroundColor: AppColor.toast_msg_warning,
-          textColor: Colors.white,
-          fontSize: 13.0);
-      return;
-    } else if (passwordController.text.trim().isEmpty) {
-      Fluttertoast.showToast(
-          msg: "Invalid password",
-          toastLength: Toast.LENGTH_SHORT,
-          gravity: ToastGravity.CENTER,
-          timeInSecForIosWeb: 1,
-          backgroundColor: AppColor.toast_msg_warning,
-          textColor: Colors.white,
-          fontSize: 13.0);
-      return;
-    } else {
-      var out = await AuthController().submitUserNamePassword(
-          usernameController.text.trim(), passwordController.text.trim());
-      // var out = await AuthController().checkLogin(
-      //     usernameController.text.trim(), passwordController.text.trim());
-
-      if (out == null) {
-        Fluttertoast.showToast(
-            msg: "Invalid Email or Password",
-            toastLength: Toast.LENGTH_SHORT,
-            gravity: ToastGravity.CENTER,
-            timeInSecForIosWeb: 1,
-            backgroundColor: AppColor.toast_msg_warning,
-            textColor: Colors.white,
-            fontSize: 13.0);
-        return;
-      }
-      redirectToDashboard(out);
-
-      // Navigator.push(context,
-      //     MaterialPageRoute(builder: (context) => LoadingPage.fromBase64(out)));
-
-    }
+    // if (usernameController.text.trim().isEmpty) {
+    //   Fluttertoast.showToast(
+    //       msg: "Invalid username",
+    //       toastLength: Toast.LENGTH_SHORT,
+    //       gravity: ToastGravity.CENTER,
+    //       timeInSecForIosWeb: 1,
+    //       backgroundColor: AppColor.toast_msg_warning,
+    //       textColor: Colors.white,
+    //       fontSize: 13.0);
+    //   return;
+    // } else if (passwordController.text.trim().isEmpty) {
+    //   Fluttertoast.showToast(
+    //       msg: "Invalid password",
+    //       toastLength: Toast.LENGTH_SHORT,
+    //       gravity: ToastGravity.CENTER,
+    //       timeInSecForIosWeb: 1,
+    //       backgroundColor: AppColor.toast_msg_warning,
+    //       textColor: Colors.white,
+    //       fontSize: 13.0);
+    //   return;
+    // } else {
+    //   var out = await AuthController().submitUserNamePassword(
+    //       usernameController.text.trim(), passwordController.text.trim());
+    //   // var out = await AuthController().checkLogin(
+    //   //     usernameController.text.trim(), passwordController.text.trim());
+    //
+    //   if (out == null) {
+    //     Fluttertoast.showToast(
+    //         msg: "Invalid Email or Password",
+    //         toastLength: Toast.LENGTH_SHORT,
+    //         gravity: ToastGravity.CENTER,
+    //         timeInSecForIosWeb: 1,
+    //         backgroundColor: AppColor.toast_msg_warning,
+    //         textColor: Colors.white,
+    //         fontSize: 13.0);
+    //     return;
+    //   }
+    //   redirectToDashboard(out);
+    //
+    //   // Navigator.push(context,
+    //   //     MaterialPageRoute(builder: (context) => LoadingPage.fromBase64(out)));
+    //
+    // }
+    redirectToDashboard('Student');
   }
 
   void redirectToDashboard(String type) {
@@ -77,7 +82,7 @@ class _LoginScreenState extends State<LoginScreen> {
           builder: (BuildContext context) => StudentDashboard()));
     } else if (type == "Lecturer") {
       Navigator.of(context).pushReplacement(new MaterialPageRoute(
-          builder: (BuildContext context) => LectureDashboard()));
+          builder: (BuildContext context) => LecturerDashboard()));
     } else if (type == "OfficeClerk") {
       Navigator.of(context).pushReplacement(new MaterialPageRoute(
           builder: (BuildContext context) => OfficeClerkDashboard()));
@@ -199,3 +204,5 @@ class _LoginScreenState extends State<LoginScreen> {
     ));
   }
 }
+
+

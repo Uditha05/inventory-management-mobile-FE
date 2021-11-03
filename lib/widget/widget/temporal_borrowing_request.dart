@@ -175,6 +175,7 @@ class _TemporalBorrowingRequestState extends State<TemporalBorrowingRequest> {
           FixDateInput('From Date'),
           FixDateInput('To Date'),
           SizedBox(height: 20,),
+          (isError)?Text('Error occur',style: TextStyle(color: Colors.red,fontSize: 20),):Text(''),
           FlatButton(
             child: Text(
               'Submit',
