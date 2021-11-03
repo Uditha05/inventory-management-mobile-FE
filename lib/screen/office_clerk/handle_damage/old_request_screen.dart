@@ -25,9 +25,7 @@ class _OldRequestScreenState extends State<OldRequestScreen> {
     out = await OfficeClerkController().getOldDamageItem();
     print(out.length);
     for (var one in out) {
-      if (one.status == "Broken") {
-        oldItems.add(one);
-      }
+      oldItems.add(one);
     }
     if (mounted) {
       setState(() {
