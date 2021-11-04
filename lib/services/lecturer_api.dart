@@ -6,8 +6,8 @@ import '../model/pending_detail.dart';
 
 class LecturerApi{
   Future<dynamic> getItems() async{
-    //NetworkHelper networkHelper = NetworkHelper('http://10.0.2.2:5000/checkAvaiability');
-    NetworkHelper networkHelper = NetworkHelper('https://sep-backend-inventory.herokuapp.com/checkAvaiability');
+    NetworkHelper networkHelper = NetworkHelper('http://10.0.2.2:5000/student/checkAvaiability');
+    //NetworkHelper networkHelper = NetworkHelper('https://sep-backend-inventory.herokuapp.com/checkAvaiability');
     var data = await networkHelper.getData();
     var lst =[];
     //print(data);
@@ -89,7 +89,8 @@ class LecturerApi{
   }
 
   Future getCategory()async{
-    NetworkHelper networkHelper = NetworkHelper('https://sep-backend-inventory.herokuapp.com/category');
+    NetworkHelper networkHelper = NetworkHelper('http://10.0.2.2:5000/student/category');
+    //NetworkHelper networkHelper = NetworkHelper('https://sep-backend-inventory.herokuapp.com/category');
     var data = await networkHelper.getData();
     var lst=[];
     for(var m in data){
@@ -99,7 +100,8 @@ class LecturerApi{
   }
 
   Future getModel(String category)async{
-    NetworkHelper networkHelper = NetworkHelper('https://sep-backend-inventory.herokuapp.com/model/${category}');
+    NetworkHelper networkHelper = NetworkHelper('http://10.0.2.2:5000/student/model/${category}');
+    //NetworkHelper networkHelper = NetworkHelper('https://sep-backend-inventory.herokuapp.com/model/${category}');
     var data = await networkHelper.getData();
     var lst=[];
     for(var m in data){
@@ -110,7 +112,8 @@ class LecturerApi{
   }
   
   Future getLab(String model,String category)async{
-    NetworkHelper networkHelper = NetworkHelper('https://sep-backend-inventory.herokuapp.com/lab/${category}/${model}');
+    NetworkHelper networkHelper = NetworkHelper('http://10.0.2.2:5000/student/lab/${category}/${model}');
+    //NetworkHelper networkHelper = NetworkHelper('https://sep-backend-inventory.herokuapp.com/lab/${category}/${model}');
     var data = await networkHelper.getData();
     //print(data);
     var lst=[];
@@ -121,7 +124,8 @@ class LecturerApi{
   }
 
   Future getStoreCode(String category,String model, String lab)async{
-    NetworkHelper networkHelper = NetworkHelper('https://sep-backend-inventory.herokuapp.com/storeCode/${category}/${model}/${lab}');
+    NetworkHelper networkHelper = NetworkHelper('http://10.0.2.2:5000/student/storeCode/${category}/${model}/${lab}');
+    //NetworkHelper networkHelper = NetworkHelper('https://sep-backend-inventory.herokuapp.com/storeCode/${category}/${model}/${lab}');
     var data = await networkHelper.getData();
     //print(data);
     var lst=[];
@@ -132,7 +136,8 @@ class LecturerApi{
   }
 
   Future getLecturers(String lab)async{
-    NetworkHelper networkHelper = NetworkHelper('https://sep-backend-inventory.herokuapp.com/lecturer/${lab}');
+    NetworkHelper networkHelper = NetworkHelper('http://10.0.2.2:5000/student/lecturer/${lab}');
+    //NetworkHelper networkHelper = NetworkHelper('https://sep-backend-inventory.herokuapp.com/lecturer/${lab}');
     var data = await networkHelper.getData();
     //print(data);
     var lst=[];
