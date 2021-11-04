@@ -1,6 +1,7 @@
 import 'package:date_time_picker/date_time_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
+import 'package:inventory_management/screen/technicla_officer_dashboard/technical_officer_dashboard.dart';
 
 import 'package:inventory_management/services/iteam.dart';
 import 'package:inventory_management/services/request.dart';
@@ -175,12 +176,14 @@ class _IssueEquipmetFormState extends State<IssueEquipmetForm> {
           this.loadingsubmit = false;
         });
         if (result == null) {
-          Navigator.popUntil(context, ModalRoute.withName('/'));
+            Navigator.of(context).pushReplacement(new MaterialPageRoute(
+              builder: (BuildContext context) => TechnicalOfficerDashboard()));
         } else {
           error = result;
         }
       } else {
-        Navigator.popUntil(context, ModalRoute.withName('/'));
+         Navigator.of(context).pushReplacement(new MaterialPageRoute(
+            builder: (BuildContext context) => TechnicalOfficerDashboard()));
       }
     }
     print(error);

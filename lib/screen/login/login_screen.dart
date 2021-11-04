@@ -6,7 +6,7 @@ import 'package:inventory_management/screen/lectureDashboard.dart';
 import 'package:inventory_management/screen/loading_screen.dart';
 import 'package:inventory_management/screen/office_clerk/office_clerk_dashboard.dart';
 import 'package:inventory_management/screen/sudentDashboard.dart';
-import 'package:inventory_management/screen/technicalOfficerDashboard.dart';
+import 'package:inventory_management/screen/technicla_officer_dashboard/technical_officer_dashboard.dart';
 
 import 'package:inventory_management/theme/app_colors.dart';
 import 'package:inventory_management/theme/app_text_style.dart';

@@ -6,12 +6,16 @@ import 'package:inventory_management/services/iteam.dart';
 import 'package:inventory_management/services/lab.dart';
 import 'package:inventory_management/services/modal.dart';
 import 'package:inventory_management/widget/chart.dart';
+import 'package:inventory_management/config/constant_data.dart';
 
 var apiurl = "https://insep.herokuapp.com";
+var headers = {
+  "Authorization": 'Bearer ' + ConstantData.TOKEN,
+};
 getCategories(Category c) async {
   var url = Uri.parse(apiurl + '/technicalofficer/categories');
 
-  var response = await http.get(url);
+  var response = await http.get(url, headers: headers);
   if (response.statusCode == 200) {
     return convert.jsonDecode(response.body);
     print(response.body);
@@ -23,7 +27,7 @@ getCategories(Category c) async {
 getLabs(Lab c) async {
   var url = Uri.parse(apiurl + '/technicalofficer/labs');
 
-  var response = await http.get(url);
+  var response = await http.get(url, headers: headers);
   if (response.statusCode == 200) {
     return convert.jsonDecode(response.body);
     print(response.body);
@@ -35,7 +39,7 @@ getLabs(Lab c) async {
 getModels(Model c) async {
   var url = Uri.parse(apiurl + '/technicalofficer/models/${c.id}');
 
-  var response = await http.get(url);
+  var response = await http.get(url, headers: headers);
   if (response.statusCode == 200) {
     return convert.jsonDecode(response.body);
     print(response.body);
@@ -47,7 +51,7 @@ getModels(Model c) async {
 getRequestData(String id) async {
   var url = Uri.parse(apiurl + '/technicalofficer/requestdata/$id');
 
-  var response = await http.get(url);
+  var response = await http.get(url, headers: headers);
   if (response.statusCode == 200) {
     return convert.jsonDecode(response.body);
     print(response.body);
@@ -59,7 +63,7 @@ getRequestData(String id) async {
 findIteamsByCatogary(id) async {
   var url = Uri.parse(apiurl + '/technicalofficer/categories/$id');
 
-  var response = await http.get(url);
+  var response = await http.get(url, headers: headers);
   if (response.statusCode == 200) {
     List result = convert.jsonDecode(response.body);
     List<Iteam> iteams = [];
@@ -82,11 +86,13 @@ findIteamsByCatogary(id) async {
 
 getBorrowData(id, fromDate, toDate) async {
   var url = Uri.parse(apiurl + '/technicalofficer/borrowdata/');
-  var response = await http.post(url, body: {
-    'store_code': id,
-    'fromDate': '${fromDate.year}/${fromDate.month}/${fromDate.day}',
-    'toDate': '${toDate.year}/${toDate.month}/${toDate.day}'
-  });
+  var response = await http.post(url,
+      body: {
+        'store_code': id,
+        'fromDate': '${fromDate.year}/${fromDate.month}/${fromDate.day}',
+        'toDate': '${toDate.year}/${toDate.month}/${toDate.day}'
+      },
+      headers: headers);
   if (response.statusCode == 200) {
     List result = convert.jsonDecode(response.body);
     // result.map((e) => print(e));
@@ -127,7 +133,7 @@ getBorrowData(id, fromDate, toDate) async {
 getLastBorrowData(id) async {
   print("hhhhhhh");
   var url = Uri.parse(apiurl + '/technicalofficer//borrowdata/$id');
-  var response = await http.get(url);
+  var response = await http.get(url, headers: headers);
   if (response.statusCode == 200) {
     List result = convert.jsonDecode(response.body);
 
@@ -167,7 +173,7 @@ getLastBorrowData(id) async {
 getEquipmentByStoreCode(storeid) async {
   var url = Uri.parse(apiurl + '/technicalofficer/equipment/$storeid');
 
-  var response = await http.get(url);
+  var response = await http.get(url, headers: headers);
   if (response.statusCode == 200) {
     var result = convert.jsonDecode(response.body);
     print(result);
@@ -191,13 +197,15 @@ getEquipmentByStoreCode(storeid) async {
 temporyIssueEquipment(userid, storeid, fromdate, todate, reason) async {
   var url = Uri.parse(apiurl + '/technicalofficer/temporyborrowing');
 
-  var response = await http.post(url, body: {
-    'userid': userid,
-    'storeid': storeid,
-    'fromdate': fromdate.toString(),
-    'todate': todate.toString(),
-    'reason': reason
-  });
+  var response = await http.post(url,
+      body: {
+        'userid': userid,
+        'storeid': storeid,
+        'fromdate': fromdate.toString(),
+        'todate': todate.toString(),
+        'reason': reason
+      },
+      headers: headers);
   if (response.statusCode == 201) {
     var result = convert.jsonDecode(response.body);
     print(result);
@@ -216,7 +224,7 @@ updateEquipment(store_code, status, imgUrl, issetimage) async {
     'issetimage': issetimage.toString()
   };
   print(bd);
-  var response = await http.post(url, body: bd);
+  var response = await http.post(url, body: bd, headers: headers);
   if (response.statusCode < 300) {
     return [true, 'none'];
   } else {
@@ -226,12 +234,14 @@ updateEquipment(store_code, status, imgUrl, issetimage) async {
 
 AddEquipment(category, model, lab, imgUrl) async {
   var url = Uri.parse(apiurl + '/technicalofficer/addequipment/');
-  var response = await http.post(url, body: {
-    'category': category,
-    'model': model,
-    'lab': lab,
-    'imgPreview': imgUrl
-  });
+  var response = await http.post(url,
+      body: {
+        'category': category,
+        'model': model,
+        'lab': lab,
+        'imgPreview': imgUrl
+      },
+      headers: headers);
   if (response.statusCode < 300) {
     var item = convert.jsonDecode(response.body);
     return [true, 'none', convert.jsonDecode(response.body)['id']];
@@ -242,7 +252,8 @@ AddEquipment(category, model, lab, imgUrl) async {
 
 acceptEquipment(id, status) async {
   var url = Uri.parse(apiurl + '/technicalofficer/acceptEquipment/');
-  var response = await http.post(url, body: {'id': id, 'status': status});
+  var response = await http.post(url,
+      body: {'id': id, 'status': status}, headers: headers);
   if (response.statusCode < 400) {
     return false;
   } else {
@@ -256,7 +267,8 @@ getReport(fromdate, toDate, categories, reportType) async {
   var response = await http.post(
     url,
     headers: <String, String>{
-      'Content-Type': 'application/json; charset=UTF-8'
+      'Content-Type': 'application/json; charset=UTF-8',
+      "Authorization": 'Bearer ' + ConstantData.TOKEN,
     },
     body: convert.jsonEncode({
       'fromdate': fromdate.toString(),
