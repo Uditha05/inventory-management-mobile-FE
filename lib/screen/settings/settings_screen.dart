@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:shared_preferences/shared_preferences.dart';
+// import 'package:shared_preferences/shared_preferences.dart';
 
 class SettingsScreen extends StatefulWidget {
   SettingsScreen({Key key}) : super(key: key);
@@ -20,35 +20,35 @@ class _SettingsScreenState extends State<SettingsScreen> {
   }
 
   void loadLanguage() async {
-    SharedPreferences prefs = await SharedPreferences.getInstance();
+    // SharedPreferences prefs = await SharedPreferences.getInstance();
     // prefs.setString("language", "English");
-    if (prefs.getString("language") == null) {
-      prefs.setString("language", "English");
-    } else if (prefs.getString("language") == "English") {
-      setState(() {
-        lang = "English";
-      });
-    } else {
-      setState(() {
-        lang = "සිංහල";
-      });
-    }
+    // if (prefs.getString("language") == null) {
+    //   prefs.setString("language", "English");
+    // } else if (prefs.getString("language") == "English") {
+    //   setState(() {
+    //     lang = "English";
+    //   });
+    // } else {
+    //   setState(() {
+    //     lang = "සිංහල";
+    //   });
+    // }
   }
 
   void updateLanguage() async {
-    SharedPreferences prefs = await SharedPreferences.getInstance();
-    if (prefs.getString("language") == null) {
-      prefs.setString("language", "English");
-    }
+    // SharedPreferences prefs = await SharedPreferences.getInstance();
+    // if (prefs.getString("language") == null) {
+    //   prefs.setString("language", "English");
+    // }
     if (lang == "සිංහල") {
       var locale = Locale('si', 'LK');
       Get.updateLocale(locale);
-      prefs.setString("language", "සිංහල");
+      // prefs.setString("language", "සිංහල");
       print("language change");
     } else {
       var locale = Locale('en', 'US');
       Get.updateLocale(locale);
-      prefs.setString("language", "English");
+      // prefs.setString("language", "English");
       print("language change");
     }
   }

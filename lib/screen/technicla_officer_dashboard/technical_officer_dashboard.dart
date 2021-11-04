@@ -38,6 +38,7 @@ class _TechnicalOfficerDashboardState extends State<TechnicalOfficerDashboard> {
                       RoundedRectangleBorder(
                           borderRadius: BorderRadius.circular(18.0),
                           side: BorderSide.none))),
+              onPressed: () {},
               child: Icon(Icons.notifications),
             ),
           ],

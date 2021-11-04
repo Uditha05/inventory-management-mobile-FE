@@ -13,7 +13,8 @@ class AvailabilityTile extends StatelessWidget {
   final String availableDate;
   final String type;
 
-  AvailabilityTile({this.availability,this.itemDetail,this.availableDate,this.type});
+  AvailabilityTile(
+      {this.availability, this.itemDetail, this.availableDate, this.type});
 
   @override
   Widget build(BuildContext context) {
@@ -32,12 +33,13 @@ class AvailabilityTile extends StatelessWidget {
             width: 100,
             height: 100,
             child: Image(
-              image: NetworkImage('https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQTCKA6akZjVZfHmZaluLOTZzE-3_j_-MBScw&usqp=CAU'),
+              image: NetworkImage(
+                  'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQTCKA6akZjVZfHmZaluLOTZzE-3_j_-MBScw&usqp=CAU'),
             ),
           ),
           Expanded(
             child: Padding(
-              padding: EdgeInsets.only(left: 30,right: 10),
+              padding: EdgeInsets.only(left: 30, right: 10),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
@@ -63,37 +65,64 @@ class AvailabilityTile extends StatelessWidget {
           ),
           Column(
             children: [
-              availability ? Column(
-                crossAxisAlignment: CrossAxisAlignment.center,
-                    children: [
-                      Button(text: 'Avaiable',color: Color(0xff3B885B),),
-                      SizedBox(height: 5,),
-                      IconContent(icon: FontAwesomeIcons.pen,onTap: (){
-                        showModalBottomSheet(
-                          context: context,
-                          isScrollControlled: true,
-                          // builder: (context)=>AddRequest(itemDetail: itemDetail,),
-                          builder: (context) => SingleChildScrollView(
-                            child: Container(
-                              padding: EdgeInsets.only(bottom: MediaQuery.of(context).viewInsets.bottom),
-                              child: AddRequest(itemDetail: itemDetail,type: type),
-                            ),
-                          ),
-                        );
-                      },),
-                    ],
-                  ) : Column(
-                children: [
-                    Button(text: 'Unavailble',color: Colors.red,),
-                    SizedBox(height: 5,),
-                    IconContent(icon: FontAwesomeIcons.eye,onTap: (){
-                      showModalBottomSheet(
-                        context: context,
-                        builder: (context)=> ItemView(itemDetail: itemDetail, availableDate: availableDate),
-                      );
-                    },),
-                ],
-              ),
+              availability
+                  ? Column(
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      children: [
+                        Button(
+                          text: 'Avaiable',
+                          color: Color(0xff3B885B),
+                        ),
+                        SizedBox(
+                          height: 5,
+                        ),
+                        IconContent(
+                          icon: FontAwesomeIcons.pen,
+                          onTap: () {
+                            if (type == "officeClerk") {
+                              return;
+                            }
+                            showModalBottomSheet(
+                              context: context,
+                              isScrollControlled: true,
+                              // builder: (context)=>AddRequest(itemDetail: itemDetail,),
+                              builder: (context) => SingleChildScrollView(
+                                child: Container(
+                                  padding: EdgeInsets.only(
+                                      bottom: MediaQuery.of(context)
+                                          .viewInsets
+                                          .bottom),
+                                  child: AddRequest(
+                                      itemDetail: itemDetail, type: type),
+                                ),
+                              ),
+                            );
+                          },
+                        ),
+                      ],
+                    )
+                  : Column(
+                      children: [
+                        Button(
+                          text: 'Unavailble',
+                          color: Colors.red,
+                        ),
+                        SizedBox(
+                          height: 5,
+                        ),
+                        IconContent(
+                          icon: FontAwesomeIcons.eye,
+                          onTap: () {
+                            showModalBottomSheet(
+                              context: context,
+                              builder: (context) => ItemView(
+                                  itemDetail: itemDetail,
+                                  availableDate: availableDate),
+                            );
+                          },
+                        ),
+                      ],
+                    ),
             ],
           ),
         ],
@@ -101,5 +130,3 @@ class AvailabilityTile extends StatelessWidget {
     );
   }
 }
-
-

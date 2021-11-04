@@ -4,6 +4,8 @@ import 'package:inventory_management/screen/login/login_screen.dart';
 import 'package:inventory_management/screen/office_clerk/handle_damage/handle_damage.dart';
 import 'package:inventory_management/screen/settings/settings_screen.dart';
 import 'package:get/get.dart';
+import 'package:inventory_management/screen/student/check_availability.dart';
+import 'package:inventory_management/screen/student/check_availability.dart';
 import 'package:inventory_management/widget/card_button.dart';
 
 class OfficeClerkDashboard extends StatefulWidget {
@@ -53,8 +55,10 @@ class _OfficeClerkDashboardState extends State<OfficeClerkDashboard> {
             ),
             GestureDetector(
               onTap: () {
-                // Navigator.of(context).push(new MaterialPageRoute(
-                //     builder: (BuildContext context) => CheckAvailability()));
+                Navigator.of(context).push(new MaterialPageRoute(
+                    builder: (BuildContext context) => CheckAvailability(
+                          type: "officeClerk",
+                        )));
               },
               child: CardButton(
                 title: "Check Availability".tr,

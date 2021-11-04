@@ -57,7 +57,7 @@ class _SearchBarState extends State<SearchBar> {
           showIfOpened: false,
           child: CircularButton(
             // icon: const Icon(Icons.search),
-            onPressed: () {},
+            onPressed: () {}, icon: null,
           ),
         ),
         FloatingSearchBarAction.searchToClear(
