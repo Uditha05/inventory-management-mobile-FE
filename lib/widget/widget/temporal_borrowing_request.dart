@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:inventory_management/config/constant_data.dart';
 import 'package:inventory_management/services/lecturer_api.dart';
 import 'package:inventory_management/widget/widget/drop_down_list.dart';
 import 'package:intl/intl.dart';
@@ -125,6 +126,7 @@ class _TemporalBorrowingRequestState extends State<TemporalBorrowingRequest> {
       print(labName);
       print(selectedStoreCode);
       print(studentId);
+      lecApi.sendTemporyRequest({"studentId":ConstantData.USER_ID,"equipmentId":selectedStoreCode,"reason":'temporyStudent',"requestDate":fromDate,"returnDate":toDate});
       setState(() {
         selectedCategory=null;
         selectedModel=null;
@@ -153,21 +155,10 @@ class _TemporalBorrowingRequestState extends State<TemporalBorrowingRequest> {
               children: [
                 Text('Student Id',style: TextStyle(color: Colors.white,fontSize: 20)),
                 Container(
+                  padding: EdgeInsets.all(5),
+                  color: Colors.white,
                   width: 200,
-                  child: TextField(
-                    decoration: InputDecoration(
-                      fillColor: Colors.white,
-                      filled: true,
-                      isDense: true,
-                      contentPadding: EdgeInsets.fromLTRB(5, 10, 10, 0),
-                      border: OutlineInputBorder(
-                        borderRadius: BorderRadius.all(Radius.circular(0)),
-                        borderSide: BorderSide.none,
-                      ),
-                    ),
-                    style: TextStyle(fontSize: 18,fontWeight: FontWeight.bold),
-                    onChanged: (value){studentId=value;},
-                  ),
+                  child: Text(ConstantData.USER_ID,style: TextStyle(fontSize: 18,fontWeight: FontWeight.bold,),),
                 ),
               ],
             ),

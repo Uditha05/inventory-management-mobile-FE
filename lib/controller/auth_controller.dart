@@ -25,6 +25,9 @@ class AuthController {
       return null;
     }
     print(payload["type"]);
+    print(payload["userID"]);
+    ConstantData.USER_ID = payload["userID"].toString();
+    //print(payload("email"));
     final localStorage = GetStorage();
     localStorage.write("email", email);
     localStorage.write("password", password);

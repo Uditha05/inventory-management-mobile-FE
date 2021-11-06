@@ -22,7 +22,8 @@ class StudentApi{
             'category': m['Category.categoryName'],
             'model': m['Model.modelName'],
             'storeCode': m['id'],
-            'labName': m['Lab.labName']
+            'labName': m['Lab.labName'],
+            'imageURL': m['imageURL'],
           },
           'availableDate': m['returnDate']
         };
@@ -33,7 +34,8 @@ class StudentApi{
             'category': m['Category.categoryName'],
             'model': m['Model.modelName'],
             'storeCode': m['id'],
-            'labName': m['Lab.labName']
+            'labName': m['Lab.labName'],
+            'imageURL': m['imageURL'],
           },
           'availableDate': m['returnDate']
         };
@@ -79,7 +81,7 @@ class StudentApi{
   }
 
   Future getStoreCode(String category,String model, String lab)async{
-    NetworkHelper networkHelper = NetworkHelper('http://10.0.2.2:5000/student/storeCode/${category}/${model}/${lab}}');
+    NetworkHelper networkHelper = NetworkHelper('http://10.0.2.2:5000/student/storeCode/${category}/${model}/${lab}');
     //NetworkHelper networkHelper = NetworkHelper('https://sep-backend-inventory.herokuapp.com/storeCode/${category}/${model}/${lab}');
     var data = await networkHelper.getData();
     //print(data);
@@ -90,8 +92,8 @@ class StudentApi{
     return lst;
   }
 
-  Future getBorrowingHistory()async{
-    NetworkHelper networkHelper = NetworkHelper('http://10.0.2.2:5000/student/borrow');
+  Future getBorrowingHistory(String id)async{
+    NetworkHelper networkHelper = NetworkHelper('http://10.0.2.2:5000/student/borrow/${id}');
     //NetworkHelper networkHelper = NetworkHelper('https://sep-backend-inventory.herokuapp.com/borrow');
     var data = await networkHelper.getData();
     var lst=[];
@@ -113,5 +115,12 @@ class StudentApi{
       lst.add(newObj);
     }
     return BorrowDetailList.fromJson(lst);
+  }
+
+  Future sendNormalRequest(Object detail)async{
+    NetworkHelper networkHelper = NetworkHelper('http://10.0.2.2:5000/student/borrow/sendNormalRequest');
+    var data = await networkHelper.sendDate(detail);
+    print('send normal request');
+    return data;
   }
 }

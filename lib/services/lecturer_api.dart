@@ -20,7 +20,8 @@ class LecturerApi{
             'category': m['Category.categoryName'],
             'model': m['Model.modelName'],
             'storeCode': m['id'],
-            'labName': m['Lab.labName']
+            'labName': m['Lab.labName'],
+            'imageURL': m['imageURL'],
           },
           'availableDate': m['returnDate']
         };
@@ -31,7 +32,8 @@ class LecturerApi{
             'category': m['Category.categoryName'],
             'model': m['Model.modelName'],
             'storeCode': m['id'],
-            'labName': m['Lab.labName']
+            'labName': m['Lab.labName'],
+            'imageURL': m['imageURL'],
           },
           'availableDate': m['returnDate']
         };
@@ -135,15 +137,45 @@ class LecturerApi{
     return lst;
   }
 
+  // Future getStoreCode(String category,String model, String lab)async{
+  //   NetworkHelper networkHelper = NetworkHelper('http://10.0.2.2:5000/student/storeCode/${category}/${model}/${lab}}');
+  //   //NetworkHelper networkHelper = NetworkHelper('https://sep-backend-inventory.herokuapp.com/storeCode/${category}/${model}/${lab}');
+  //   var data = await networkHelper.getData();
+  //   print('stiuerea');
+  //   print(data);
+  //   var lst=[];
+  //   for(var m in data){
+  //     lst.add(m['id']);
+  //   }
+  //   return lst;
+  // }
+
   Future getLecturers(String lab)async{
     NetworkHelper networkHelper = NetworkHelper('http://10.0.2.2:5000/student/lecturer/${lab}');
     //NetworkHelper networkHelper = NetworkHelper('https://sep-backend-inventory.herokuapp.com/lecturer/${lab}');
     var data = await networkHelper.getData();
-    //print(data);
-    var lst=[];
+    var lst=[[],[]];
     for(var m in data){
-      lst.add(m['firstName']);
+      //print(m['id']);
+      var lec = m['firstName'];
+      var id = m['id'];
+      lst[0].add(lec);
+      lst[1].add(id);
     }
     return lst;
+  }
+
+  Future sendNormalRequest(Object detail)async{
+    NetworkHelper networkHelper = NetworkHelper('http://10.0.2.2:5000/student/sendNormalRequest');
+    var data = await networkHelper.sendDate(detail);
+    print('send normal request');
+    return data;
+  }
+
+  Future sendTemporyRequest(Object detail)async{
+    NetworkHelper networkHelper = NetworkHelper('http://10.0.2.2:5000/student/sendTemporyRequest');
+    var data = await networkHelper.sendDate(detail);
+    print('send normal request');
+    return data;
   }
 }

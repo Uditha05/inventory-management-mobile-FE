@@ -1,10 +1,13 @@
 import 'package:flutter/material.dart';
+import 'package:inventory_management/screen/lecturer/add_request.dart';
+import 'package:inventory_management/screen/student/borrowing_request.dart';
 import 'package:inventory_management/screen/student/tile_style.dart';
 import 'package:inventory_management/model/item.dart';
+import 'package:inventory_management/widget/widget/normal_borrowing_request.dart';
 import 'button.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'icon_content.dart';
-import 'package:inventory_management/screen/student/add_request_form.dart';
+//import 'package:inventory_management/screen/student/add_request_form.dart';
 import 'package:inventory_management/screen/student/view_item.dart';
 
 class AvailabilityTile extends StatelessWidget {
@@ -34,7 +37,7 @@ class AvailabilityTile extends StatelessWidget {
             height: 100,
             child: Image(
               image: NetworkImage(
-                  'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQTCKA6akZjVZfHmZaluLOTZzE-3_j_-MBScw&usqp=CAU'),
+                itemDetail.imageURL),
             ),
           ),
           Expanded(
@@ -82,21 +85,40 @@ class AvailabilityTile extends StatelessWidget {
                             if (type == "officeClerk") {
                               return;
                             }
-                            showModalBottomSheet(
-                              context: context,
-                              isScrollControlled: true,
-                              // builder: (context)=>AddRequest(itemDetail: itemDetail,),
-                              builder: (context) => SingleChildScrollView(
-                                child: Container(
-                                  padding: EdgeInsets.only(
-                                      bottom: MediaQuery.of(context)
-                                          .viewInsets
-                                          .bottom),
-                                  child: AddRequest(
-                                      itemDetail: itemDetail, type: type),
-                                ),
+                            // showModalBottomSheet(
+                            //   context: context,
+                            //   isScrollControlled: true,
+                            //   // builder: (context)=>AddRequest(itemDetail: itemDetail,),
+                            //   builder: (context) => SingleChildScrollView(
+                            //     child: Container(
+                            //       padding: EdgeInsets.only(
+                            //           bottom: MediaQuery.of(context)
+                            //               .viewInsets
+                            //               .bottom),
+                            //       child: AddRequest(
+                            //           itemDetail: itemDetail, type: type),
+                            //     ),
+                            //   ),
+                            // );
+                            else if(type=="lecturer"){
+                              // Navigator.push(
+                              //   context,
+                              //   MaterialPageRoute(builder: (context)=>AddRequest(),),
+                              // );
+                              Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder: (context) => AddRequest(),
                               ),
                             );
+                            }
+                            else{
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder: (context) => BorrowingRequest(),
+                              ),
+                            );}
                           },
                         ),
                       ],
