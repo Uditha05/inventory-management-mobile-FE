@@ -35,9 +35,21 @@ class _OfficeClerkDashboardState extends State<OfficeClerkDashboard> {
               })
         ],
       ),
+      backgroundColor: AppColor.main_green_background,
       body: Container(
         child: Column(
           children: [
+            Container(
+              margin: EdgeInsets.only(top: 20),
+              child: FaIcon(
+                FontAwesomeIcons.tools,
+                color: Colors.white,
+                size: 80,
+              ),
+            ),
+            SizedBox(
+              height: 10,
+            ),
             GestureDetector(
               onTap: () {
                 Navigator.of(context).push(new MaterialPageRoute(
@@ -48,25 +60,23 @@ class _OfficeClerkDashboardState extends State<OfficeClerkDashboard> {
                 subtitle: "Handle damage item and repair".tr,
                 icon: Icon(
                   Icons.handyman,
-                  size: 50,
-                  color: Colors.white,
+                  size: 80,
+                  color: Colors.black,
                 ),
               ),
             ),
             GestureDetector(
               onTap: () {
-                Navigator.of(context).push(new MaterialPageRoute(
-                    builder: (BuildContext context) => CheckAvailability(
-                          type: "officeClerk",
-                        )));
+                // Navigator.of(context).push(new MaterialPageRoute(
+                //     builder: (BuildContext context) => CheckAvailability()));
               },
               child: CardButton(
                 title: "Check Availability".tr,
-                subtitle: "check availability of the items".tr,
+                subtitle: "Check availability of the items".tr,
                 icon: Icon(
                   Icons.check_box_rounded,
-                  size: 50,
-                  color: Colors.white,
+                  size: 80,
+                  color: Colors.black,
                 ),
               ),
             ),
@@ -80,8 +90,8 @@ class _OfficeClerkDashboardState extends State<OfficeClerkDashboard> {
                 subtitle: "Logout from Office Clerk".tr,
                 icon: Icon(
                   Icons.logout,
-                  size: 50,
-                  color: Colors.white,
+                  size: 80,
+                  color: Colors.black,
                 ),
               ),
             ),
