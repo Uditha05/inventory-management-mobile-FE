@@ -34,24 +34,4 @@ class AuthService {
       return null;
     }
   }
-
-  Future testLogin(
-    String username,
-    String password,
-  ) async {
-    print("Try access");
-    try {
-      var url = Uri.parse(loginURL);
-      var res = await _client.get(url);
-      if (res.statusCode == 200) {
-        return res.body;
-      } else {
-        return null;
-      }
-    } on Exception catch (e) {
-      print(e);
-
-      return null;
-    }
-  }
 }
