@@ -1,29 +1,56 @@
 import 'dart:convert';
 
+import 'package:flutter/cupertino.dart';
 import 'package:http/http.dart' as http;
 import 'package:inventory_management/config/api/auth_api.dart';
 import 'package:inventory_management/config/constant_data.dart';
 
 class AuthService {
-  Future attemptLogIn(String username, String password) async {
+  final http.Client _client;
+  AuthService() : _client = http.Client();
+
+  @visibleForTesting
+  AuthService.internal(this._client);
+
+  Future attemptLogIn(
+    String username,
+    String password,
+  ) async {
     print("Try access");
     try {
       var url = Uri.parse(loginURL);
-      var res =
-          await http.post(url, body: {"email": username, "password": password});
+      var res = await _client
+          .post(url, body: {"email": username, "password": password});
 
-      if (res.statusCode == 200) {
-        print(res.body);
+      if (res.statusCode != null && res.statusCode == 200) {
         final parsed = json.decode(res.body);
         ConstantData.TOKEN = parsed['token'].toString();
-        // print("res.body ${parsed['token']}");
+
         return res.body;
       } else {
-        print("status code : ${res.statusCode}");
+        return null;
+      }
+    } on Exception catch (e) {
+      return null;
+    }
+  }
+
+  Future testLogin(
+    String username,
+    String password,
+  ) async {
+    print("Try access");
+    try {
+      var url = Uri.parse(loginURL);
+      var res = await _client.get(url);
+      if (res.statusCode == 200) {
+        return res.body;
+      } else {
         return null;
       }
     } on Exception catch (e) {
       print(e);
+
       return null;
     }
   }
