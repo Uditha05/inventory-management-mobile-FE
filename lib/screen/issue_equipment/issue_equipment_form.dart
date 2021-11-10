@@ -27,7 +27,7 @@ class _IssueEquipmetFormState extends State<IssueEquipmetForm> {
   TextEditingController catetoryController = new TextEditingController();
   TextEditingController modelController = new TextEditingController();
   TextEditingController storeCodeController = new TextEditingController();
-  TextEditingController lectureController = new TextEditingController();
+  //TextEditingController lectureController = new TextEditingController();
 
   DateTime fromDate;
   DateTime toDate;
@@ -57,10 +57,16 @@ class _IssueEquipmetFormState extends State<IssueEquipmetForm> {
   }
 
   Future findStudentByID(String id) async {
+    setState(() {
+      this.loadingsubmit = true;
+    });
     iRequestUser = await IRequestUser.findStudentByID(id);
+    setState(() {
+      this.loadingsubmit = false;
+    });
     if (iRequestUser != null) {
       if (iRequestUser.request != null &&
-          iRequestUser.request.status == "Approved") {
+          iRequestUser.request.status == "pass") {
         setState(() {
           iteam = iRequestUser.request.iteam;
         });
@@ -68,7 +74,7 @@ class _IssueEquipmetFormState extends State<IssueEquipmetForm> {
         catetoryController.text = iRequestUser.request.iteam.catogary;
         storeCodeController.text = iRequestUser.request.iteam.store_code;
         modelController.text = iRequestUser.request.iteam.model;
-        lectureController.text = iRequestUser.request.lecture.id;
+        //lectureController.text = iRequestUser.request.lecture.id;
         setState(() {
           isIDVailed = true;
         });
@@ -163,8 +169,6 @@ class _IssueEquipmetFormState extends State<IssueEquipmetForm> {
       error = "From Date is Empty";
     } else if (toDate == null) {
       error = "To Date is Empty";
-    } else if (!isTemp && lectureController.text.isEmpty) {
-      error = "Lecture is Empty";
     } else {
       if (isnewRequest) {
         setState(() {
@@ -176,14 +180,26 @@ class _IssueEquipmetFormState extends State<IssueEquipmetForm> {
           this.loadingsubmit = false;
         });
         if (result == null) {
-            Navigator.of(context).pushReplacement(new MaterialPageRoute(
+          Navigator.of(context).pushReplacement(new MaterialPageRoute(
               builder: (BuildContext context) => TechnicalOfficerDashboard()));
         } else {
           error = result;
         }
       } else {
-         Navigator.of(context).pushReplacement(new MaterialPageRoute(
-            builder: (BuildContext context) => TechnicalOfficerDashboard()));
+        setState(() {
+          this.loadingsubmit = true;
+        });
+        var result =
+            await iRequestUser.request.IssueNormalEquipment(fromDate, toDate);
+        setState(() {
+          this.loadingsubmit = false;
+        });
+        if (result == null) {
+          Navigator.of(context).pushReplacement(new MaterialPageRoute(
+              builder: (BuildContext context) => TechnicalOfficerDashboard()));
+        } else {
+          error = result;
+        }
       }
     }
     print(error);
@@ -304,16 +320,16 @@ class _IssueEquipmetFormState extends State<IssueEquipmetForm> {
                                                   isEnable: false,
                                                   name: 'Model',
                                                 ),
-                                                isTemp
-                                                    ? Container()
-                                                    : InputFeildType(
-                                                        textEditingController:
-                                                            lectureController,
-                                                        isEnable:
-                                                            isnewRequest &&
-                                                                !isTemp,
-                                                        name: 'Lecture',
-                                                      ),
+                                                // isTemp
+                                                //     ? Container()
+                                                //     : InputFeildType(
+                                                //         textEditingController:
+                                                //             lectureController,
+                                                //         isEnable:
+                                                //             isnewRequest &&
+                                                //                 !isTemp,
+                                                //         name: 'Lecture',
+                                                //       ),
                                                 Column(
                                                   children: [
                                                     Text(

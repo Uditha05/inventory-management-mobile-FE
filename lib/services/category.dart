@@ -6,7 +6,7 @@ class Category {
     set(setfun);
   }
   Future set(setfun) async {
-    categories = await getCategories(this);
+    categories = await API().getCategories(this);
     setfun();
   }
 

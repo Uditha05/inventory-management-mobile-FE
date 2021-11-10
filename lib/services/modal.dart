@@ -8,7 +8,7 @@ class Model {
     set(setfun);
   }
   Future set(setfun) async {
-    models = await getModels(this);
+    models = await API().getModels(this);
     setfun();
   }
 

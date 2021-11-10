@@ -1,6 +1,6 @@
 import 'package:inventory_management/services/borrow_data.dart';
 import 'package:inventory_management/services/i_request_user.dart';
-
+import 'package:inventory_management/api/technical_officer/technical_officer.dart';
 import 'iteam.dart';
 
 class Request {
@@ -21,4 +21,9 @@ class Request {
   });
 
   Future setBorrowData() {}
+
+  Future IssueNormalEquipment(fromdate, todate) async {
+    return await API().NormalIssueEquipment(
+        iRequestUser.id, iteam.store_code, fromdate, todate, id);
+  }
 }

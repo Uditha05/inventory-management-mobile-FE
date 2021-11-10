@@ -2,8 +2,7 @@ import 'dart:math';
 
 import 'package:inventory_management/services/excel.dart';
 import 'package:inventory_management/widget/chart.dart';
-import 'package:inventory_management/api/technical_officer/technical_officer.dart'
-    as api;
+import 'package:inventory_management/api/technical_officer/technical_officer.dart';
 
 class Report {
   DateTime fromdate;
@@ -15,7 +14,7 @@ class Report {
 
   Future<List<ChartData>> getReport() async {
     List<ChartData> lis =
-        await api.getReport(fromdate, toDate, categories, reportType);
+        await API().getReport(fromdate, toDate, categories, reportType);
     print(lis);
     // for (var i = fromdate.day.toInt(); i < toDate.day.toInt() + 1; i++) {
     //   List data = [];

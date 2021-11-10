@@ -1,5 +1,4 @@
-import 'package:inventory_management/api/technical_officer/technical_officer.dart'
-    as api;
+import 'package:inventory_management/api/technical_officer/technical_officer.dart';
 
 class BorrowData {
   final String type;
@@ -21,6 +20,6 @@ class BorrowData {
       this.returnDate});
 
   Future AcceptEquipment(status) async {
-    return await api.acceptEquipment(this.id, status);
+    return await API().acceptEquipment(this.id, status);
   }
 }

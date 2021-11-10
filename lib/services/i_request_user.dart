@@ -1,7 +1,6 @@
 import 'package:inventory_management/services/iteam.dart';
 import 'package:inventory_management/services/request.dart';
-import 'package:inventory_management/api/technical_officer/technical_officer.dart'
-    as api;
+import 'package:inventory_management/api/technical_officer/technical_officer.dart';
 
 class IRequestUser {
   String id;
@@ -12,7 +11,7 @@ class IRequestUser {
   }
 
   Future<Request> getRequest(id) async {
-    var result = await api.getRequestData(id);
+    var result = await API().getRequestData(id);
     print(result);
     if (result == null) return null;
     if (result is String) return null;
@@ -30,10 +29,10 @@ class IRequestUser {
 
       Request req = new Request(
           iRequestUser: this,
-          reqdate: result['requestDate'],
+          reqdate: DateTime.parse(result['requestDate']),
           status: result['status'],
           iteam: iteam,
-          id: result['id']);
+          id: result['id'].toString());
       request = req;
       return req;
     }
