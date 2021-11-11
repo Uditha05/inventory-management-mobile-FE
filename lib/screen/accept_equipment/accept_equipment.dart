@@ -111,7 +111,7 @@ class _AcceptEquipmentFormState extends State<AcceptEquipmentForm> {
       setState(() {
         this.loadingsubmit = true;
       });
-      var result = await borrowData.AcceptEquipment(iteam.status);
+      var result = await borrowData.AcceptEquipment(addUpdateType);
       setState(() {
         this.loadingsubmit = false;
       });

@@ -344,7 +344,7 @@ class _IssueEquipmetFormState extends State<IssueEquipmetForm> {
                                                               10, 0, 10, 20),
                                                       child: DateTimePicker(
                                                         type: DateTimePickerType
-                                                            .dateTime,
+                                                            .date,
                                                         dateHintText: 'From',
                                                         initialDate:
                                                             DateTime.now(),
@@ -381,7 +381,7 @@ class _IssueEquipmetFormState extends State<IssueEquipmetForm> {
                                                               10, 0, 10, 20),
                                                       child: DateTimePicker(
                                                         type: DateTimePickerType
-                                                            .dateTime,
+                                                            .date,
                                                         dateHintText: 'To',
                                                         initialDate:
                                                             DateTime.now(),

@@ -5,10 +5,9 @@ import 'package:inventory_management/widget/widget/drop_down_list.dart';
 import 'package:intl/intl.dart';
 
 class TemporalBorrowingRequest extends StatefulWidget {
-
-
   @override
-  _TemporalBorrowingRequestState createState() => _TemporalBorrowingRequestState();
+  _TemporalBorrowingRequestState createState() =>
+      _TemporalBorrowingRequestState();
 }
 
 class _TemporalBorrowingRequestState extends State<TemporalBorrowingRequest> {
@@ -17,76 +16,74 @@ class _TemporalBorrowingRequestState extends State<TemporalBorrowingRequest> {
   String selectedStoreCode;
   String labName;
   String studentId = ConstantData.USER_ID;
-  String fromDate = DateFormat('dd/MM/yyyy').format(DateTime.now());
-  String toDate = DateFormat('dd/MM/yyyy').format(DateTime.now());
-  bool isError=false;
+  String fromDate = DateFormat('MM/dd/yyyy').format(DateTime.now());
+  String toDate = DateFormat('MM/dd/yyyy').format(DateTime.now());
+  bool isError = false;
 
-  List<String> cList=[];
-  List<String> mList=[];
-  List<String> lList=[];
-  List<String> sList=[];
+  List<String> cList = [];
+  List<String> mList = [];
+  List<String> lList = [];
+  List<String> sList = [];
 
   LecturerApi lecApi = LecturerApi();
 
   @override
-  void initState(){
+  void initState() {
     super.initState();
     updateCategory(lecApi.getCategory());
   }
 
-  void updateCategory(dynamic data)async{
-    List<dynamic>lst = await data;
-    List<String> ls=[];
-    for(var m in lst){
+  void updateCategory(dynamic data) async {
+    List<dynamic> lst = await data;
+    List<String> ls = [];
+    for (var m in lst) {
       ls.add(m.toString());
     }
     setState(() {
-      cList=ls;
+      cList = ls;
     });
   }
 
-  void updateModel(dynamic data)async{
-    List<dynamic>lst = await data;
-    List<String> ls=[];
-    for(var m in lst){
+  void updateModel(dynamic data) async {
+    List<dynamic> lst = await data;
+    List<String> ls = [];
+    for (var m in lst) {
       ls.add(m.toString());
     }
     setState(() {
-      mList=ls;
+      mList = ls;
     });
   }
 
-  void updateLab(dynamic data)async{
-    List<dynamic>lst = await data;
-    List<String> ls=[];
-    for(var m in lst){
+  void updateLab(dynamic data) async {
+    List<dynamic> lst = await data;
+    List<String> ls = [];
+    for (var m in lst) {
       ls.add(m.toString());
     }
     setState(() {
-      lList=ls;
+      lList = ls;
     });
   }
 
-  void updateStoreCode(dynamic data)async{
-    List<dynamic>lst = await data;
-    List<String> ls=[];
-    for(var m in lst){
+  void updateStoreCode(dynamic data) async {
+    List<dynamic> lst = await data;
+    List<String> ls = [];
+    for (var m in lst) {
       ls.add(m.toString());
     }
     setState(() {
-      sList=ls;
+      sList = ls;
     });
   }
-
-
 
   void toogleCategory(String category) {
     setState(() {
       updateModel(lecApi.getModel(category));
       selectedCategory = category;
       selectedModel = null;
-      labName=null;
-      selectedStoreCode= null;
+      labName = null;
+      selectedStoreCode = null;
     });
   }
 
@@ -94,16 +91,17 @@ class _TemporalBorrowingRequestState extends State<TemporalBorrowingRequest> {
     updateLab(lecApi.getLab(model, selectedCategory));
     setState(() {
       selectedModel = model;
-      labName=null;
-      selectedStoreCode=null;
+      labName = null;
+      selectedStoreCode = null;
     });
   }
 
   void toogleLabName(String lbName) {
-    updateStoreCode(lecApi.getStoreCode(selectedCategory, selectedModel, lbName));
+    updateStoreCode(
+        lecApi.getStoreCode(selectedCategory, selectedModel, lbName));
     setState(() {
       labName = lbName;
-      selectedStoreCode=null;
+      selectedStoreCode = null;
     });
   }
 
@@ -113,14 +111,17 @@ class _TemporalBorrowingRequestState extends State<TemporalBorrowingRequest> {
     });
   }
 
-
-  void formSubmitHandler(){
-    if(selectedCategory==null || selectedModel==null || labName==null || selectedStoreCode==null || studentId==null){
+  void formSubmitHandler() {
+    if (selectedCategory == null ||
+        selectedModel == null ||
+        labName == null ||
+        selectedStoreCode == null ||
+        studentId == null) {
       setState(() {
         isError = true;
       });
       print('Error');
-    }else{
+    } else {
       print(selectedCategory);
       print(selectedModel);
       print(labName);
@@ -128,12 +129,18 @@ class _TemporalBorrowingRequestState extends State<TemporalBorrowingRequest> {
       print(studentId);
       print(fromDate);
       print(toDate);
-      lecApi.sendTemporyRequest({"studentId":ConstantData.USER_ID,"equipmentId":selectedStoreCode,"reason":'temporyStudent',"requestDate":fromDate,"returnDate":toDate});
+      lecApi.sendTemporyRequest({
+        "studentId": ConstantData.USER_ID,
+        "equipmentId": selectedStoreCode,
+        "reason": 'temporyStudent',
+        "requestDate": fromDate,
+        "returnDate": toDate
+      });
       setState(() {
-        selectedCategory=null;
-        selectedModel=null;
-        labName=null;
-        selectedStoreCode=null;
+        selectedCategory = null;
+        selectedModel = null;
+        labName = null;
+        selectedStoreCode = null;
       });
     }
   }
@@ -146,36 +153,70 @@ class _TemporalBorrowingRequestState extends State<TemporalBorrowingRequest> {
           SizedBox(
             height: 20,
           ),
-          FormInput(title: 'Category',lst: cList,callback: toogleCategory,value: selectedCategory,),
-          FormInput(title: 'Model',lst: mList,callback: toogleModel,value: selectedModel,),
-          FormInput(title: 'Lab Name',lst: lList,callback: toogleLabName,value: labName,),
-          FormInput(title:'StoreCode',lst: sList,callback: toogleStoreCode,value: selectedStoreCode,),
+          FormInput(
+            title: 'Category',
+            lst: cList,
+            callback: toogleCategory,
+            value: selectedCategory,
+          ),
+          FormInput(
+            title: 'Model',
+            lst: mList,
+            callback: toogleModel,
+            value: selectedModel,
+          ),
+          FormInput(
+            title: 'Lab Name',
+            lst: lList,
+            callback: toogleLabName,
+            value: labName,
+          ),
+          FormInput(
+            title: 'StoreCode',
+            lst: sList,
+            callback: toogleStoreCode,
+            value: selectedStoreCode,
+          ),
           Padding(
-            padding: EdgeInsets.only(left: 15,right: 15,top: 10),
+            padding: EdgeInsets.only(left: 15, right: 15, top: 10),
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                Text('Student Id',style: TextStyle(color: Colors.white,fontSize: 20)),
+                Text('Student Id',
+                    style: TextStyle(color: Colors.white, fontSize: 20)),
                 Container(
                   padding: EdgeInsets.all(5),
                   color: Colors.white,
                   width: 200,
-                  child: Text(ConstantData.USER_ID,style: TextStyle(fontSize: 18,fontWeight: FontWeight.bold,),),
+                  child: Text(
+                    ConstantData.USER_ID,
+                    style: TextStyle(
+                      fontSize: 18,
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
                 ),
               ],
             ),
           ),
           FixDateInput('From Date'),
           FixDateInput('To Date'),
-          SizedBox(height: 20,),
-          (isError)?Text('Error occur',style: TextStyle(color: Colors.red,fontSize: 20),):Text(''),
+          SizedBox(
+            height: 20,
+          ),
+          (isError)
+              ? Text(
+                  'Error occur',
+                  style: TextStyle(color: Colors.red, fontSize: 20),
+                )
+              : Text(''),
           FlatButton(
             child: Text(
               'Submit',
               style: TextStyle(fontSize: 20, color: Colors.white),
             ),
             color: Color(0xff69C0A1),
-            onPressed: (){
+            onPressed: () {
               formSubmitHandler();
             },
           )
@@ -193,11 +234,11 @@ class FixDateInput extends StatelessWidget {
   Widget build(BuildContext context) {
     return Padding(
       //padding: EdgeInsets.only(left: 15,right: 15,top: 10),
-      padding: EdgeInsets.only(left: 15,right: 15,top: 10),
+      padding: EdgeInsets.only(left: 15, right: 15, top: 10),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
-          Text(title,style: TextStyle(color: Colors.white,fontSize: 20)),
+          Text(title, style: TextStyle(color: Colors.white, fontSize: 20)),
           Container(
             padding: EdgeInsets.all(5),
             color: Colors.white,
@@ -217,7 +258,7 @@ class FixDateInput extends StatelessWidget {
 }
 
 class FormInput extends StatelessWidget {
-  const FormInput({this.title,this.lst,this.callback,this.value});
+  const FormInput({this.title, this.lst, this.callback, this.value});
   final String title;
   final List lst;
   final Function callback;

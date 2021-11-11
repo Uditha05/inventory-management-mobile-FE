@@ -38,7 +38,26 @@ void main() {
     await tester.tap(next);
     await tester.pump();
     var form = find.byType(IssueEquipmetForm);
-    print(form);
+    //expect(form, findsOneWidget);
+    // test('description', () {
+  });
+  testWidgets('tempory borrowing', (WidgetTester tester) async {
+    Widget testWidget = new MediaQuery(
+        data: new MediaQueryData(),
+        child: new MaterialApp(home: new IssueEquipment()));
+    await tester.pumpWidget(testWidget);
+
+    var dropdown = find.byType(DropdownButton);
+    // await tester.tap(dropdown);
+    // await tester.pump();
+    var menuitems = find.byType(DropdownMenuItem);
+    // await tester.tap(menuitems.at(1));
+    // await tester.pump();
+    var next = find.byType(RaisedButton);
+    await tester.tap(next);
+    await tester.pump();
+    var form = find.byType(IssueEquipmetForm);
+
     //expect(form, findsOneWidget);
 
     // test('description', () {

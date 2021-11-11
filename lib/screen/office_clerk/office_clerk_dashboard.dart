@@ -69,8 +69,10 @@ class _OfficeClerkDashboardState extends State<OfficeClerkDashboard> {
             ),
             GestureDetector(
               onTap: () {
-                // Navigator.of(context).push(new MaterialPageRoute(
-                //     builder: (BuildContext context) => CheckAvailability()));
+                Navigator.of(context).push(new MaterialPageRoute(
+                    builder: (BuildContext context) => CheckAvailability(
+                          type: "officeClerk",
+                        )));
               },
               child: CardButton(
                 title: "Check Availability".tr,

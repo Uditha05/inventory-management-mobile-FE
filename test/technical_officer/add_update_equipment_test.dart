@@ -37,8 +37,8 @@ void main() {
     await tester.tap(next);
     await tester.pump();
     var form = find.byType(AddUpdateEquipmetForm);
-    print(form);
-    //expect(form, findsOneWidget);
+ 
+   // expect(form, findsOneWidget);
 
     // test('description', () {
   });

@@ -119,7 +119,7 @@ class UserTypeIcon extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     switch (data.type.toLowerCase()) {
-      case ("lecture"):
+      case ("lecturer"):
         return Container(
           width: 40,
           height: 40,
@@ -151,6 +151,15 @@ class UserTypeIcon extends StatelessWidget {
           child: Icon(FontAwesomeIcons.userGraduate),
         );
       default:
+        return Container(
+          width: 40,
+          height: 40,
+          decoration: BoxDecoration(
+            borderRadius: BorderRadius.all(Radius.circular(5)),
+            color: Colors.grey[200],
+          ),
+          child: Icon(FontAwesomeIcons.userGraduate),
+        );
     }
   }
 }

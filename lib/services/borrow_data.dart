@@ -19,7 +19,8 @@ class BorrowData {
       this.id,
       this.returnDate});
 
-  Future AcceptEquipment(status) async {
-    return await API().acceptEquipment(this.id, status);
+  Future AcceptEquipment(statu) async {
+    print(statu);
+    return await API().acceptEquipment(this.id, statu);
   }
 }

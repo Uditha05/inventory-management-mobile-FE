@@ -99,12 +99,8 @@ class API {
       List result = convert.jsonDecode(response.body);
       // result.map((e) => print(e));
       for (var item in result) {
-        print(item);
-        if (item['type'] == 'temporary') {
-          print(item['TemoryBorrowings']);
-        } else if (item['type'] == 'normal') {
-          print(item['RequestBorrowings']);
-        } else {
+        print(result);
+        if (item['type'] == 'lecturer') {
           print(item['LecturerBorrowings']);
         }
       }
@@ -112,7 +108,7 @@ class API {
           .map((e) => new BorrowData(
               type: e['type'],
               name: e['type'] == 'lecturer'
-                  ? e['LecturerBorrowings'][0]['lecturer']['firstName']
+                  ? e['LecturerBorrowings'][0]['Lecturer']['firstName']
                   : e['type'] == 'normal'
                       ? e['RequestBorrowings'][0]['student']['firstName']
                       : e['type'] == 'temporary'
@@ -140,11 +136,11 @@ class API {
       List result = convert.jsonDecode(response.body);
 
       var e = result[0];
-      print(e);
+
       BorrowData data = new BorrowData(
           type: e['type'],
           name: e['type'] == 'lecturer'
-              ? e['LecturerBorrowings'][0]['lecturer']['firstName']
+              ? e['LecturerBorrowings'][0]['Lecturer']['firstName']
               : e['type'] == 'normal'
                   ? e['RequestBorrowings'][0]['student']['firstName']
                   : e['type'] == 'temporary'
@@ -162,8 +158,8 @@ class API {
         data.userid = e['TemoryBorrowings'][0]['student']['id'];
       } else if (e['type'] == 'normal') {
         data.userid = e['RequestBorrowings'][0]['student']['id'];
-      } else {
-        data.userid = e['LecturerBorrowings'][0]['lecturer']['id'];
+      } else if (e['type'] == 'lecturer') {
+        data.userid = e['LecturerBorrowings'][0]['Lecturer']['id'];
       }
       print("result");
       return data;
