@@ -34,9 +34,7 @@ class _MarkRequestScreenState extends State<MarkRequestScreen> {
     List<BrokenItem> out = []; //dummyBroken;
     out = await OfficeClerkController().getPendingRepair();
     for (var one in out) {
-      if (one.status == "Broken") {
-        pendingList.add(one);
-      }
+      pendingList.add(one);
     }
     if (mounted) {
       setState(() {
@@ -58,8 +56,8 @@ class _MarkRequestScreenState extends State<MarkRequestScreen> {
           fontSize: 13.0);
       return;
     } else {
-      String id = searchFromList(storeCodeEditor.text);
-      if (id == "No") {
+      BrokenItem item = searchFromList(storeCodeEditor.text);
+      if (item == null) {
         print("error No");
         Fluttertoast.showToast(
             msg: "Equipment is not recognize from below",
@@ -71,22 +69,22 @@ class _MarkRequestScreenState extends State<MarkRequestScreen> {
             fontSize: 13.0);
         return;
       } else {
-        _showDialog(context, id);
+        _showDialog(context, item.damageId, item.itemId);
       }
     }
   }
 
-  String searchFromList(String storeCode) {
+  BrokenItem searchFromList(String storeCode) {
     for (var oneReq in pendingList) {
       if (oneReq.storeCode == storeCode) {
-        return oneReq.itemId;
+        return oneReq;
       }
     }
-    return "No";
+    return null;
   }
 
-  Future continuMarking(String id) async {
-    var output = await OfficeClerkController().markAsFinished(id);
+  Future continuMarking(String id, String itemID) async {
+    var output = await OfficeClerkController().markAsFinished(id, itemID);
     if (output != null) {
       await getPendingRequest();
       setState(() {
@@ -110,7 +108,7 @@ class _MarkRequestScreenState extends State<MarkRequestScreen> {
     }
   }
 
-  void _showDialog(BuildContext context, String id) {
+  void _showDialog(BuildContext context, String id, String itemId) {
     showDialog(
       context: context,
       builder: (BuildContext context) {
@@ -145,7 +143,7 @@ class _MarkRequestScreenState extends State<MarkRequestScreen> {
                 setState(() {
                   isloading = true;
                 });
-                continuMarking(id);
+                continuMarking(id, itemId);
               },
             ),
           ],
@@ -295,7 +293,8 @@ class _MarkRequestScreenState extends State<MarkRequestScreen> {
                                 BrokenItem brokenItem = pendingList[index];
                                 return GestureDetector(
                                   onTap: () {
-                                    _showDialog(context, brokenItem.itemId);
+                                    _showDialog(context, brokenItem.damageId,
+                                        brokenItem.itemId);
                                   },
                                   child: BrokenItemViewCard(
                                     brokenItem: brokenItem,

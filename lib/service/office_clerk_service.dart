@@ -5,6 +5,7 @@ import 'package:http/http.dart' as http;
 import 'package:inventory_management/config/api/office_clerk_api.dart';
 import 'package:inventory_management/config/constant_data.dart';
 import 'package:inventory_management/model/office_clerk_related/broken_item_model.dart';
+import 'package:inventory_management/model/office_clerk_related/repairModel.dart';
 
 class OfficeClerkService {
   // var headers;
@@ -19,7 +20,7 @@ class OfficeClerkService {
 
       if (res.statusCode == 200) {
         print(res.body);
-        List<BrokenItems> responseModel = brokenItemsFromJson(res.body);
+        List<DamageModel> responseModel = damageModelFromJson(res.body);
 
         print(responseModel.length);
         return responseModel;
@@ -45,7 +46,7 @@ class OfficeClerkService {
 
       if (res.statusCode == 200) {
         print(res.body);
-        List<BrokenItems> responseModel = brokenItemsFromJson(res.body);
+        List<DamageModel> responseModel = damageModelFromJson(res.body);
 
         print(responseModel.length);
         return responseModel;
@@ -70,7 +71,7 @@ class OfficeClerkService {
 
       if (res.statusCode == 200) {
         print(res.body);
-        List<BrokenItems> responseModel = brokenItemsFromJson(res.body);
+        List<DamageModel> responseModel = damageModelFromJson(res.body);
 
         print(responseModel.length);
         return responseModel;
@@ -109,20 +110,18 @@ class OfficeClerkService {
     }
   }
 
-  Future markFinishedRepair(String id) async {
+  Future markFinishedRepair(String id, String itemId) async {
     print("Try access");
     try {
-      var url = Uri.parse(markRepairFinish + id);
-      print(sendToRepair + id);
+      var url = Uri.parse(markRepairFinish + id + "/$itemId");
+      print(url);
       var res = await http.put(url, headers: {
         HttpHeaders.authorizationHeader: 'Bearer ' + ConstantData.TOKEN,
       });
 
       if (res.statusCode == 200) {
         print(res.body);
-
         return "pass";
-        // return res.body;
       } else {
         print("status code : ${res.statusCode}");
         return null;

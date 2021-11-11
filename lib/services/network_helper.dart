@@ -22,6 +22,7 @@ class NetworkHelper {
       Uri.parse(url),
       headers: {"Content-Type": "application/json"},
       body: jsonEncode(obj),
+      
     );
     print(response.body);
   }

@@ -8,7 +8,6 @@ import 'package:inventory_management/widget/widget/dashboard_card.dart';
 import 'package:inventory_management/screen/student/borrowing_request.dart';
 
 class StudentDashboard extends StatelessWidget {
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -30,34 +29,54 @@ class StudentDashboard extends StatelessWidget {
                 size: 80,
               ),
             ),
-            ReusableCard(BorrowItems(), Icon(
-              Icons.view_list,
-              size: 80,
-            ), [
-              Text('View Borrowed Items',style: TextStyle(fontSize: 20,fontWeight: FontWeight.w500),),
-              Text('View the list of borrowed items'),
-            ],),
-            ReusableCard(CheckAvailability(), Icon(
-              Icons.book,
-              size: 80,
-            ), [
-              Text('Check Availability',style: TextStyle(fontSize: 20,fontWeight: FontWeight.w500),),
-              Text('Check equipment availability'),
-              Text('Request for equipments'),
-            ],),
-            ReusableCard(BorrowingRequest(), Icon(
-              Icons.request_page,
-              size: 80,
-            ), [
-              Text('Add Borrowing Requests',style: TextStyle(fontSize: 20,fontWeight: FontWeight.w500),),
-              Text('Add normal borrowing request'),
-              Text('Add temporal borrowing request'),
-            ]),
+            ReusableCard(
+              BorrowItems(),
+              Icon(
+                Icons.view_list,
+                size: 80,
+              ),
+              [
+                Text(
+                  'View Borrowed Items',
+                  style: TextStyle(fontSize: 20, fontWeight: FontWeight.w500),
+                ),
+                Text('View the list of borrowed items'),
+              ],
+            ),
+            ReusableCard(
+              CheckAvailability(
+                type: 'student',
+              ),
+              Icon(
+                Icons.book,
+                size: 80,
+              ),
+              [
+                Text(
+                  'Check Availability',
+                  style: TextStyle(fontSize: 20, fontWeight: FontWeight.w500),
+                ),
+                Text('Check equipment availability'),
+                Text('Request for equipments'),
+              ],
+            ),
+            ReusableCard(
+                BorrowingRequest(),
+                Icon(
+                  Icons.request_page,
+                  size: 80,
+                ),
+                [
+                  Text(
+                    'Add Borrowing Requests',
+                    style: TextStyle(fontSize: 20, fontWeight: FontWeight.w500),
+                  ),
+                  Text('Add normal borrowing request'),
+                  Text('Add temporal borrowing request'),
+                ]),
           ],
         ),
       ),
     );
   }
 }
-
-

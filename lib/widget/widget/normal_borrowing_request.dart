@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:inventory_management/config/constant_data.dart';
 import 'package:inventory_management/services/lecturer_api.dart';
 import 'package:inventory_management/widget/widget/drop_down_list.dart';
 import 'package:inventory_management/widget/widget/date_picker.dart';
@@ -14,10 +15,10 @@ class _NormalBorrowingRequestState extends State<NormalBorrowingRequest> {
   String selectedModel;
   String selectedStoreCode;
   String selectedlabName;
-  String studentId;
   String fromDate;
   String toDate;
   String selectedLecturer;
+  String selectedLecturerId;
   bool isError = false;
 
   List<String> cList=[];
@@ -25,6 +26,7 @@ class _NormalBorrowingRequestState extends State<NormalBorrowingRequest> {
   List<String> lList=[];
   List<String> sList=[];
   List<String> lecList=[];
+  List<String> lecIdList=[];
 
   LecturerApi lecApi = LecturerApi();
 
@@ -81,11 +83,16 @@ class _NormalBorrowingRequestState extends State<NormalBorrowingRequest> {
   void updateLecturerList(dynamic data)async{
     List<dynamic>lst = await data;
     List<String> ls=[];
-    for(var m in lst){
+    List<String>idls=[];
+    for(var m in lst[0]){
       ls.add(m.toString());
+    }
+    for(var m in lst[1]){
+      idls.add(m.toString());
     }
     setState(() {
       lecList=ls;
+      lecIdList=idls;
     });
   }
 
@@ -140,25 +147,36 @@ class _NormalBorrowingRequestState extends State<NormalBorrowingRequest> {
   }
 
   void toogleLecturer(String lecturer){
+    int idex= lecList.indexOf(lecturer);
     setState(() {
       selectedLecturer = lecturer;
+      selectedLecturerId = lecIdList[idex];
     });
   }
 
   void formSubmitHandler(){
-    if(selectedCategory==null || selectedModel==null || selectedlabName==null || selectedStoreCode==null || studentId==null || fromDate==null || toDate==null || selectedLecturer==null){
+    if(selectedCategory==null || selectedModel==null || selectedlabName==null || selectedStoreCode==null || fromDate==null || toDate==null || selectedLecturer==null){
       setState(() {
         isError = true;
       });
       print('Error');
     }else{
-      print(selectedCategory);
-      print(selectedModel);
-      print(selectedStoreCode);
-      print(studentId);
-      print(fromDate);
-      print(toDate);
-      print(selectedLecturer);
+      // print(selectedCategory);
+      // print(selectedModel);
+      // print(selectedStoreCode);
+      // print(ConstantData.USER_ID);
+      // print(fromDate);
+      // print(toDate);
+      // print(selectedLecturer);
+      // print(selectedLecturerId);
+      lecApi.sendNormalRequest({"studentId":ConstantData.USER_ID,"lecId":selectedLecturerId,"equipmentId":selectedStoreCode,"requestDate":fromDate,"returnDate":toDate});
+      setState(() {
+        selectedCategory=null;
+        selectedModel=null;
+        selectedStoreCode=null;
+        fromDate=null;
+        toDate=null;
+      });
     }
   }
 
@@ -182,27 +200,15 @@ class _NormalBorrowingRequestState extends State<NormalBorrowingRequest> {
               children: [
                 Text('Student Id',style: TextStyle(color: Colors.white,fontSize: 20)),
                 Container(
+                  padding: EdgeInsets.all(5),
+                  color: Colors.white,
                   width: 200,
-                  child: TextField(
-                    decoration: InputDecoration(
-                      fillColor: Colors.white,
-                      filled: true,
-                      isDense: true,
-                      contentPadding: EdgeInsets.fromLTRB(5, 10, 10, 0),
-                      border: OutlineInputBorder(
-                        borderRadius: BorderRadius.all(Radius.circular(0)),
-                        borderSide: BorderSide.none,
-                      ),
-                    ),
-                    style: TextStyle(fontSize: 18,fontWeight: FontWeight.bold),
-                    onChanged: (value){studentId=value;},
-                  ),
+                  child: Text(ConstantData.USER_ID,style: TextStyle(fontSize: 18,fontWeight: FontWeight.bold,),),
                 ),
               ],
             ),
           ),
           Padding(
-            //padding: EdgeInsets.only(left: 15,right: 15,top: 10),
             padding: EdgeInsets.only(left: 15,right: 15,top: 2),
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,

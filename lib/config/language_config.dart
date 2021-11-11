@@ -33,8 +33,7 @@ class Language extends Translations {
           'Handle damage item and repair':
               'හානියට පත් අයිතම හා අලුත්වැඩියා කටයුතු හසුරුවන්න',
           'Check Availability': 'අයිතමයන් පරීක්‍ෂා කරන්න',
-          'Check availability of the items':
-              'අයිතමයන් ලබා ගත හැකිව තිබේදැයි පරීක්ෂා කරන්න',
+          'Check availability of the items': 'අයිතමයන් තිබේදැයි පරීක්ෂා කරන්න',
           'Logout': 'ඉවත් වීම',
           'Logout from Office Clerk': 'පරිශීලකයාගෙන් ඉවත් වීම',
           //!=====

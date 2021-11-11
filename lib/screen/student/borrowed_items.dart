@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:inventory_management/config/constant_data.dart';
 import 'package:inventory_management/model/borrow_detail_list.dart';
 import 'package:inventory_management/services/student_api.dart';
 import 'package:inventory_management/theme/app_colors.dart';
@@ -31,7 +32,7 @@ class _BorrowItemsState extends State<BorrowItems> {
   @override
   void initState() {
     super.initState();
-    updateUi(studentApi.getBorrowingHistory());
+    updateUi(studentApi.getBorrowingHistory(ConstantData.USER_ID));
 
   }
 

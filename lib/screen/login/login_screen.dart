@@ -1,18 +1,24 @@
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
+import 'package:get/get.dart';
+
 import 'package:inventory_management/config/asset_config.dart';
 import 'package:inventory_management/controller/auth_controller.dart';
-import 'package:inventory_management/screen/lectureDashboard.dart';
-import 'package:inventory_management/screen/loading_screen.dart';
+import 'package:inventory_management/screen/lecturer/lecturer_dashboard.dart';
+//import 'package:inventory_management/screen/lectureDashboard.dart';
+
 import 'package:inventory_management/screen/office_clerk/office_clerk_dashboard.dart';
-import 'package:inventory_management/screen/sudentDashboard.dart';
+import 'package:inventory_management/screen/student/student_dashboard.dart';
 import 'package:inventory_management/screen/technicla_officer_dashboard/technical_officer_dashboard.dart';
+// import 'package:inventory_management/screen/sudentDashboard.dart';
+// import 'package:inventory_management/screen/technicalOfficerDashboard.dart';
 
 import 'package:inventory_management/theme/app_colors.dart';
 import 'package:inventory_management/theme/app_text_style.dart';
 import 'package:inventory_management/widget/custom_button.dart';
 import 'package:inventory_management/widget/custom_password_input.dart';
 import 'package:inventory_management/widget/custom_string_input.dart';
+// import 'package:shared_preferences/shared_preferences.dart';
 
 class LoginScreen extends StatefulWidget {
   LoginScreen({Key key}) : super(key: key);
@@ -24,6 +30,11 @@ class LoginScreen extends StatefulWidget {
 class _LoginScreenState extends State<LoginScreen> {
   TextEditingController usernameController = new TextEditingController();
   TextEditingController passwordController = new TextEditingController();
+
+  @override
+  void initState() {
+    super.initState();
+  }
 
   void submitUsernameAndPassword() async {
     if (usernameController.text.trim().isEmpty) {
@@ -71,16 +82,25 @@ class _LoginScreenState extends State<LoginScreen> {
     }
   }
 
-  void redirectToDashboard(String type) {
+  void redirectToDashboard(String type) async {
+    // SharedPreferences prefs = await SharedPreferences.getInstance();
+    // prefs.setString("email", usernameController.text);
+    // prefs.setString("password", passwordController.text);
     if (type == "Student") {
       Navigator.of(context).pushReplacement(new MaterialPageRoute(
           builder: (BuildContext context) => StudentDashboard()));
     } else if (type == "Lecturer") {
       Navigator.of(context).pushReplacement(new MaterialPageRoute(
-          builder: (BuildContext context) => LectureDashboard()));
+          builder: (BuildContext context) => LecturerDashboard()));
     } else if (type == "OfficeClerk") {
-      Navigator.of(context).pushReplacement(new MaterialPageRoute(
-          builder: (BuildContext context) => OfficeClerkDashboard()));
+      // Get.off(() => OfficeClerkDashboard());
+      Navigator.pushAndRemoveUntil(
+        context,
+        MaterialPageRoute(builder: (context) => OfficeClerkDashboard()),
+        (Route<dynamic> route) => false,
+      );
+      // Navigator.of(context).pushReplacement(new MaterialPageRoute(
+      //     builder: (BuildContext context) => OfficeClerkDashboard()));
     } else if (type == "TechnicalOfficer") {
       Navigator.of(context).pushReplacement(new MaterialPageRoute(
           builder: (BuildContext context) => TechnicalOfficerDashboard()));

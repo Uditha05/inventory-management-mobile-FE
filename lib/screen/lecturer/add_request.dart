@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:inventory_management/config/constant_data.dart';
+import 'package:inventory_management/services/lecturer_api.dart';
 import 'package:inventory_management/services/student_api.dart';
 import 'package:inventory_management/theme/app_colors.dart';
 import 'package:intl/intl.dart';
@@ -26,6 +28,7 @@ class _AddRequestState extends State<AddRequest> {
   List<String> sList=[];
 
   StudentApi studentApi = StudentApi();
+  LecturerApi lecApi = LecturerApi();
   var lectureIdController = TextEditingController();
 
   @override
@@ -101,6 +104,8 @@ class _AddRequestState extends State<AddRequest> {
   }
 
   void toogleLabName(String lbName) {
+    //updateStoreCode(studentApi.getStoreCode(selectedCategory, selectedModel, lbName));
+    //updateStoreCode(lecApi.getStoreCode(selectedCategory, selectedModel, lbName));
     updateStoreCode(studentApi.getStoreCode(selectedCategory, selectedModel, lbName));
     setState(() {
       labName = lbName;
@@ -108,7 +113,7 @@ class _AddRequestState extends State<AddRequest> {
     });
   }
 
-  void toogleStoreCode(String storeCode) {
+  void toogleStoreCode(String storeCode) { 
     setState(() {
       selectedStoreCode = storeCode;
     });
@@ -197,27 +202,33 @@ class _AddRequestState extends State<AddRequest> {
                 children: [
                   Text('Lecturer Id',
                       style: TextStyle(color: Colors.white, fontSize: 20)),
+                  // Container(
+                  //   width: 200,
+                  //   child: TextField(
+                  //     controller: lectureIdController,
+                  //     decoration: InputDecoration(
+                  //       fillColor: Colors.white,
+                  //       filled: true,
+                  //       isDense: true,
+                  //       contentPadding: EdgeInsets.fromLTRB(5, 10, 10, 0),
+                  //       border: OutlineInputBorder(
+                  //         borderRadius: BorderRadius.all(Radius.circular(0)),
+                  //         borderSide: BorderSide.none,
+                  //       ),
+                  //     ),
+                  //     style:
+                  //         TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+                  //     onChanged: (value) {
+                  //       lecturerId = value;
+                  //     },
+                  //   ),
+                  // ),
                   Container(
-                    width: 200,
-                    child: TextField(
-                      controller: lectureIdController,
-                      decoration: InputDecoration(
-                        fillColor: Colors.white,
-                        filled: true,
-                        isDense: true,
-                        contentPadding: EdgeInsets.fromLTRB(5, 10, 10, 0),
-                        border: OutlineInputBorder(
-                          borderRadius: BorderRadius.all(Radius.circular(0)),
-                          borderSide: BorderSide.none,
-                        ),
-                      ),
-                      style:
-                          TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
-                      onChanged: (value) {
-                        lecturerId = value;
-                      },
-                    ),
-                  ),
+                  padding: EdgeInsets.all(5),
+                  color: Colors.white,
+                  width: 200,
+                  child: Text(ConstantData.USER_ID,style: TextStyle(fontSize: 18,fontWeight: FontWeight.bold,),),
+                ),
                 ],
               ),
             ),
