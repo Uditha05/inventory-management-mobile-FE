@@ -8,11 +8,6 @@ import 'package:inventory_management/services/modal.dart';
 import 'package:inventory_management/widget/chart.dart';
 import 'package:inventory_management/config/constant_data.dart';
 
-<<<<<<< HEAD
-var apiurl = "https://sep-uom-inventory.herokuapp.com";
-getCategories(Category c) async {
-  var url = Uri.parse(apiurl + '/technicalofficer/categories');
-=======
 class API {
   var apiurl = "https://sep-uom-inventory.herokuapp.com";
   var headers = {
@@ -21,7 +16,6 @@ class API {
   http.Client client = new http.Client();
   getCategories(Category c) async {
     var url = Uri.parse(apiurl + '/technicalofficer/categories');
->>>>>>> ff8effc17f9d148f55e15713ca3bd502c5007da1
 
     var response = await client.get(url, headers: headers);
     if (response.statusCode == 200) {
