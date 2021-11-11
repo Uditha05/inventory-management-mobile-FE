@@ -1,6 +1,7 @@
 import 'dart:convert';
 import 'dart:io';
 import 'dart:math';
+import 'package:inventory_management/screen/technicla_officer_dashboard/technical_officer_dashboard.dart';
 
 import 'package:date_time_picker/date_time_picker.dart';
 import 'package:dropdown_search/dropdown_search.dart';
@@ -136,7 +137,8 @@ class _AddUpdateEquipmetFormState extends State<AddUpdateEquipmetForm> {
           this.loadingsubmit = false;
         });
         if (check[0]) {
-          Navigator.popUntil(context, ModalRoute.withName('/'));
+           Navigator.of(context).pushReplacement(new MaterialPageRoute(
+              builder: (BuildContext context) => TechnicalOfficerDashboard()));
         } else {
           error = check[1];
         }

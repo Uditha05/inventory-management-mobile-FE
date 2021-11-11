@@ -33,10 +33,13 @@ class _UsageReportState extends State<UsageReport> {
     'Stack Line Chart'
   ];
   String charttype = 'Column Chart';
-  List reporttypes = ['usage', 'availability'];
+  List reporttypes = ['usage', 'available'];
   String reporttype = 'usage';
-  DateTime fromDate = DateTime.now();
-  DateTime toDate = DateTime.now();
+
+  DateTime fromDate = new DateTime(
+      DateTime.now().year, DateTime.now().month, DateTime.now().day - 7);
+  DateTime toDate = new DateTime(
+      DateTime.now().year, DateTime.now().month, DateTime.now().day);
   bool loading = false;
   TextEditingController fromdateController = TextEditingController();
   TextEditingController todateController = TextEditingController();

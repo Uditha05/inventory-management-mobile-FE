@@ -9,11 +9,10 @@ import 'package:mockito/annotations.dart';
 import 'package:mockito/mockito.dart';
 import 'getItems_test.mocks.dart';
 
-
 @GenerateMocks([http.Client])
 void main() {
   LecturerApi lecturerApi;
-  setUp((){
+  setUp(() {
     lecturerApi = LecturerApi();
   });
   group('fetch items',(){
@@ -26,8 +25,9 @@ void main() {
     });
   });
 
-  group('fetch pending requests',(){
-    test('returns pending requests if the http call complete succesfully',()async {
+  group('fetch pending requests', () {
+    test('returns pending requests if the http call complete succesfully',
+        () async {
       final client = MockClient();
       lecturerApi.client = client;
       when(client.get(Uri.parse('https://sep-uom-inventory.herokuapp.com/lecturer/pending/s001'))).thenAnswer((_) async=>
@@ -35,15 +35,16 @@ void main() {
       expect(await lecturerApi.getPendingRequest('s001'),isA<RequestsList>());
     });
 
-    test('trows an expection',()async{
+    test('trows an expection', () async {
       final client = MockClient();
       when(client.get(Uri.parse('https://sep-uom-inventory.herokuapp.com/lecturer/pending/s001'))).thenAnswer((_) async=> http.Response('Not Found',404));
       expect(await lecturerApi.getPendingRequest('s001'), isA<RequestsList>());
     });
   });
 
-  group('fetch pending item details',(){
-    test('returns pending item details if the http call complete succesfully',()async {
+  group('fetch pending item details', () {
+    test('returns pending item details if the http call complete succesfully',
+        () async {
       final client = MockClient();
       lecturerApi.client = client;
       when(client.get(Uri.parse('https://sep-uom-inventory.herokuapp.com/lecturer/requestDetail/3'))).thenAnswer((_) async=>
@@ -51,15 +52,19 @@ void main() {
       expect(await lecturerApi.getPendingItemDetail('3'),isA<PendingDetail>());
     });
 
-    test('trows an expection',()async{
+    test('trows an expection', () async {
       final client = MockClient();
-      when(client.get(Uri.parse('https://sep-backend-inventory.herokuapp.com/pending'))).thenAnswer((_) async=> http.Response('Not Found',404));
+      when(client.get(
+              Uri.parse('https://sep-backend-inventory.herokuapp.com/pending')))
+          .thenAnswer((_) async => http.Response('Not Found', 404));
       expect(await lecturerApi.getPendingItemDetail('3'), isA<PendingDetail>());
     });
   });
 
-  group('fetch avilable category details',(){
-    test('returns available category details if the http call complete succesfully',()async {
+  group('fetch avilable category details', () {
+    test(
+        'returns available category details if the http call complete succesfully',
+        () async {
       final client = MockClient();
       lecturerApi.client = client;
       when(client.get(Uri.parse('https://sep-uom-inventory.herokuapp.com/student/category'))).thenAnswer((_) async=>
@@ -67,7 +72,7 @@ void main() {
       expect(await lecturerApi.getCategory(),isA<List>());
     });
 
-    test('trows an expection',()async{
+    test('trows an expection', () async {
       final client = MockClient();
       when(client.get(Uri.parse('https://sep-uom-inventory.herokuapp.com/student/category'))).thenAnswer((_) async=> http.Response('Not Found',404));
       expect(await lecturerApi.getCategory(), isA<List>());
@@ -83,7 +88,7 @@ void main() {
       expect(await lecturerApi.getModel('camera'),isA<List>());
     });
 
-    test('trows an expection',()async{
+    test('trows an expection', () async {
       final client = MockClient();
       when(client.get(Uri.parse('https://sep-uom-inventory.herokuapp.com/student/model/camera'))).thenAnswer((_) async=> http.Response('Not Found',404));
       expect(await lecturerApi.getModel('camera'), isA<List>());
@@ -99,7 +104,7 @@ void main() {
       expect(await lecturerApi.getLab('RT567-R','camera'),isA<List>());
     });
 
-    test('trows an expection',()async{
+    test('trows an expection', () async {
       final client = MockClient();
       when(client.get(Uri.parse('https://sep-uom-inventory.herokuapp.com/student/lab/camera/RT567-R'))).thenAnswer((_) async=> http.Response('Not Found',404));
       expect(await lecturerApi.getLab('RT567-R','camera'), isA<List>());
@@ -115,10 +120,13 @@ void main() {
       expect(await lecturerApi.getStoreCode('camera', 'RT567-R', 'cse level 1'),isA<List>());
     });
 
-    test('trows an expection',()async{
+    test('trows an expection', () async {
       final client = MockClient();
-      when(client.get(Uri.parse('https://sep-backend-inventory.herokuapp.com/storeCode/camera/RT567-R/cse%20level%201'))).thenAnswer((_) async=> http.Response('Not Found',404));
-      expect(await lecturerApi.getStoreCode('camera', 'RT567-R', 'cse level 1'), isA<List>());
+      when(client.get(Uri.parse(
+              'https://sep-backend-inventory.herokuapp.com/storeCode/camera/RT567-R/cse%20level%201')))
+          .thenAnswer((_) async => http.Response('Not Found', 404));
+      expect(await lecturerApi.getStoreCode('camera', 'RT567-R', 'cse level 1'),
+          isA<List>());
     });
   });
   //
@@ -131,11 +139,10 @@ void main() {
       expect(await lecturerApi.getLecturers('cse level 1'),isA<List>());
     });
 
-    test('trows an expection',()async{
+    test('trows an expection', () async {
       final client = MockClient();
       when(client.get(Uri.parse('https://sep-uom-inventory.herokuapp.com/student/lecturer/cse%20level%201'))).thenAnswer((_) async=> http.Response('Not Found',404));
       expect(await lecturerApi.getLecturers('cse level 1'), isA<List>());
     });
   });
-
 }

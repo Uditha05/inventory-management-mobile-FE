@@ -1,6 +1,7 @@
 import 'package:date_time_picker/date_time_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
+import 'package:inventory_management/screen/technicla_officer_dashboard/technical_officer_dashboard.dart';
 import 'package:inventory_management/services/borrow_data.dart';
 
 import 'package:inventory_management/services/iteam.dart';
@@ -117,7 +118,9 @@ class _AcceptEquipmentFormState extends State<AcceptEquipmentForm> {
       if (result) {
         error = "Error";
       } else {
-        Navigator.popUntil(context, ModalRoute.withName('/'));
+        //Navigator.popUntil(context, ModalRoute.withName('/'));
+        Navigator.of(context).pushReplacement(new MaterialPageRoute(
+            builder: (BuildContext context) => TechnicalOfficerDashboard()));
       }
     }
     print(error);

@@ -1,7 +1,6 @@
 import 'package:inventory_management/services/iteam.dart';
 import 'package:inventory_management/services/request.dart';
-import 'package:inventory_management/api/technical_officer/technical_officer.dart'
-    as api;
+import 'package:inventory_management/api/technical_officer/technical_officer.dart';
 
 class IRequestUser {
   String id;
@@ -11,11 +10,11 @@ class IRequestUser {
     // getRequest(id);
   }
 
-  Future<Request> getRequest(id) async {
-    var result = await api.getRequestData(id);
+  Future getRequest(id) async {
+    var result = await API().getRequestData(id);
     print(result);
     if (result == null) return null;
-    if (result is String) return null;
+    if (result is String) return result;
 
     if (result['Equipment'] != null) {
       var equ = result['Equipment'];
@@ -30,10 +29,10 @@ class IRequestUser {
 
       Request req = new Request(
           iRequestUser: this,
-          reqdate: result['requestDate'],
+          reqdate: DateTime.parse(result['requestDate']),
           status: result['status'],
           iteam: iteam,
-          id: result['id']);
+          id: result['id'].toString());
       request = req;
       return req;
     }
@@ -43,7 +42,10 @@ class IRequestUser {
   static Future<IRequestUser> findStudentByID(String quary) async {
     if (quary.isNotEmpty) {
       IRequestUser user = new IRequestUser(id: quary);
-      await user.getRequest(user.id);
+      var result = await user.getRequest(user.id);
+      if (result is String) {
+        return null;
+      }
       return user;
     } else {
       return null;

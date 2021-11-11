@@ -3,8 +3,7 @@ import 'dart:typed_data';
 
 import 'package:flutter/services.dart';
 import 'package:flutter_barcode_scanner/flutter_barcode_scanner.dart';
-import 'package:inventory_management/api/technical_officer/technical_officer.dart'
-    as api;
+import 'package:inventory_management/api/technical_officer/technical_officer.dart';
 import 'package:inventory_management/services/borrow_data.dart';
 import 'package:inventory_management/widget/borrow_details.dart';
 import 'dart:io';
@@ -32,7 +31,7 @@ class Iteam {
       this.status});
 
   Future<List<BorrowData>> getBorrowData(fromDate, toDate) async {
-    return await api.getBorrowData(this.store_code, fromDate, toDate);
+    return await API().getBorrowData(this.store_code, fromDate, toDate);
     //   List<BorrowData> list = [];
     //   list.add(new BorrowData(
     //       type: "Lecture",
@@ -67,7 +66,7 @@ class Iteam {
   }
 
   Future<BorrowData> getLastBorrowData() async {
-    return await api.getLastBorrowData(this.store_code);
+    return await API().getLastBorrowData(this.store_code);
   }
 
   static Future<Iteam> findDataByQr() async {
@@ -78,7 +77,7 @@ class Iteam {
       barcodeScanRes = await FlutterBarcodeScanner.scanBarcode(
           '#ff6666', 'Cancel', true, ScanMode.BARCODE);
       if (barcodeScanRes != '-1') {
-        return await api.getEquipmentByStoreCode(barcodeScanRes);
+        return await API().getEquipmentByStoreCode(barcodeScanRes);
         //   return new Iteam(
         //       store_code: barcodeScanRes,
         //       isAvailable: true,
@@ -113,8 +112,8 @@ class Iteam {
   }
 
   Future IssueEquipment(userid, fromdate, todate) async {
-    return await api.temporyIssueEquipment(
-        userid, store_code, fromdate, todate, 'reason');
+    return await API()
+        .temporyIssueEquipment(userid, store_code, fromdate, todate, 'reason');
   }
 
   Future<Uint8List> create() async {
@@ -156,7 +155,7 @@ class Iteam {
   }
 
   static Future<Iteam> findByStoreId(String id) async {
-    return await api.getEquipmentByStoreCode(id);
+    return await API().getEquipmentByStoreCode(id);
     // if (id != "") {
     //   return await Iteam(
     //       store_code: id,
@@ -171,7 +170,7 @@ class Iteam {
 
   static Future<List<Iteam>> findIteamsByCatogary(int categoryId) async {
     print(categoryId);
-    return await api.findIteamsByCatogary(categoryId);
+    return await API().findIteamsByCatogary(categoryId);
     //  [
     //   Iteam(
     //       store_code: "1234-234-355",
@@ -198,7 +197,7 @@ class Iteam {
 
   Future<List> SetLabandStatus(
       String lab, String Status, imgUrl, issetimage) async {
-    return await api.updateEquipment(store_code, Status, imgUrl, issetimage);
+    return await API().updateEquipment(store_code, Status, imgUrl, issetimage);
     // if (Random().nextInt(10) < 125) {
     //   return [true, "none"];
     // } else {
@@ -208,7 +207,7 @@ class Iteam {
 
   static Future<List> createNewIteam(
       String catogary, String Model, String lab, String imgUrl) async {
-    return await api.AddEquipment(catogary, Model, lab, imgUrl);
+    return await API().AddEquipment(catogary, Model, lab, imgUrl);
     // Iteam iteam = Iteam(
     //     catogary: catogary,
     //     model: Model,

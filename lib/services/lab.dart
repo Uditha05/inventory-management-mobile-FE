@@ -7,7 +7,7 @@ class Lab {
     set(setfun);
   }
   Future set(setfun) async {
-    labs = await getLabs(this);
+    labs = await API().getLabs(this);
     setfun();
   }
 
