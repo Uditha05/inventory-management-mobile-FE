@@ -10,11 +10,11 @@ class IRequestUser {
     // getRequest(id);
   }
 
-  Future<Request> getRequest(id) async {
+  Future getRequest(id) async {
     var result = await API().getRequestData(id);
     print(result);
     if (result == null) return null;
-    if (result is String) return null;
+    if (result is String) return result;
 
     if (result['Equipment'] != null) {
       var equ = result['Equipment'];
@@ -42,7 +42,10 @@ class IRequestUser {
   static Future<IRequestUser> findStudentByID(String quary) async {
     if (quary.isNotEmpty) {
       IRequestUser user = new IRequestUser(id: quary);
-      await user.getRequest(user.id);
+      var result = await user.getRequest(user.id);
+      if (result is String) {
+        return null;
+      }
       return user;
     } else {
       return null;

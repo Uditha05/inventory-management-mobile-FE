@@ -14,7 +14,6 @@ class Chrartless extends StatelessWidget {
     List<ChartSeries> lis = [];
     if (chartData.length > 0) {
       for (var i = 0; i < chartData[0].data.length; i++) {
-        
         lis.add(type == 'Column Chart'
             ? StackedColumnSeries<ChartData, String>(
                 dataSource: chartData,
@@ -51,7 +50,7 @@ class Chrartless extends StatelessWidget {
   Widget build(BuildContext context) {
     TooltipBehavior tooltipBehavior = TooltipBehavior(enable: true);
     return SfCartesianChart(
-        title: ChartTitle(text: 'Usage Report'),
+        title: ChartTitle(text: 'Report'),
         zoomPanBehavior: ZoomPanBehavior(
             enableDoubleTapZooming: false,
             enablePanning: true,

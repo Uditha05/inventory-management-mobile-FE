@@ -9,7 +9,7 @@ import 'package:inventory_management/widget/chart.dart';
 import 'package:inventory_management/config/constant_data.dart';
 
 class API {
-  var apiurl = "https://insep.herokuapp.com";
+  var apiurl = "https://sep-uom-inventory.herokuapp.com";
   var headers = {
     "Authorization": 'Bearer ' + ConstantData.TOKEN,
   };
@@ -216,7 +216,8 @@ class API {
       return ('Request failed with status: ${response.statusCode}.');
     }
   }
-NormalIssueEquipment(userid, storeid, fromdate, todate, requestId) async {
+
+  NormalIssueEquipment(userid, storeid, fromdate, todate, requestId) async {
     var url = Uri.parse(apiurl + '/technicalofficer/normalborrowing');
 
     var response = await client.post(url,
@@ -236,6 +237,7 @@ NormalIssueEquipment(userid, storeid, fromdate, todate, requestId) async {
       return ('Request failed with status: ${response.statusCode}.');
     }
   }
+
   updateEquipment(store_code, status, imgUrl, issetimage) async {
     var url = Uri.parse(apiurl + '/technicalofficer/updateequipment/');
     var bd = {
@@ -283,7 +285,7 @@ NormalIssueEquipment(userid, storeid, fromdate, todate, requestId) async {
   }
 
   getReport(fromdate, toDate, categories, reportType) async {
-    print(reportType);
+    print([fromdate, toDate, categories, reportType]);
     var url = Uri.parse(apiurl + '/technicalofficer/report/');
     var response = await client.post(
       url,
@@ -299,6 +301,7 @@ NormalIssueEquipment(userid, storeid, fromdate, todate, requestId) async {
       }),
     );
     if (response.statusCode < 300) {
+      print(response.statusCode);
       var data = convert.jsonDecode(response.body);
       List<ChartData> report = [];
       for (int i = 0; i < data.length; i++) {

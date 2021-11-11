@@ -7,6 +7,7 @@ import 'package:inventory_management/screen/view_track/view_track.dart';
 import 'package:inventory_management/theme/app_colors.dart';
 import 'package:inventory_management/screen/monthly_report/usage_report.dart';
 import 'package:printing/printing.dart';
+import 'package:inventory_management/screen/login/login_screen.dart';
 
 class TechnicalOfficerDashboard extends StatefulWidget {
   const TechnicalOfficerDashboard({Key key}) : super(key: key);
@@ -31,6 +32,10 @@ class _TechnicalOfficerDashboardState extends State<TechnicalOfficerDashboard> {
               width: 70,
             ),
             ElevatedButton(
+              onPressed: () {
+                Navigator.of(context).pushReplacement(new MaterialPageRoute(
+                    builder: (BuildContext context) => LoginScreen()));
+              },
               style: ButtonStyle(
                   backgroundColor:
                       MaterialStateProperty.all<Color>(Colors.white30),
@@ -38,7 +43,7 @@ class _TechnicalOfficerDashboardState extends State<TechnicalOfficerDashboard> {
                       RoundedRectangleBorder(
                           borderRadius: BorderRadius.circular(18.0),
                           side: BorderSide.none))),
-              child: Icon(Icons.notifications),
+              child: Icon(Icons.logout),
             ),
           ],
         ),
