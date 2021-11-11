@@ -7,6 +7,6 @@ void main() {
     await tester.pumpWidget(MyApp());
 
     await expectLater(
-        find.byType(LoginScreen), matchesGoldenFile("golden/logoScreen.png"));
+        find.byType(LoginScreen), matchesGoldenFile("golden/logoScreen1.png"));
   });
 }

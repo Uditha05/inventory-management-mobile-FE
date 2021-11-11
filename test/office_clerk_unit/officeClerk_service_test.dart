@@ -140,12 +140,14 @@ void main() {
     });
 
     test("Mark as finished to repair", () async {
+      var damageId = "1";
+      var itemId = "1-2-3-4";
       MockClient mockClient = MockClient();
-
-      when(mockClient.get(
+      when(mockClient.put(
           Uri.parse('http://10.0.2.2:5000/users/office-clerk/finish-repair/' +
-              "1" +
-              "1-2-3-4"),
+              damageId +
+              "/" +
+              itemId),
           headers: {
             "Authorization": 'Bearer ${ConstantData.TOKEN}',
           })).thenAnswer((_) async =>
@@ -153,7 +155,7 @@ void main() {
 
       OfficeClerkService officeClerkService =
           OfficeClerkService.internal(mockClient);
-      var out = await officeClerkService.markFinishedRepair("1", "1-2-3-4");
+      var out = await officeClerkService.markFinishedRepair(damageId, itemId);
 
       expect(out, "pass");
     });

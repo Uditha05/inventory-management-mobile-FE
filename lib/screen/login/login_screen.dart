@@ -170,8 +170,10 @@ class _LoginScreenState extends State<LoginScreen> {
                           style: AppTextStyle.loginPageTitle2,
                         )),
                     Container(
+                      key: Key("emailContainer"),
                       padding: EdgeInsets.all(8),
                       child: CustomStringInput(
+                        key: Key("email"),
                         hintText: "Username",
                         icon: Icon(Icons.person),
                         isEnable: true,
@@ -181,7 +183,9 @@ class _LoginScreenState extends State<LoginScreen> {
                     ),
                     Container(
                       padding: EdgeInsets.all(8),
+                      key: Key("passwordContainer"),
                       child: CustomPasswordInput(
+                        key: Key("password"),
                         hintText: "Password",
                         icon: Icon(Icons.lock),
                         isEnable: true,
@@ -190,11 +194,29 @@ class _LoginScreenState extends State<LoginScreen> {
                       ),
                     ),
                     Container(
-                      child: CustomButton(
-                        onPressed: submitUsernameAndPassword,
-                        text: "Log in",
-                      ),
-                    ),
+                        child: GestureDetector(
+                      key: Key("login"),
+                      onTap: submitUsernameAndPassword,
+                      child: Container(
+                          decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(13),
+                            color: AppColor.main_green_background,
+                          ),
+                          padding: EdgeInsets.all(13),
+                          child: Text(
+                            "Log in",
+                            style: AppTextStyle.loginButtonText,
+                          )
+
+                          // RaisedButton(
+
+                          //   onPressed: onPressed,
+                          //   color: AppColor.main_green_background,
+                          //   padding: EdgeInsets.all(5),
+                          //   child: ,
+                          // ),
+                          ),
+                    )),
                     SizedBox(
                       height: 20,
                     )

@@ -22,7 +22,7 @@ class AuthController {
     if (payload == null) {
       return null;
     }
-    print(payload);
+    // print(payload);
     final localStorage = GetStorage();
     localStorage.write("email", email);
     localStorage.write("password", password);

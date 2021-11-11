@@ -11,7 +11,7 @@ const Map<String, dynamic> loginResposne = {
       "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySUQiOiJTMTExIiwiZXhwaXJlc0luIjozNjAwLCJ0eXBlIjoiT2ZmaWNlQ2xlcmsiLCJmaXJzdE5hbWUiOiJVZGl0aGEiLCJsYXN0TmFtZSI6IklzdXJhbmdhIiwiZW1haWwiOiJvZmZpY2VjbGVya0B1b20uY29tIiwiaWF0IjoxNjM2MzUwMDUwfQ.x-CzTmdvP90_8yUPgeA8C5Md216G-GlfsJ3g0GfHlH0"
 };
 
-class MockClient extends Mock implements AuthService {
+class MockAuthService extends Mock implements AuthService {
   @override
   Future attemptLogIn(
     String username,
@@ -26,12 +26,12 @@ class MockClient extends Mock implements AuthService {
 }
 
 void main() {
-  group("auth_controller_tests", () {
+  group("auth_controller_tests: ", () {
     setUpAll(() {}); // before all, one time
 
     setUp(() {}); // before each test
 
-    test("decode Jwt", () {
+    test("Decode Jwt to Json", () {
       var model = AuthController();
       var jwt =
           '{"token":"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySUQiOiJTMTExIiwiZXhwaXJlc0luIjozNjAwLCJ0eXBlIjoiT2ZmaWNlQ2xlcmsiLCJmaXJzdE5hbWUiOiJVZGl0aGEiLCJsYXN0TmFtZSI6IklzdXJhbmdhIiwiZW1haWwiOiJvZmZpY2VjbGVya0B1b20uY29tIiwiaWF0IjoxNjM2MzUwMDUwfQ.x-CzTmdvP90_8yUPgeA8C5Md216G-GlfsJ3g0GfHlH0"}';
@@ -48,7 +48,7 @@ void main() {
     });
 
     test("submit valid Username and password", () async {
-      MockClient mockService = MockClient();
+      MockAuthService mockService = MockAuthService();
 
       AuthController authController = AuthController.internal(mockService);
       var out = await authController.submitUserNamePassword(
@@ -58,7 +58,7 @@ void main() {
     });
 
     test("submit invalid Username and password", () async {
-      MockClient mockService = MockClient();
+      MockAuthService mockService = MockAuthService();
 
       AuthController authController = AuthController.internal(mockService);
       var out = await authController.submitUserNamePassword(

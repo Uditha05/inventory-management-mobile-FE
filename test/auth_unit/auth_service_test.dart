@@ -27,7 +27,6 @@ void main() {
 
       AuthService authService = AuthService.internal(mockClient);
       var out = await authService.attemptLogIn("officeclerk@uom.com", "abc123");
-
       expect(out, jsonEncode(loginResposne));
     });
 

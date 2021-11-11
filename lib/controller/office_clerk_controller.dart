@@ -1,12 +1,19 @@
+import 'package:flutter/material.dart';
 import 'package:inventory_management/model/dummy/broken_item.dart';
-import 'package:inventory_management/model/office_clerk_related/broken_item_model.dart';
+
 import 'package:inventory_management/model/office_clerk_related/repairModel.dart';
 import 'package:inventory_management/service/office_clerk_service.dart';
 
 class OfficeClerkController {
+  final OfficeClerkService _officeClerkService;
+  OfficeClerkController() : _officeClerkService = new OfficeClerkService();
+
+  @visibleForTesting
+  OfficeClerkController.internal(this._officeClerkService);
+
   Future getNewDamages() async {
     List<BrokenItem> newbrokens = [];
-    List<DamageModel> out = await OfficeClerkService().getNewDamageItems();
+    List<DamageModel> out = await _officeClerkService.getNewDamageItems();
     if (out == null) {
       return newbrokens;
     }
@@ -31,7 +38,7 @@ class OfficeClerkController {
 
   Future getPendingRepair() async {
     List<BrokenItem> pendingBroken = [];
-    List<DamageModel> out = await OfficeClerkService().getPendingRepairItems();
+    List<DamageModel> out = await _officeClerkService.getPendingRepairItems();
     if (out == null) {
       return pendingBroken;
     }
@@ -56,7 +63,7 @@ class OfficeClerkController {
 
   Future getOldDamageItem() async {
     List<BrokenItem> pendingBroken = [];
-    List<DamageModel> out = await OfficeClerkService().getOldDamageItem();
+    List<DamageModel> out = await _officeClerkService.getOldDamageItem();
     if (out == null) {
       return pendingBroken;
     }
@@ -82,12 +89,12 @@ class OfficeClerkController {
   }
 
   Future markSendToRepair(String id) async {
-    var out = await OfficeClerkService().markSendToRepair(id);
+    var out = await _officeClerkService.markSendToRepair(id);
     return out;
   }
 
   Future markAsFinished(String id, String itemID) async {
-    var out = await OfficeClerkService().markFinishedRepair(id, itemID);
+    var out = await _officeClerkService.markFinishedRepair(id, itemID);
     return out;
   }
 }

@@ -51,6 +51,7 @@ class _OfficeClerkDashboardState extends State<OfficeClerkDashboard> {
               height: 10,
             ),
             GestureDetector(
+              key: Key("handleDamageOfficeC"),
               onTap: () {
                 Navigator.of(context).push(new MaterialPageRoute(
                     builder: (BuildContext context) => HandleDamage()));
@@ -66,6 +67,7 @@ class _OfficeClerkDashboardState extends State<OfficeClerkDashboard> {
               ),
             ),
             GestureDetector(
+              key: Key("checkAvaOfficeC"),
               onTap: () {
                 // Navigator.of(context).push(new MaterialPageRoute(
                 //     builder: (BuildContext context) => CheckAvailability()));
@@ -81,6 +83,7 @@ class _OfficeClerkDashboardState extends State<OfficeClerkDashboard> {
               ),
             ),
             GestureDetector(
+              key: Key("logoutOfficeC"),
               onTap: () {
                 Navigator.of(context).pushReplacement(new MaterialPageRoute(
                     builder: (BuildContext context) => LoginScreen()));
