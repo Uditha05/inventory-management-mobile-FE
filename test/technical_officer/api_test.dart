@@ -17,7 +17,7 @@ import 'dart:convert' as convert;
 // Create new instances of this class in each test.
 @GenerateMocks([http.Client])
 void main() {
-  var apiurl = "insep.herokuapp.com";
+
   mockfn() {}
   var headers = {"Authorization": 'Bearer ' + ConstantData.TOKEN};
   API api = API();
@@ -30,7 +30,7 @@ void main() {
       // provided http.Client.
       when(client.get(
               Uri.parse(
-                  'https://insep.herokuapp.com/technicalofficer/categories'),
+                  'https://sep-uom-inventory.herokuapp.com/technicalofficer/categories'),
               headers: headers))
           .thenAnswer((_) async =>
               http.Response('{"id": 2, "categoryName": "mock"}', 200));
@@ -45,7 +45,7 @@ void main() {
       // provided http.Client.
       when(client.get(
               Uri.parse(
-                  'https://insep.herokuapp.com/technicalofficer/categories'),
+                  'https://sep-uom-inventory.herokuapp.com/technicalofficer/categories'),
               headers: headers))
           .thenAnswer((_) async => http.Response('Not Found', 404));
 
@@ -60,7 +60,7 @@ void main() {
       // provided http.Client.
       when(client.get(
               Uri.parse(
-                  'https://insep.herokuapp.com/technicalofficer/models/2'),
+                  'https://sep-uom-inventory.herokuapp.com/technicalofficer/models/2'),
               headers: headers))
           .thenAnswer((_) async =>
               http.Response('{"id": 2, "modelName": "mock"}', 200));
@@ -75,7 +75,7 @@ void main() {
       // provided http.Client.
       when(client.get(
               Uri.parse(
-                  'https://insep.herokuapp.com/technicalofficer/models/2'),
+                  'https://sep-uom-inventory.herokuapp.com/technicalofficer/models/2'),
               headers: headers))
           .thenAnswer((_) async => http.Response('not found', 404));
 
@@ -89,7 +89,8 @@ void main() {
       // Use Mockito to return a successful response when it calls the
       // provided http.Client.
       when(client.get(
-              Uri.parse('https://insep.herokuapp.com/technicalofficer/labs'),
+              Uri.parse(
+                  'https://sep-uom-inventory.herokuapp.com/technicalofficer/labs'),
               headers: headers))
           .thenAnswer(
               (_) async => http.Response('{"id": 2, "labName": "mock"}', 200));
@@ -103,7 +104,8 @@ void main() {
       // Use Mockito to return a successful response when it calls the
       // provided http.Client.
       when(client.get(
-              Uri.parse('https://insep.herokuapp.com/technicalofficer/labs'),
+              Uri.parse(
+                  'https://sep-uom-inventory.herokuapp.com/technicalofficer/labs'),
               headers: headers))
           .thenAnswer((_) async => http.Response('not found', 404));
 
@@ -119,7 +121,7 @@ void main() {
       // provided http.Client.
       when(client.get(
               Uri.parse(
-                  'https://insep.herokuapp.com/technicalofficer/requestdata/1'),
+                  'https://sep-uom-inventory.herokuapp.com/technicalofficer/requestdata/1'),
               headers: headers))
           .thenAnswer(
               (_) async => http.Response('{"id": 2, "labName": "mock"}', 200));
@@ -132,7 +134,7 @@ void main() {
       // provided http.Client.
       when(client.get(
               Uri.parse(
-                  'https://insep.herokuapp.com/technicalofficer/requestdata/1'),
+                  'https://sep-uom-inventory.herokuapp.com/technicalofficer/requestdata/1'),
               headers: headers))
           .thenAnswer((_) async => http.Response('not found', 404));
 
@@ -146,7 +148,7 @@ void main() {
       // provided http.Client.
       when(client.get(
               Uri.parse(
-                  'https://insep.herokuapp.com/technicalofficer/categories/1'),
+                  'https://sep-uom-inventory.herokuapp.com/technicalofficer/categories/1'),
               headers: headers))
           .thenAnswer((_) async => http.Response(
               '[{"Category": {"categoryName":"cat"}, "imageURL": "mock","status":"notdamage","availability":1,"Lab":{"labName":"lab"},"Model":{"modelName":"model"}}]',
@@ -160,7 +162,7 @@ void main() {
       // provided http.Client.
       when(client.get(
               Uri.parse(
-                  'https://insep.herokuapp.com/technicalofficer/categories/1'),
+                  'https://sep-uom-inventory.herokuapp.com/technicalofficer/categories/1'),
               headers: headers))
           .thenAnswer((_) async => http.Response('not found', 404));
 
@@ -179,7 +181,7 @@ void main() {
       var toDate = new DateTime(2021);
       when(client.post(
               Uri.parse(
-                  'https://insep.herokuapp.com/technicalofficer/borrowdata/'),
+                  'https://sep-uom-inventory.herokuapp.com/technicalofficer/borrowdata/'),
               body: {
                 'store_code': id,
                 'fromDate':
@@ -201,7 +203,7 @@ void main() {
       var toDate = new DateTime(2021);
       when(client.post(
               Uri.parse(
-                  'https://insep.herokuapp.com/technicalofficer/borrowdata/'),
+                  'https://sep-uom-inventory.herokuapp.com/technicalofficer/borrowdata/'),
               body: {
                 'store_code': id,
                 'fromDate':
@@ -256,7 +258,7 @@ void main() {
       // provided http.Client.
       when(client.get(
               Uri.parse(
-                  'https://insep.herokuapp.com/technicalofficer/borrowdata/1'),
+                  'https://sep-uom-inventory.herokuapp.com/technicalofficer/borrowdata/1'),
               headers: headers))
           .thenAnswer(
               (_) async => http.Response(convert.jsonEncode(data), 200));
@@ -270,7 +272,7 @@ void main() {
       // provided http.Client.
       when(client.get(
               Uri.parse(
-                  'https://insep.herokuapp.com/technicalofficer/borrowdata/1'),
+                  'https://sep-uom-inventory.herokuapp.com/technicalofficer/borrowdata/1'),
               headers: headers))
           .thenAnswer((_) async => http.Response("not found", 404));
 
@@ -293,7 +295,7 @@ void main() {
       // provided http.Client.
       when(client.get(
               Uri.parse(
-                  'https://insep.herokuapp.com/technicalofficer/equipment/1'),
+                  'https://sep-uom-inventory.herokuapp.com/technicalofficer/equipment/1'),
               headers: headers))
           .thenAnswer(
               (_) async => http.Response(convert.jsonEncode(data), 200));
@@ -306,7 +308,7 @@ void main() {
       // provided http.Client.
       when(client.get(
               Uri.parse(
-                  'https://insep.herokuapp.com/technicalofficer/equipment/1'),
+                  'https://sep-uom-inventory.herokuapp.com/technicalofficer/equipment/1'),
               headers: headers))
           .thenAnswer((_) async => http.Response("not found", 404));
 
@@ -330,7 +332,7 @@ void main() {
       // provided http.Client.
       when(client.get(
               Uri.parse(
-                  'https://insep.herokuapp.com/technicalofficer/equipment/1'),
+                  'https://sep-uom-inventory.herokuapp.com/technicalofficer/equipment/1'),
               headers: headers))
           .thenAnswer(
               (_) async => http.Response(convert.jsonEncode(data), 200));
@@ -343,7 +345,7 @@ void main() {
       // provided http.Client.
       when(client.get(
               Uri.parse(
-                  'https://insep.herokuapp.com/technicalofficer/equipment/1'),
+                  'https://sep-uom-inventory.herokuapp.com/technicalofficer/equipment/1'),
               headers: headers))
           .thenAnswer((_) async => http.Response("not found", 404));
 
@@ -363,7 +365,7 @@ void main() {
       // provided http.Client.
       when(client.post(
               Uri.parse(
-                  'https://insep.herokuapp.com/technicalofficer/temporyborrowing'),
+                  'https://sep-uom-inventory.herokuapp.com/technicalofficer/temporyborrowing'),
               body: {
                 'userid': userid,
                 'storeid': storeid,
@@ -385,7 +387,7 @@ void main() {
       // provided http.Client.
       when(client.post(
               Uri.parse(
-                  'https://insep.herokuapp.com/technicalofficer/temporyborrowing'),
+                  'https://sep-uom-inventory.herokuapp.com/technicalofficer/temporyborrowing'),
               body: {
                 'userid': userid,
                 'storeid': storeid,
@@ -414,7 +416,7 @@ void main() {
       // provided http.Client.
       when(client.post(
               Uri.parse(
-                  'https://insep.herokuapp.com/technicalofficer/normalborrowing'),
+                  'https://sep-uom-inventory.herokuapp.com/technicalofficer/normalborrowing'),
               body: {
                 'userid': userid,
                 'storeid': storeid,
@@ -436,7 +438,7 @@ void main() {
       // provided http.Client.
       when(client.post(
               Uri.parse(
-                  'https://insep.herokuapp.com/technicalofficer/normalborrowing'),
+                  'https://sep-uom-inventory.herokuapp.com/technicalofficer/normalborrowing'),
               body: {
                 'userid': userid,
                 'storeid': storeid,
@@ -464,7 +466,7 @@ void main() {
       // provided http.Client.
       when(client.post(
               Uri.parse(
-                  'https://insep.herokuapp.com/technicalofficer/updateequipment/'),
+                  'https://sep-uom-inventory.herokuapp.com/technicalofficer/updateequipment/'),
               body: {
                 'store_code': storeid,
                 'status': status,
@@ -483,7 +485,7 @@ void main() {
       // provided http.Client.
       when(client.post(
               Uri.parse(
-                  'https://insep.herokuapp.com/technicalofficer/updateequipment/'),
+                  'https://sep-uom-inventory.herokuapp.com/technicalofficer/updateequipment/'),
               body: {
                 'store_code': storeid,
                 'status': status,
@@ -491,10 +493,10 @@ void main() {
                 'issetimage': issetimage.toString()
               },
               headers: headers))
-          .thenAnswer((_) async => http.Response("{}", 201));
+          .thenAnswer((_) async => http.Response("{}", 404));
 
       expect(await api.updateEquipment(storeid, status, imgUrl, issetimage),
-          [true, 'Request failed with status: 404.']);
+          [false, 'Request failed with status: 404.']);
     });
   });
   group('fetch AddEquipment', () {
@@ -508,7 +510,7 @@ void main() {
       // provided http.Client.
       when(client.post(
               Uri.parse(
-                  'https://insep.herokuapp.com/technicalofficer/addequipment/'),
+                  'https://sep-uom-inventory.herokuapp.com/technicalofficer/addequipment/'),
               body: {
                 'category': category,
                 'model': model,
@@ -528,7 +530,7 @@ void main() {
       // provided http.Client.
       when(client.post(
               Uri.parse(
-                  'https://insep.herokuapp.com/technicalofficer/addequipment/'),
+                  'https://sep-uom-inventory.herokuapp.com/technicalofficer/addequipment/'),
               body: {
                 'category': category,
                 'model': model,
@@ -552,7 +554,7 @@ void main() {
       // provided http.Client.
       when(client.post(
               Uri.parse(
-                  'https://insep.herokuapp.com/technicalofficer/acceptEquipment/'),
+                  'https://sep-uom-inventory.herokuapp.com/technicalofficer/acceptEquipment/'),
               body: {'id': id, 'status': status},
               headers: headers))
           .thenAnswer((_) async => http.Response('{}', 201));
@@ -565,7 +567,7 @@ void main() {
       // provided http.Client.
       when(client.post(
               Uri.parse(
-                  'https://insep.herokuapp.com/technicalofficer/acceptEquipment/'),
+                  'https://sep-uom-inventory.herokuapp.com/technicalofficer/acceptEquipment/'),
               body: {'id': id, 'status': status},
               headers: headers))
           .thenAnswer((_) async => http.Response('{}', 404));

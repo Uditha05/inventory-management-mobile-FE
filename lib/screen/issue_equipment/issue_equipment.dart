@@ -37,58 +37,60 @@ class _IssueEquipmentState extends State<IssueEquipment> {
         elevation: 0,
       ),
       backgroundColor: AppColor.main_green_background,
-      body: Padding(
-        padding: const EdgeInsets.all(20),
-        child: Container(
-          width: 370,
-          height: 1000,
-          decoration: BoxDecoration(
-            borderRadius: BorderRadius.all(Radius.circular(20)),
-            color: Colors.grey[200],
-          ),
-          child: Padding(
-            padding: EdgeInsets.all(20),
-            child: Form(
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.start,
-                children: [
-                  Text(
-                    "Borrowing Type",
-                    style: TextStyle(
-                      fontWeight: FontWeight.w700,
-                      fontSize: 20,
+      body: SingleChildScrollView(
+        child: Padding(
+          padding: const EdgeInsets.all(20),
+          child: Container(
+            width: 530,
+            height: 700,
+            decoration: BoxDecoration(
+              borderRadius: BorderRadius.all(Radius.circular(20)),
+              color: Colors.grey[200],
+            ),
+            child: Padding(
+              padding: EdgeInsets.all(20),
+              child: Form(
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.start,
+                  children: [
+                    Text(
+                      "Borrowing Type",
+                      style: TextStyle(
+                        fontWeight: FontWeight.w700,
+                        fontSize: 20,
+                      ),
                     ),
-                  ),
-                  Container(
-                    padding: EdgeInsets.all(8),
-                    child: DropdownButton(
-                      hint: Text("Select one ..."),
-                      value: borrow_type,
-                      onChanged: (newvalue) {
-                        setState(() {
-                          borrow_type = newvalue;
-                        });
-                      },
-                      items: borrow_types.map((e) {
-                        return DropdownMenuItem(
-                          child: Text(e),
-                          value: e,
-                        );
-                      }).toList(),
+                    Container(
+                      padding: EdgeInsets.all(8),
+                      child: DropdownButton(
+                        hint: Text("Select one ..."),
+                        value: borrow_type,
+                        onChanged: (newvalue) {
+                          setState(() {
+                            borrow_type = newvalue;
+                          });
+                        },
+                        items: borrow_types.map((e) {
+                          return DropdownMenuItem(
+                            child: Text(e),
+                            value: e,
+                          );
+                        }).toList(),
+                      ),
                     ),
-                  ),
-                  SizedBox(
-                    height: 70,
-                  ),
-                  RaisedButton(
-                    onPressed: () => next(context),
-                    color: AppColor.main_green_background,
-                    child: Text(
-                      'Next',
-                      style: TextStyle(fontSize: 20, color: Colors.white),
+                    SizedBox(
+                      height: 70,
                     ),
-                  )
-                ],
+                    RaisedButton(
+                      onPressed: () => next(context),
+                      color: AppColor.main_green_background,
+                      child: Text(
+                        'Next',
+                        style: TextStyle(fontSize: 20, color: Colors.white),
+                      ),
+                    )
+                  ],
+                ),
               ),
             ),
           ),

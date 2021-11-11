@@ -3,13 +3,14 @@ import 'package:flutter_test/flutter_test.dart';
 
 import 'package:inventory_management/screen/add_update_equipment/add_update_equipment.dart';
 import 'package:inventory_management/screen/add_update_equipment/add_update_equipment_form.dart';
-
+import 'package:inventory_management/screen/issue_equipment/issue_equipment.dart';
+import 'package:inventory_management/screen/issue_equipment/issue_equipment_form.dart';
 
 void main() {
-  testWidgets('Add Update type', (WidgetTester tester) async {
+  testWidgets('IssueEquipment type', (WidgetTester tester) async {
     Widget testWidget = new MediaQuery(
         data: new MediaQueryData(),
-        child: new MaterialApp(home: new AddUpdateEquipment()));
+        child: new MaterialApp(home: new IssueEquipment()));
     await tester.pumpWidget(testWidget);
 
     var dropdown = find.byType(DropdownButton);
@@ -21,10 +22,10 @@ void main() {
 
     // test('description', () {
   });
-  testWidgets('Add Equipment', (WidgetTester tester) async {
+  testWidgets('select approve', (WidgetTester tester) async {
     Widget testWidget = new MediaQuery(
         data: new MediaQueryData(),
-        child: new MaterialApp(home: new AddUpdateEquipment()));
+        child: new MaterialApp(home: new IssueEquipment()));
     await tester.pumpWidget(testWidget);
 
     var dropdown = find.byType(DropdownButton);
@@ -36,7 +37,7 @@ void main() {
     var next = find.byType(RaisedButton);
     await tester.tap(next);
     await tester.pump();
-    var form = find.byType(AddUpdateEquipmetForm);
+    var form = find.byType(IssueEquipmetForm);
     print(form);
     //expect(form, findsOneWidget);
 

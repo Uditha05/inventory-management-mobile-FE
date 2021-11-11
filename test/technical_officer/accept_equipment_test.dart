@@ -6,6 +6,7 @@ import 'package:inventory_management/widget/custem_input.dart';
 import 'package:inventory_management/widget/custom_button.dart';
 
 void main() {
+  
   testWidgets('Store id input feild', (WidgetTester tester) async {
     // Build our app and trigger a frame.
     Widget testWidget = new MediaQuery(

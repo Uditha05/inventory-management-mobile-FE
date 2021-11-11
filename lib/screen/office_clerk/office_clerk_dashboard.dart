@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:inventory_management/screen/login/login_screen.dart';
 
 import 'package:inventory_management/screen/office_clerk/handle_damage/handle_damage.dart';
@@ -6,6 +7,7 @@ import 'package:inventory_management/screen/settings/settings_screen.dart';
 import 'package:get/get.dart';
 import 'package:inventory_management/screen/student/check_availability.dart';
 import 'package:inventory_management/screen/student/check_availability.dart';
+import 'package:inventory_management/theme/app_colors.dart';
 import 'package:inventory_management/widget/card_button.dart';
 
 class OfficeClerkDashboard extends StatefulWidget {
