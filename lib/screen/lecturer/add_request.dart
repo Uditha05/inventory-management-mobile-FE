@@ -17,7 +17,7 @@ class _AddRequestState extends State<AddRequest> {
   String selectedModel;
   String selectedStoreCode;
   String labName;
-  String lecturerId;
+  String lecturerId = ConstantData.USER_ID;
   String fromDate;
   String toDate;
   bool isError = false;
@@ -121,13 +121,13 @@ class _AddRequestState extends State<AddRequest> {
 
   void toogleFromDate(DateTime date) {
     setState(() {
-      fromDate = DateFormat('dd/MM/yyyy').format(date);
+      fromDate = DateFormat('MM/dd/yyyy').format(date);
     });
   }
 
   void toogleToDate(DateTime date) {
     setState(() {
-      toDate = DateFormat('dd/MM/yyyy').format(date);
+      toDate = DateFormat('MM/dd/yyyy').format(date);
     });
   }
 
@@ -144,6 +144,7 @@ class _AddRequestState extends State<AddRequest> {
       print(lecturerId);
       print(fromDate);
       print(toDate);
+      lecApi.sendLecturerRequest({"lecId":ConstantData.USER_ID,"equipmentId":selectedStoreCode,"reason":'temp',"requestDate":fromDate,"returnDate":toDate});
       setState(() {
         selectedCategory=null;
         selectedModel=null;
@@ -266,6 +267,7 @@ class _AddRequestState extends State<AddRequest> {
             SizedBox(
               height: 20,
             ),
+            (isError)?Text('Error occur',style: TextStyle(color: Colors.red,fontSize: 20),):Text(''),
             FlatButton(
               child: Text(
                 'Submit',

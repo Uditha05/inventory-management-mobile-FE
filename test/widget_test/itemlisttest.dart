@@ -8,7 +8,7 @@ import 'package:network_image_mock/network_image_mock.dart';
 void main(){
   List<BorrowDetail> details;
   setUp((){
-    details=[BorrowDetail(month: 'JAN',date: '20', data: Item(category: 'Camera',model: 'Model',storeCode: '123',labName: 'lab'))];
+    details=[BorrowDetail(month: 'JAN',date: '20', data: Item(category: 'Camera',model: 'Model',storeCode: '123',labName: 'lab',imageURL:'abc.com'))];
   });
   testWidgets('Show scrollable list view', (WidgetTester tester)async{
     await mockNetworkImagesFor(()async=>await tester.pumpWidget(MaterialApp(

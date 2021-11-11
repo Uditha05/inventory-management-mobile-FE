@@ -16,9 +16,9 @@ class _TemporalBorrowingRequestState extends State<TemporalBorrowingRequest> {
   String selectedModel;
   String selectedStoreCode;
   String labName;
-  String studentId;
-  String fromDate;
-  String toDate;
+  String studentId = ConstantData.USER_ID;
+  String fromDate = DateFormat('dd/MM/yyyy').format(DateTime.now());
+  String toDate = DateFormat('dd/MM/yyyy').format(DateTime.now());
   bool isError=false;
 
   List<String> cList=[];
@@ -126,6 +126,8 @@ class _TemporalBorrowingRequestState extends State<TemporalBorrowingRequest> {
       print(labName);
       print(selectedStoreCode);
       print(studentId);
+      print(fromDate);
+      print(toDate);
       lecApi.sendTemporyRequest({"studentId":ConstantData.USER_ID,"equipmentId":selectedStoreCode,"reason":'temporyStudent',"requestDate":fromDate,"returnDate":toDate});
       setState(() {
         selectedCategory=null;

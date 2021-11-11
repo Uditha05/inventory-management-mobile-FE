@@ -7,7 +7,7 @@ import 'package:inventory_management/services/lab.dart';
 import 'package:inventory_management/services/modal.dart';
 import 'package:inventory_management/widget/chart.dart';
 
-var apiurl = "https://insep.herokuapp.com";
+var apiurl = "https://sep-uom-inventory.herokuapp.com";
 getCategories(Category c) async {
   var url = Uri.parse(apiurl + '/technicalofficer/categories');
 

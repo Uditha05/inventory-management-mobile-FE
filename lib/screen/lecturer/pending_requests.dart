@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:inventory_management/config/constant_data.dart';
 import 'package:inventory_management/model/request_list.dart';
 import 'package:inventory_management/theme/app_colors.dart';
 import 'package:inventory_management/widget/widget/request_list.dart';
@@ -19,7 +20,7 @@ class _PendingRequestState extends State<PendingRequest> {
   @override
   void initState(){
     super.initState();
-    updateUi(lecApi.getPendingRequest());
+    updateUi(lecApi.getPendingRequest(ConstantData.USER_ID));
   }
 
   void updateUi(dynamic data)async{
@@ -32,7 +33,7 @@ class _PendingRequestState extends State<PendingRequest> {
       reqlist = await data;
       setState(() {
         requests = reqlist.details;
-        //print(requests);
+        print(requests);
         print('I am running again');
       });
     }

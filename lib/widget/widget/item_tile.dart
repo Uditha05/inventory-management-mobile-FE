@@ -7,10 +7,13 @@ class ItemTile extends StatelessWidget {
   final String date;
   final Item itemDetail;
 
-  ItemTile({this.month,this.date,this.itemDetail});
+  ItemTile({this.month, this.date, this.itemDetail});
 
   @override
   Widget build(BuildContext context) {
+    print(month);
+    print(date);
+    print(itemDetail.category);
     return Container(
       margin: EdgeInsets.all(10),
       padding: EdgeInsets.all(5),
@@ -26,33 +29,39 @@ class ItemTile extends StatelessWidget {
             children: [
               Text(
                 month,
+                //'month',
                 style: dateStyle,
               ),
               Text(
                 date,
+                //'date',
                 style: dateStyle,
               )
             ],
           ),
           Expanded(
             child: Padding(
-              padding: EdgeInsets.only(left: 50,right: 20),
+              padding: EdgeInsets.only(left: 50, right: 20),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Text(
+                    //'item',
                     itemDetail.category,
                     style: dataCategoryStyle,
                   ),
                   Text(
+                    //'model',
                     itemDetail.model,
                     style: dataDetailStyle,
                   ),
                   Text(
+                    //'scode',
                     itemDetail.storeCode,
                     style: dataDetailStyle,
                   ),
                   Text(
+                    //'lab',
                     itemDetail.labName,
                     style: dataDetailStyle,
                   ),
@@ -64,7 +73,8 @@ class ItemTile extends StatelessWidget {
             width: 100,
             height: 100,
             child: Image(
-              image: NetworkImage('https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQTCKA6akZjVZfHmZaluLOTZzE-3_j_-MBScw&usqp=CAU'),
+              image: NetworkImage(itemDetail.imageURL),
+              //image: NetworkImage('http://res.cloudinary.com/inventorysep/image/upload/v1636624241/ht5t0warynpmbheoi6fr.jpg'),
             ),
           )
         ],

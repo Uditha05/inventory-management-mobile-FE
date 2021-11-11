@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:inventory_management/model/avaiability_detail.dart';
 import 'package:inventory_management/model/availability_detail_list.dart';
+import 'package:inventory_management/screen/student/search_page.dart';
 import 'package:inventory_management/services/student_api.dart';
 import 'package:inventory_management/widget/widget/availability_list.dart';
 import 'package:inventory_management/theme/app_colors.dart';
@@ -32,7 +33,6 @@ class _CheckAvailabilityState extends State<CheckAvailability> {
       datalist = await data;
       setState(() {
         lst = datalist.details;
-        //print(lst);
       });
     }
   }
@@ -47,7 +47,7 @@ class _CheckAvailabilityState extends State<CheckAvailability> {
             IconButton(
                 icon: Icon(Icons.search),
                 onPressed: () {
-                  //logic of search
+                 Navigator.of(context).push(new MaterialPageRoute(builder:(BuildContext context)=>SearchPage(lst,widget.type))); 
                 }),
           ],
           title: Text('Check Availability'),
@@ -63,7 +63,7 @@ class _CheckAvailabilityState extends State<CheckAvailability> {
             : Column(
                 children: [
                   Expanded(
-                    child: AvailabilityList(lst, widget.type), //'student'
+                    child: AvailabilityList(details: lst,type: widget.type,), //'student'
                   ),
                 ],
               ));

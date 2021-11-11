@@ -2,12 +2,15 @@ import 'package:http/http.dart' as http;
 import 'dart:convert';
 
 class NetworkHelper {
-  NetworkHelper(this.url);
+  NetworkHelper(this.url,this.client);
 
   final String url;
+  final http.Client client;
+
+  //http.Client client = new http.Client();
 
   Future getData() async {
-    http.Response response = await http.get(Uri.parse(url));
+    http.Response response = await client.get(Uri.parse(url));
 
     if (response.statusCode == 200) {
       String data = response.body;
@@ -18,7 +21,7 @@ class NetworkHelper {
   }
 
   Future sendDate(Object obj)async{
-    http.Response response = await http.post(
+    http.Response response = await client.post(
       Uri.parse(url),
       headers: {"Content-Type": "application/json"},
       body: jsonEncode(obj),

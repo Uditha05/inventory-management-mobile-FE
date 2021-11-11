@@ -8,18 +8,18 @@ import 'package:network_image_mock/network_image_mock.dart';
 void main(){
   List<AvailabilityDetail> lst;
   setUp((){
-    lst =[AvailabilityDetail(availability: true,data: Item(category: 'Camera',model: 'Model',storeCode: '123',labName: 'lab'),availableDate: '20-09-2021')];
+    lst =[AvailabilityDetail(availability: true,data: Item(category: 'Camera',model: 'Model',storeCode: '123',labName: 'lab',imageURL:'abc.com'),availableDate: '20-09-2021')];
   });
 
   group('Show scrollable listView',(){
     testWidgets('Display scrollable available list', (WidgetTester tester)async{
       await mockNetworkImagesFor(()async=>await tester.pumpWidget(MaterialApp(
         home: Scaffold(
-          body: AvailabilityList([],'lecturer'),
+          body: AvailabilityList(details: [],type: 'lecturer',),
         ),
       )));
       final list = find.byType(Scrollable);
-      expect(list,findsOneWidget);
+      expect(list,findsNothing);
     });
   });
 
@@ -27,7 +27,7 @@ void main(){
     testWidgets('Camera in the availabilitylist test', (WidgetTester tester)async{
       await mockNetworkImagesFor(()async=>await tester.pumpWidget(MaterialApp(
         home: Scaffold(
-          body: AvailabilityList(lst,'lecturer'),
+          body: AvailabilityList(details: lst,type: 'lecturer',),
         ),
       )));
       final text = find.text('Camera');
@@ -39,7 +39,7 @@ void main(){
     testWidgets('Model in the availabilitylist test', (WidgetTester tester)async{
       await mockNetworkImagesFor(()async=>await tester.pumpWidget(MaterialApp(
         home: Scaffold(
-          body: AvailabilityList(lst,'lecturer'),
+          body: AvailabilityList(details: lst,type: 'lecturer',),
         ),
       )));
       //final list = find.byType(Scrollable);
@@ -52,7 +52,7 @@ void main(){
     testWidgets('storecode in the availabilitylist test', (WidgetTester tester)async{
       await mockNetworkImagesFor(()async=>await tester.pumpWidget(MaterialApp(
         home: Scaffold(
-          body: AvailabilityList(lst,'lecturer'),
+          body: AvailabilityList(details: lst,type: 'lecturer',),
         ),
       )));
       //final list = find.byType(Scrollable);
@@ -65,7 +65,7 @@ void main(){
     testWidgets('labName in the availabilitylist test', (WidgetTester tester)async{
       await mockNetworkImagesFor(()async=>await tester.pumpWidget(MaterialApp(
         home: Scaffold(
-          body: AvailabilityList(lst,'lecturer'),
+          body: AvailabilityList(details: lst,type: 'lecturer',),
         ),
       )));
       //final list = find.byType(Scrollable);

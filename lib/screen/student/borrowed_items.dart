@@ -15,16 +15,7 @@ class BorrowItems extends StatefulWidget {
 }
 
 class _BorrowItemsState extends State<BorrowItems> {
-  List<BorrowDetail> details = [
-    BorrowDetail(month: 'JAN',date: '16',data: Item(category: 'Projector',model: 'CA124-B',storeCode: 'NA255',labName: 'CSE Level 1 lab')),
-    BorrowDetail(month: 'JAN',date: '16',data: Item(category: 'Hi-fi system',model: 'CA124-B',storeCode: 'NA255',labName: 'CSE Level 1 lab')),
-    BorrowDetail(month: 'JAN',date: '16',data: Item(category: 'Router',model: 'CA124-B',storeCode: 'NA255',labName: 'CSE Level 1 lab')),
-    BorrowDetail(month: 'JAN',date: '16',data: Item(category: 'Touch',model: 'CA124-B',storeCode: 'NA255',labName: 'CSE Level 1 lab')),
-    BorrowDetail(month: 'JAN',date: '16',data: Item(category: 'Pen drive',model: 'CA124-B',storeCode: 'NA255',labName: 'CSE Level 1 lab')),
-    BorrowDetail(month: 'JAN',date: '16',data: Item(category: 'Bluetooth Mouse',model: 'CA124-B',storeCode: 'NA255',labName: 'CSE Level 1 lab')),
-    BorrowDetail(month: 'JAN',date: '16',data: Item(category: 'Sound system',model: 'CA124-B',storeCode: 'NA255',labName: 'CSE Level 1 lab')),
-  ];
-
+  
   StudentApi studentApi = StudentApi();
   BorrowDetailList datalist;
   List<BorrowDetail> lst;
@@ -39,7 +30,10 @@ class _BorrowItemsState extends State<BorrowItems> {
   void updateUi (dynamic data) async{
     if(data==null){
       print('null val');
-      lst = [];
+      setState(() {
+        lst = [];
+      });
+      
     }else{
       datalist = await data;
       setState(() {
@@ -57,7 +51,7 @@ class _BorrowItemsState extends State<BorrowItems> {
         title: Text('Borrowed Items'),
         backgroundColor: AppColor.main_green_background,
       ),
-      body: (datalist==null)?Center(child: SpinKitDoubleBounce(color: Colors.white,size: 100,),):Column(
+      body: (datalist==null)?Center(child: SpinKitDoubleBounce(color: Colors.white,size: 100,)):Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Container(

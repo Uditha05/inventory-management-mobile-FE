@@ -2,11 +2,13 @@ import '../model/request_list.dart';
 import './network_helper.dart';
 import '../model/availability_detail_list.dart';
 import '../model/pending_detail.dart';
+import 'package:http/http.dart' as http;
 
 
 class LecturerApi{
+  http.Client client = new http.Client();
   Future<dynamic> getItems() async{
-    NetworkHelper networkHelper = NetworkHelper('http://10.0.2.2:5000/student/checkAvaiability');
+    NetworkHelper networkHelper = NetworkHelper('https://sep-uom-inventory.herokuapp.com/student/checkAvaiabilitymobile',client);
     //NetworkHelper networkHelper = NetworkHelper('https://sep-backend-inventory.herokuapp.com/checkAvaiability');
     var data = await networkHelper.getData();
     var lst =[];
@@ -43,8 +45,8 @@ class LecturerApi{
     return AvailabilityDetailList.fromJson(lst);
   }
 
-  Future<dynamic> getPendingRequest() async{
-    NetworkHelper networkHelper = NetworkHelper('https://sep-backend-inventory.herokuapp.com/pending');
+  Future<dynamic> getPendingRequest(id) async{
+    NetworkHelper networkHelper = NetworkHelper('https://sep-uom-inventory.herokuapp.com/lecturer/pending/${id}',client);
     var data = await networkHelper.getData();
     var lst=[];
     for(var m in data){
@@ -53,14 +55,15 @@ class LecturerApi{
         "id" : m['id'],
         "storeCode": m['equipmentId'],
         "requestDate": m['requestDate'],
-        "studentId": m['RequestBorrowing.studentId'],
+        "studentId": m['RequestBorrowings.studentId'],
       };
       lst.add(newObj);
     }
+    print(lst);
     return RequestsList.fromJson(lst);
   }
   Future<dynamic> getPendingItemDetail(String id) async{
-    NetworkHelper networkHelper = NetworkHelper('https://sep-backend-inventory.herokuapp.com/requestDetail/${id}');
+    NetworkHelper networkHelper = NetworkHelper('https://sep-uom-inventory.herokuapp.com/lecturer/requestDetail/${id}',client);
     var data = await networkHelper.getData();
     var newObj = {
       'studentId': data[0]['Requests.RequestBorrowing.studentId'],
@@ -77,21 +80,21 @@ class LecturerApi{
   }
 
   Future approveRequest(String id,Object obj)async{
-    NetworkHelper networkHelper = NetworkHelper('https://sep-backend-inventory.herokuapp.com/approve/${id}');
+    NetworkHelper networkHelper = NetworkHelper('https://sep-uom-inventory.herokuapp.com/lecturer/approve/${id}',client);
     var data = await networkHelper.sendDate(obj);
     print('send approve request');
     return data;
   }
 
   Future rejectRequest(String id,Object obj)async{
-    NetworkHelper networkHelper = NetworkHelper('https://sep-backend-inventory.herokuapp.com/reject/${id}');
+    NetworkHelper networkHelper = NetworkHelper('https://sep-uom-inventory.herokuapp.com/lecturer/reject/${id}',client);
     var data = await networkHelper.sendDate(obj);
     print('send reject request');
     return data;
   }
 
   Future getCategory()async{
-    NetworkHelper networkHelper = NetworkHelper('http://10.0.2.2:5000/student/category');
+    NetworkHelper networkHelper = NetworkHelper('https://sep-uom-inventory.herokuapp.com/student/category',client);
     //NetworkHelper networkHelper = NetworkHelper('https://sep-backend-inventory.herokuapp.com/category');
     var data = await networkHelper.getData();
     var lst=[];
@@ -102,7 +105,7 @@ class LecturerApi{
   }
 
   Future getModel(String category)async{
-    NetworkHelper networkHelper = NetworkHelper('http://10.0.2.2:5000/student/model/${category}');
+    NetworkHelper networkHelper = NetworkHelper('https://sep-uom-inventory.herokuapp.com/student/model/${category}',client);
     //NetworkHelper networkHelper = NetworkHelper('https://sep-backend-inventory.herokuapp.com/model/${category}');
     var data = await networkHelper.getData();
     var lst=[];
@@ -114,7 +117,7 @@ class LecturerApi{
   }
   
   Future getLab(String model,String category)async{
-    NetworkHelper networkHelper = NetworkHelper('http://10.0.2.2:5000/student/lab/${category}/${model}');
+    NetworkHelper networkHelper = NetworkHelper('https://sep-uom-inventory.herokuapp.com/student/lab/${category}/${model}',client);
     //NetworkHelper networkHelper = NetworkHelper('https://sep-backend-inventory.herokuapp.com/lab/${category}/${model}');
     var data = await networkHelper.getData();
     //print(data);
@@ -126,7 +129,7 @@ class LecturerApi{
   }
 
   Future getStoreCode(String category,String model, String lab)async{
-    NetworkHelper networkHelper = NetworkHelper('http://10.0.2.2:5000/student/storeCode/${category}/${model}/${lab}');
+    NetworkHelper networkHelper = NetworkHelper('https://sep-uom-inventory.herokuapp.com/student/storeCode/${category}/${model}/${lab}',client);
     //NetworkHelper networkHelper = NetworkHelper('https://sep-backend-inventory.herokuapp.com/storeCode/${category}/${model}/${lab}');
     var data = await networkHelper.getData();
     //print(data);
@@ -151,7 +154,7 @@ class LecturerApi{
   // }
 
   Future getLecturers(String lab)async{
-    NetworkHelper networkHelper = NetworkHelper('http://10.0.2.2:5000/student/lecturer/${lab}');
+    NetworkHelper networkHelper = NetworkHelper('https://sep-uom-inventory.herokuapp.com/student/lecturer/${lab}',client);
     //NetworkHelper networkHelper = NetworkHelper('https://sep-backend-inventory.herokuapp.com/lecturer/${lab}');
     var data = await networkHelper.getData();
     var lst=[[],[]];
@@ -166,16 +169,25 @@ class LecturerApi{
   }
 
   Future sendNormalRequest(Object detail)async{
-    NetworkHelper networkHelper = NetworkHelper('http://10.0.2.2:5000/student/sendNormalRequest');
+    NetworkHelper networkHelper = NetworkHelper('https://sep-uom-inventory.herokuapp.com/student/sendNormalRequest',client);
     var data = await networkHelper.sendDate(detail);
     print('send normal request');
     return data;
   }
 
   Future sendTemporyRequest(Object detail)async{
-    NetworkHelper networkHelper = NetworkHelper('http://10.0.2.2:5000/student/sendTemporyRequest');
+    NetworkHelper networkHelper = NetworkHelper('https://sep-uom-inventory.herokuapp.com/student/sendTemporyRequest',client);
     var data = await networkHelper.sendDate(detail);
     print('send normal request');
     return data;
   }
+
+  Future sendLecturerRequest(Object detail)async{
+    NetworkHelper networkHelper = NetworkHelper('https://sep-uom-inventory.herokuapp.com/lecturer/sendTemporyRequest',client);
+    var data = await networkHelper.sendDate(detail);
+    print('send normal request');
+    return data;
+  }
+
+  
 }

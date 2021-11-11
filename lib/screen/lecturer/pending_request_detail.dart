@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:inventory_management/config/constant_data.dart';
 import 'package:inventory_management/services/lecturer_api.dart';
 import '../../model/pending_detail.dart';
 import 'package:intl/intl.dart';
@@ -109,8 +110,8 @@ class _PendingRequestDetailState extends State<PendingRequestDetail> {
                     backgroundColor: MaterialStateProperty.all<Color>(Colors.red),
                   ),
                   onPressed: (){
-                    print('reject');
-                    var data = lecApi.rejectRequest(widget.id, {});
+                    print('reject'+widget.id);
+                    var data = lecApi.rejectRequest(widget.id,{"id":widget.id,"category":detail.item.category,"storeCode":detail.item.storeCode,"lecId":ConstantData.USER_ID,"studentId":detail.studentId});
                     Navigator.pop(context);
                     (data==null)?Text('Loading....'): Navigator.popUntil(context, (route) => route.isFirst);
                     },
@@ -122,7 +123,7 @@ class _PendingRequestDetailState extends State<PendingRequestDetail> {
                   ),
                   onPressed: (){
                     print('approve');
-                    var data=lecApi.approveRequest(widget.id,{});
+                    var data=lecApi.approveRequest(widget.id,{"id":widget.id,"category":detail.item.category,"storeCode":detail.item.storeCode,"lecId":ConstantData.USER_ID,"studentId":detail.studentId});
                     (data==null)?Text('Loading....'): Navigator.popUntil(context, (route) => route.isFirst);
                     //(data==null)?Text('Loading....'): Navigator.pushReplacement(context, MaterialPageRoute(builder: (context)=>PendingRequest()));
                     },

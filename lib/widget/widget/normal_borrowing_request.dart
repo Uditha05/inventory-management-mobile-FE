@@ -136,13 +136,13 @@ class _NormalBorrowingRequestState extends State<NormalBorrowingRequest> {
 
   void toogleFromDate(DateTime date){
     setState(() {
-      fromDate= DateFormat('dd/MM/yyyy').format(date);
+      fromDate= DateFormat('MM/dd/yyyy').format(date);
     });
   }
 
   void toogleToDate(DateTime date){
     setState(() {
-      toDate= DateFormat('dd/MM/yyyy').format(date);
+      toDate= DateFormat('MM/dd/yyyy').format(date);
     });
   }
 
@@ -169,7 +169,7 @@ class _NormalBorrowingRequestState extends State<NormalBorrowingRequest> {
       // print(toDate);
       // print(selectedLecturer);
       // print(selectedLecturerId);
-      lecApi.sendNormalRequest({"studentId":ConstantData.USER_ID,"lecId":selectedLecturerId,"equipmentId":selectedStoreCode,"requestDate":fromDate,"returnDate":toDate});
+      lecApi.sendNormalRequest({"studentId":ConstantData.USER_ID,"lecId":selectedLecturerId,"equipmentId":selectedStoreCode,"requestDate":fromDate,"returnDate":toDate,"model":selectedModel,"category":selectedCategory});
       setState(() {
         selectedCategory=null;
         selectedModel=null;
