@@ -152,6 +152,43 @@ class _MarkRequestScreenState extends State<MarkRequestScreen> {
     );
   }
 
+  // Future<void> scanBarcodeNormal() async {
+  //   String barcodeScanRes;
+  //   // Platform messages may fail, so we use a try/catch PlatformException.
+  //   try {
+  //     barcodeScanRes = await FlutterBarcodeScanner.scanBarcode(
+  //         '#ff6666', 'Cancel', true, ScanMode.BARCODE);
+
+  //     print(barcodeScanRes.toString());
+  //     if (barcodeScanRes == "" || barcodeScanRes == "-1") {
+  //       setState(() {
+  //         barcodeString = barcodeScanRes;
+  //       });
+  //       if (barcodeString != "-1") {
+  //         setState(() {
+  //           storeCodeEditor.text = barcodeString;
+  //         });
+  //       }
+
+  //       return;
+  //     } else {
+  //       Fluttertoast.showToast(
+  //           msg: "Barcode can not ditect!",
+  //           toastLength: Toast.LENGTH_SHORT,
+  //           gravity: ToastGravity.CENTER,
+  //           timeInSecForIosWeb: 1,
+  //           backgroundColor: AppColor.toast_msg_warning,
+  //           textColor: Colors.white,
+  //           fontSize: 13.0);
+
+  //       return;
+  //     }
+  //   } on PlatformException {
+  //     barcodeScanRes = 'Failed to get platform version.';
+  //   }
+  //   if (!mounted) return;
+  // }
+
   Future<void> scanBarcodeNormal() async {
     String barcodeScanRes;
     // Platform messages may fail, so we use a try/catch PlatformException.
@@ -159,34 +196,68 @@ class _MarkRequestScreenState extends State<MarkRequestScreen> {
       barcodeScanRes = await FlutterBarcodeScanner.scanBarcode(
           '#ff6666', 'Cancel', true, ScanMode.BARCODE);
 
-      print(barcodeScanRes.toString());
-      if (barcodeScanRes == "" || barcodeScanRes == "-1") {
-        setState(() {
-          barcodeString = barcodeScanRes;
-        });
-        if (barcodeString != "-1") {
-          setState(() {
-            storeCodeEditor.text = barcodeString;
-          });
-        }
-
-        return;
-      } else {
-        Fluttertoast.showToast(
-            msg: "Barcode can not ditect!",
-            toastLength: Toast.LENGTH_SHORT,
-            gravity: ToastGravity.CENTER,
-            timeInSecForIosWeb: 1,
-            backgroundColor: AppColor.toast_msg_warning,
-            textColor: Colors.white,
-            fontSize: 13.0);
-
-        return;
-      }
+      print(barcodeScanRes);
     } on PlatformException {
       barcodeScanRes = 'Failed to get platform version.';
     }
     if (!mounted) return;
+    if (barcodeScanRes != " ") {
+      setState(() {
+        barcodeString = barcodeScanRes;
+      });
+      checkUpcomingList(barcodeScanRes);
+      return;
+    } else {
+      Fluttertoast.showToast(
+          msg: "Barcode can not ditect!",
+          toastLength: Toast.LENGTH_SHORT,
+          gravity: ToastGravity.CENTER,
+          timeInSecForIosWeb: 1,
+          backgroundColor: AppColor.toast_msg_warning,
+          textColor: Colors.white,
+          fontSize: 13.0);
+      return;
+    }
+  }
+
+  void checkUpcomingList(String sCode) {
+    for (var oneB in pendingList) {
+      if (oneB.storeCode == sCode) {
+        return _showDialog(context, oneB.damageId, oneB.itemId);
+      }
+    }
+    return errorDialog(context);
+  }
+
+  void errorDialog(BuildContext context) {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          backgroundColor: AppColor.main_green_background,
+          title: new Text(
+            "Invalid Store code",
+            style: TextStyle(color: Colors.white),
+          ),
+          content: new Text(
+            "Damaged item cannot find for this store code.",
+            style: TextStyle(color: Colors.white),
+          ),
+          actions: <Widget>[
+            new FlatButton(
+              color: Colors.green[200],
+              child: new Text(
+                "OK",
+                style: TextStyle(color: Colors.black),
+              ),
+              onPressed: () {
+                Navigator.of(context).pop();
+              },
+            ),
+          ],
+        );
+      },
+    );
   }
 
   @override

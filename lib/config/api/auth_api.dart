@@ -1,1 +1,1 @@
-const String loginURL = "http://10.0.2.2:5000/auth/";
+const String loginURL = "https://sep-uom-inventory.herokuapp.com/auth/";
