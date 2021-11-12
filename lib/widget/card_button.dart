@@ -10,6 +10,7 @@ class CardButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    var width = MediaQuery.of(context).size.width;
     return Container(
       margin: EdgeInsets.all(14),
       padding: EdgeInsets.all(15),
@@ -17,6 +18,8 @@ class CardButton extends StatelessWidget {
         borderRadius: BorderRadius.circular(13),
         color: Colors.white,
       ),
+      width: width,
+      height: 100,
       child: Row(
         crossAxisAlignment: CrossAxisAlignment.center,
         mainAxisAlignment: MainAxisAlignment.start,
@@ -37,7 +40,7 @@ class CardButton extends StatelessWidget {
               mainAxisAlignment: MainAxisAlignment.start,
               children: [
                 Container(
-                  width: 185,
+                  width: width,
                   child: Flexible(
                     child: Text(
                       title,
@@ -49,7 +52,7 @@ class CardButton extends StatelessWidget {
                   height: 5,
                 ),
                 Container(
-                  width: 200,
+                  width: width,
                   child: Flexible(
                     child: Text(
                       subtitle,
